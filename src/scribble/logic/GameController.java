@@ -1,4 +1,4 @@
-package scribble.controller;
+package scribble.logic;
 
 public class GameController {
 

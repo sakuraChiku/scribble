@@ -1,4 +1,4 @@
-package scribble.logic;
+package scribble.models;
 
 public class Player {
     String name;
