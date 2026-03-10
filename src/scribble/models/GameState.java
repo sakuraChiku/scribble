@@ -1,5 +1,5 @@
 package scribble.models;
 
-public class Game {
+public class GameState {
 
 }
