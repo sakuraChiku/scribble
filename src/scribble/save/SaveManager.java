@@ -1,4 +1,4 @@
-package scribble.logic.save;
+package scribble.save;
 
 public class SaveManager {
 
