@@ -1,5 +1,7 @@
 package scribble.models;
 
-public class Move {
+import java.util.ArrayList;
 
+public class Move {
+    ArrayList<Placement> placements; 
 }
