@@ -2,6 +2,7 @@ package scribble.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class TileBag implements Serializable{
@@ -9,7 +10,7 @@ public class TileBag implements Serializable{
      * 
      */
     // initialize 100 letters in the bag
-    final private ArrayList<Tile> letterPool;
+    final private List<Tile> letterPool;
 
     public TileBag() {
         // Define the score and type of different tile
@@ -107,10 +108,21 @@ public class TileBag implements Serializable{
         return letterPool.size();
     }
 
-    public Tile drawTile() {
-        // return a random Tile from index 0-99
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(letterPool.size());
-        return letterPool.remove(randomIndex);
+    public List<Tile> drawTiles(int n) {
+        // return a list of random Tiles from index 0-99
+        List<Tile> tiles = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            Random rand = new Random();
+            int randomIndex = rand.nextInt(letterPool.size());
+            tiles.add(letterPool.remove(randomIndex));
+        }
+        return tiles;
+    }
+
+    public void refillTiles(Player player) {
+        List<Tile> rack = player.getRack();
+        int requiredTilesNum = 7 - rack.size();
+        List<Tile> requiredTiles = drawTiles(requiredTilesNum);
+        player.addTiles(requiredTiles);
     }
 }

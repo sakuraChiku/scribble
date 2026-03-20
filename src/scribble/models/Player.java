@@ -2,12 +2,14 @@ package scribble.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player implements Serializable{
-    String name;
-    int score;
-    ArrayList<Tile> tiles;
+    private String name;
+    private int score;
+    private ArrayList<Tile> rack;
     boolean isSkipped;
+    TileBag bag = new TileBag();
 
     public Player(String name) {
         //initialize the basic information of the player
@@ -16,16 +18,11 @@ public class Player implements Serializable{
         this.isSkipped = false;
 
         //initialize the rack
-        tiles = new ArrayList<>();
-        TileBag bag = new TileBag();
-        for (int i = 0; i < 7; i++) {
-            Tile tile = bag.drawTile();
-            tiles.add(tile);
-        }
+        rack = new ArrayList<>();
     }
 
-    public ArrayList<Tile> getTiles() {
-        return tiles;
+    public ArrayList<Tile> getRack() {
+        return rack;
     }
 
     public String getName() {
@@ -38,5 +35,9 @@ public class Player implements Serializable{
 
     public boolean isIsSkipped() {
         return isSkipped;
+    }
+
+    public void addTiles(List<Tile> tiles) {
+        rack.addAll(tiles);
     }
 }

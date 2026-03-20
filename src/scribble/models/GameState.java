@@ -1,9 +1,9 @@
 package scribble.models;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GameState {
-    ArrayList<Player> players;
+    List<Player> players;
     TileBag bag;
     Board board;
 }
