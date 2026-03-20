@@ -22,4 +22,8 @@ public class Move {
         }
         return false;
     }
+
+    public void recallPlacement() {
+        placements.removeLast();
+    }
 }

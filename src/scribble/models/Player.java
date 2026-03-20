@@ -40,4 +40,8 @@ public class Player implements Serializable{
     public void addTiles(List<Tile> tiles) {
         rack.addAll(tiles);
     }
+
+    public void addScore(int score) {
+        this.score += score;
+    }
 }

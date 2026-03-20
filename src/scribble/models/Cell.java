@@ -1,11 +1,27 @@
 package scribble.models;
 
 public class Cell {
-    Tile tile;
-    BonusType bonus;
+    private Tile tile;
+    private final BonusType bonus;
 
-    public Cell(Tile tile, BonusType bonus) {
-        this.tile = tile;
+    public Cell(BonusType bonus) {
+        this.tile = null;
         this.bonus = bonus;
+    }
+
+    public void placeTile(Tile tile) {
+        this.tile = tile;
+    }
+
+    public Tile getTile() {
+        return tile;
+    }
+
+    public BonusType getBonus() {
+        return bonus;
+    }
+
+    public boolean isPlaced() {
+        return tile != null;
     }
 }
