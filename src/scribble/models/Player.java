@@ -9,7 +9,7 @@ public class Player implements Serializable{
     private int score;
     private ArrayList<Tile> rack;
     boolean isSkipped;
-    TileBag bag = new TileBag();
+    private TileBag bag = new TileBag();
 
     public Player(String name) {
         //initialize the basic information of the player
