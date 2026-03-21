@@ -8,7 +8,7 @@ public class Player implements Serializable{
     private String name;
     private int score;
     private ArrayList<Tile> rack;
-    boolean isSkipped;
+    private boolean isSkipped;
     private TileBag bag = new TileBag();
 
     public Player(String name) {
@@ -35,6 +35,14 @@ public class Player implements Serializable{
 
     public boolean isIsSkipped() {
         return isSkipped;
+    }
+
+    public void punishPlayer() {
+        isSkipped = true;
+    }
+
+    public void recoverPlayer() {
+        isSkipped = false;
     }
 
     public void addTiles(List<Tile> tiles) {
