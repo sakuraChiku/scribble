@@ -52,7 +52,7 @@ public class Board implements Serializable{
     public void placeMove(Move move) {
         List<Placement> placements = move.getPlacements();
         for (Placement p : placements) {
-            grid[p.row-1][p.col-1].placeTile(p.tile);
+            grid[p.getRow()-1][p.getCol()-1].placeTile(p.getTile());
         }
     }
 }

@@ -16,7 +16,7 @@ public class Move {
 
     public boolean hasPlacement(int row, int col) {
         for (Placement p : placements) {
-            if (p.row == row && p.col == col) {
+            if (p.getRow() == row && p.getCol() == col) {
                 return true;
             }
         }

@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements Serializable{
-    private String name;
+    private final String name;
     private int score;
     private ArrayList<Tile> rack;
     private boolean isSkipped;
-    private TileBag bag = new TileBag();
 
     public Player(String name) {
         //initialize the basic information of the player
@@ -47,6 +46,10 @@ public class Player implements Serializable{
 
     public void addTiles(List<Tile> tiles) {
         rack.addAll(tiles);
+    }
+
+    public void removeTiles(List<Tile> tiles) {
+        rack.removeAll(tiles);
     }
 
     public void addScore(int score) {
