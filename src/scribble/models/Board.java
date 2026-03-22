@@ -1,7 +1,6 @@
 package scribble.models;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Board implements Serializable{
     Cell[][] grid;
@@ -50,8 +49,7 @@ public class Board implements Serializable{
     }
 
     public void placeMove(Move move) {
-        List<Placement> placements = move.getPlacements();
-        for (Placement p : placements) {
+        for (Placement p : move.getPlacements()) {
             grid[p.getRow()-1][p.getCol()-1].placeTile(p.getTile());
         }
     }
