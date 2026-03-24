@@ -1,7 +1,15 @@
 package scribble.models;
 
 import java.io.Serializable;
+import scribble.exceptions.CellOccupiedException;
+import scribble.exceptions.CellOutOfBoundException;
 
+/**
+ * Create a 15 x 15 board, cells can be put on it.
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
+ */
 public class Board implements Serializable {
     private static final int SIZE = 15;
     private final Cell[][] grid;
@@ -37,6 +45,11 @@ public class Board implements Serializable {
         }
     }
 
+    public Cell getCell(int row, int col) {
+        checkBounds(row, col);
+        return grid[row-1][col-1];
+    }
+
     public boolean hasTile(int row, int col) {
         checkBounds(row, col);
         return grid[row-1][col-1].isPlaced();
@@ -52,25 +65,28 @@ public class Board implements Serializable {
         return grid[row-1][col-1].getTile().getScore();
     }
 
-    public void placeMove(Move move) {
+    public void placeMove(Move move) throws CellOccupiedException{
         for (Placement p : move.getPlacements()) {
             checkBounds(p.getRow(), p.getCol());
             Cell cell = grid[p.getRow()-1][p.getCol()-1];
             if (cell.isPlaced()) {
-                throw new IllegalStateException("Cell already occupied at (" + p.getRow() + ", " + p.getCol() + ")");
+                throw new CellOccupiedException("Cell already occupied at (" + p.getRow() + ", " + p.getCol() + ")");
             }
             cell.placeTile(p.getTile());
         }
     }
 
-    public Cell getCell(int row, int col) {
-        checkBounds(row, col);
-        return grid[row-1][col-1];
+    public boolean hasAdjacentTile(int row, int col) {
+        boolean left = hasTile(row, col-1);
+        boolean right = hasTile(row, col+1);
+        boolean up = hasTile(row-1, col);
+        boolean down = hasTile(row+1, col);
+        return left || right || up || down;
     }
 
-    private void checkBounds(int row, int col) {
+    private void checkBounds(int row, int col) throws CellOutOfBoundException{
         if (row < 1 || row > SIZE || col < 1 || col > SIZE) {
-            throw new IndexOutOfBoundsException("Invalid board position: (" + row + ", " + col + ")");
+            throw new CellOutOfBoundException("Invalid board position: (" + row + ", " + col + ")");
         }
     }
 }

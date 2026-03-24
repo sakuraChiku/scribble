@@ -6,6 +6,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Reflect basic information, rack and score of a player, with some methods to initialize and modify them
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
+ */
 public class Player implements Serializable{
     private final String name;
     private final UUID id;

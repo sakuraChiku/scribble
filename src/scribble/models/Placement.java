@@ -1,5 +1,11 @@
 package scribble.models;
 
+/**
+ * Includes the tile, the row, and the column information
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
+ */
 public class Placement {
     private Tile tile;
     private int row;

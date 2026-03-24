@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A list of placements with some methods to modify it, and return some basic information
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
+ */
 public class Move {
     private List<Placement> placements = new ArrayList<>();
 
@@ -61,5 +67,25 @@ public class Move {
             row.add(p.getRow());
         }
         return Collections.min(row);
+    }
+
+    // judge if placements are in the same row or col
+    public boolean isSameRow() {
+        int stdRow = placements.get(0).getRow();
+        for (Placement p : placements) {
+            if (p.getRow() != stdRow) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean isSameCol() {
+        int stdCol = placements.get(0).getCol();
+        for (Placement p : placements) {
+            if (p.getCol() != stdCol) {
+                return false;
+            }
+        }
+        return true;
     }
 }

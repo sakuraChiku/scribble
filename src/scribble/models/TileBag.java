@@ -4,11 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import scribble.exceptions.TileBagEmptyException;
 
+/**
+ * Put 100 tiles into the bag and shuffle them, with methods to draw tiles and check if the bag is empty
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
+ */
 public class TileBag implements Serializable{
-    /**
-     * 
-     */
     // initialize 100 letters in the bag
     final private List<Tile> letterPool;
 
@@ -82,10 +86,10 @@ public class TileBag implements Serializable{
         return letterPool.size();
     }
 
-    public List<Tile> drawTiles(int n) throws IllegalStateException{
+    public List<Tile> drawTiles(int n) throws TileBagEmptyException {
         // return a list of random Tiles from index 0-99
         List<Tile> tiles = new ArrayList<>();
-        if (n > letterPool.size()) throw new IllegalStateException("Not enough tiles!");
+        if (n > letterPool.size()) throw new TileBagEmptyException("Not enough tiles!");
         for (int i = 0; i < n; i++) {
             tiles.add(letterPool.remove(i));
         }

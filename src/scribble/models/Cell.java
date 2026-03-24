@@ -1,5 +1,11 @@
 package scribble.models;
 
+/**
+ * Define the cell which includes the tile and the bonus type
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
+ */
 public class Cell {
     private Tile tile;
     private final BonusType bonus;
