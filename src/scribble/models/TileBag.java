@@ -2,8 +2,8 @@ package scribble.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class TileBag implements Serializable{
     /**
@@ -13,116 +13,84 @@ public class TileBag implements Serializable{
     final private List<Tile> letterPool;
 
     public TileBag() {
-        // Define the score and type of different tile
-        Tile aTile = new Tile('A', 1);
-        Tile bTile = new Tile('B', 3);
-        Tile cTile = new Tile('C', 3);
-        Tile dTile = new Tile('D', 2);
-        Tile eTile = new Tile('E', 1);
-        Tile fTile = new Tile('F', 4);
-        Tile gTile = new Tile('G', 2);
-        Tile hTile = new Tile('H', 4);
-        Tile iTile = new Tile('I', 1);
-        Tile jTile = new Tile('J', 8);
-        Tile kTile = new Tile('K', 5);
-        Tile lTile = new Tile('L', 1);
-        Tile mTile = new Tile('M', 3);
-        Tile nTile = new Tile('N', 1);
-        Tile oTile = new Tile('O', 1);
-        Tile pTile = new Tile('P', 3);
-        Tile qTile = new Tile('Q', 10);
-        Tile rTile = new Tile('R', 1);
-        Tile sTile = new Tile('S', 1);
-        Tile tTile = new Tile('T', 1);
-        Tile uTile = new Tile('U', 1);
-        Tile vTile = new Tile('V', 4);
-        Tile wTile = new Tile('W', 4);
-        Tile xTile = new Tile('X', 8);
-        Tile yTile = new Tile('Y', 4);
-        Tile zTile = new Tile('Z', 10);
-        Tile blankTile = new Tile('?', 0);
-
         // initialize the tilepool
         letterPool = new ArrayList<>();
 
         // add tiles to the bag
         //add 12 e tiles to pool
         for (int i = 0; i < 12; i++) {
-            letterPool.add(eTile);
+            letterPool.add(new Tile('E', 1));
         }
 
         //add 9 a and i tiles
         for (int i = 0; i < 9; i++) {
-            letterPool.add(aTile);
-            letterPool.add(iTile);
+            letterPool.add(new Tile('A', 1));
+            letterPool.add(new Tile('I', 1));
         }
 
         //add 8 o tiles
         for (int i = 0; i < 8; i++) {
-            letterPool.add(oTile);
+            letterPool.add(new Tile('O', 1));
         }
 
         //add 6 n,r and t tiles
         for (int i = 0; i < 6; i++) {
-            letterPool.add(nTile);
-            letterPool.add(rTile);
-            letterPool.add(tTile);
+            letterPool.add(new Tile('N', 1));
+            letterPool.add(new Tile('R', 1));
+            letterPool.add(new Tile('T', 1));
         }
 
         //add 4 l,s,u and d tiles
         for (int i = 0; i < 4; i++) {
-            letterPool.add(lTile);
-            letterPool.add(sTile);
-            letterPool.add(uTile);
-            letterPool.add(dTile);
+            letterPool.add(new Tile('L', 1));
+            letterPool.add(new Tile('S', 1));
+            letterPool.add(new Tile('U', 1));
+            letterPool.add(new Tile('D', 2));
         }
 
         //add 3 g tiles
         for (int i = 0; i < 3; i++) {
-            letterPool.add(gTile);
+            letterPool.add(new Tile('G', 2));
         }
 
         //add 2 b,c,m,p,f,h,v,w,y and blank tiles
         for (int i = 0; i < 2; i++) {
-            letterPool.add(bTile);
-            letterPool.add(cTile);
-            letterPool.add(mTile);
-            letterPool.add(pTile);
-            letterPool.add(fTile);
-            letterPool.add(hTile);
-            letterPool.add(vTile);
-            letterPool.add(wTile);
-            letterPool.add(yTile);
-            letterPool.add(blankTile);
+            letterPool.add(new Tile('B', 3));
+            letterPool.add(new Tile('C', 3));
+            letterPool.add(new Tile('M', 3));
+            letterPool.add(new Tile('P', 3));
+            letterPool.add(new Tile('F', 4));
+            letterPool.add(new Tile('H', 4));
+            letterPool.add(new Tile('V', 4));
+            letterPool.add(new Tile('W', 4));
+            letterPool.add(new Tile('Y', 4));
+            letterPool.add(new Tile('?', 0));
         }
 
         //add 1 k,j,x,q and z tiles
-        letterPool.add(kTile);
-        letterPool.add(jTile);
-        letterPool.add(xTile);
-        letterPool.add(qTile);
-        letterPool.add(zTile);
+        letterPool.add(new Tile('K', 5));
+        letterPool.add(new Tile('J', 8));
+        letterPool.add(new Tile('X', 8));
+        letterPool.add(new Tile('Q', 10));
+        letterPool.add(new Tile('Z', 10));
+
+        // shuffle the letterpool
+        Collections.shuffle(letterPool);
     } // initialization complete
 
     public int tilesRemaining() {
         return letterPool.size();
     }
 
-    public List<Tile> drawTiles(int n) {
+    public List<Tile> drawTiles(int n) throws IllegalStateException{
         // return a list of random Tiles from index 0-99
         List<Tile> tiles = new ArrayList<>();
+        if (n > letterPool.size()) throw new IllegalStateException("Not enough tiles!");
         for (int i = 0; i < n; i++) {
-            Random rand = new Random();
-            int randomIndex = rand.nextInt(letterPool.size());
-            tiles.add(letterPool.remove(randomIndex));
+            tiles.add(letterPool.remove(i));
         }
         return tiles;
     }
 
-    public void refillTiles(Player player) {
-        List<Tile> rack = player.getRack();
-        int requiredTilesNum = 7 - rack.size();
-        List<Tile> requiredTiles = drawTiles(requiredTilesNum);
-        player.addTiles(requiredTiles);
-    }
+    // Game controller will refill the tiles for the player
 }

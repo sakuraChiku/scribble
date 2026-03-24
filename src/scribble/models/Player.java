@@ -2,26 +2,35 @@ package scribble.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class Player implements Serializable{
     private final String name;
+    private final UUID id;
     private int score;
-    private ArrayList<Tile> rack;
-    private boolean isSkipped;
+    private List<Tile> rack;
+    private boolean isPenalized; // penalize the player by skipping his/her turn
+    private static final int RACK_SIZE = 7;
 
-    public Player(String name) {
+    public Player(String name, UUID id) {
         //initialize the basic information of the player
         this.name = name;
         this.score = 0;
-        this.isSkipped = false;
-
+        this.isPenalized = false;
+        this.id = id;
+        
         //initialize the rack
         rack = new ArrayList<>();
     }
+    
+    public UUID getId() {
+        return id;
+    }
 
-    public ArrayList<Tile> getRack() {
-        return rack;
+    public List<Tile> getRack() {
+        return Collections.unmodifiableList(rack); // make sure that the player is unable to modify the rack
     }
 
     public String getName() {
@@ -32,24 +41,27 @@ public class Player implements Serializable{
         return score;
     }
 
-    public boolean isIsSkipped() {
-        return isSkipped;
+    public boolean isPenalized() {
+        return isPenalized;
     }
 
     public void punishPlayer() {
-        isSkipped = true;
+        isPenalized = true;
     }
 
     public void recoverPlayer() {
-        isSkipped = false;
+        isPenalized = false;
     }
 
-    public void addTiles(List<Tile> tiles) {
+    public void addTiles(List<Tile> tiles) throws IllegalStateException{
+        if (tiles.size() + rack.size() > RACK_SIZE) throw new IllegalStateException("The maximum size of rack is 7!");
         rack.addAll(tiles);
     }
 
     public void removeTiles(List<Tile> tiles) {
-        rack.removeAll(tiles);
+        for (Tile t : tiles) {
+            rack.remove(t);
+        }
     }
 
     public void addScore(int score) {
