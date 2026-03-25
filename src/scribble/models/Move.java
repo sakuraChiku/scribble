@@ -22,6 +22,10 @@ public class Move {
         return Collections.unmodifiableList(placements); // make sure player can not change the placements by move.getPlacements().clear()
     }
 
+    public boolean isEmpty() {
+        return placements.isEmpty();
+    }
+
     public boolean hasPlacement(int row, int col) {
         for (Placement p : placements) {
             if (p.getRow() == row && p.getCol() == col) {
@@ -67,6 +71,12 @@ public class Move {
             row.add(p.getRow());
         }
         return Collections.min(row);
+    }
+    public int getSameCol() {
+        return placements.get(0).getCol();
+    }
+    public int getSameRow() {
+        return placements.get(0).getRow();
     }
 
     // judge if placements are in the same row or col
