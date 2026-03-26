@@ -1,27 +1,30 @@
 package scribble.logic;
 
 import scribble.exceptions.EmptyMoveException;
+import scribble.exceptions.FirstMoveNotThroughCenter;
 import scribble.exceptions.GameException;
 import scribble.exceptions.MoveNotContinuousException;
 import scribble.exceptions.MoveNotInLineException;
 import scribble.models.Board;
 import scribble.models.Direction;
 import scribble.models.Move;
+import scribble.models.Placement;
 
 public class BoardValidator {
     public void structureValidator(Move move, Board board) throws GameException {
         if (move.isEmpty())
             throw new EmptyMoveException("The move cannot be empty!");
-        if (!move.isSameCol() || !move.isSameRow()) {
+        if (move.getDirection() == null) {
             throw new MoveNotInLineException("The move must be in a line!");
         }
 
         if (move.getPlacements().size() == 1) {
             return;
-        } else if (move.isSameCol()) {
-            validateDirection(move, board, Direction.VERTICAL);
-        } else if (move.isSameRow()) {
-            validateDirection(move, board, Direction.HORIZONTAL);
+        }
+
+        switch (move.getDirection()) {
+            case HORIZONTAL: validateDirection(move, board, move.getDirection());
+            case VERTICAL: validateDirection(move, board, move.getDirection());
         }
     }
 
@@ -43,5 +46,14 @@ public class BoardValidator {
                 }
             }
         }
+    }
+
+    public void throughCenter(Move move, Board board) throws GameException {
+        for (Placement p : move.getPlacements()) {
+            if ((p.getRow() == (1+Board.getSIZE())/2) && (p.getCol() == (1+Board.getSIZE())/2)) {
+                return;
+            }
+        }
+        throw new FirstMoveNotThroughCenter("First move must go through the center!");
     }
 }

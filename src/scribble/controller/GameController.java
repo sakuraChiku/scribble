@@ -1,4 +1,4 @@
-package scribble.logic;
+package scribble.controller;
 
 import scribble.models.Move;
 

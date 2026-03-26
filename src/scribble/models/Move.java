@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class Move {
     private List<Placement> placements = new ArrayList<>();
+    private Direction direction;
 
     public void addPlacement(Placement p) throws IllegalArgumentException{
         if (hasPlacement(p.getRow(), p.getCol())) throw new IllegalArgumentException("Duplicated move!");
@@ -20,6 +21,10 @@ public class Move {
 
     public List<Placement> getPlacements() {
         return Collections.unmodifiableList(placements); // make sure player can not change the placements by move.getPlacements().clear()
+    }
+
+    public Direction getDirection() {
+        return direction;
     }
 
     public boolean isEmpty() {
@@ -40,7 +45,7 @@ public class Move {
             placements.remove(placements.size()-1);
         }
     }
-
+    
     /**
      * Basic logical judgements
      */
@@ -79,23 +84,24 @@ public class Move {
         return placements.get(0).getRow();
     }
 
-    // judge if placements are in the same row or col
-    public boolean isSameRow() {
+    // judge the direction of the move
+    public void isSameRow() {
         int stdRow = placements.get(0).getRow();
         for (Placement p : placements) {
             if (p.getRow() != stdRow) {
-                return false;
+                return;
             }
         }
-        return true;
+        direction = Direction.HORIZONTAL;
     }
-    public boolean isSameCol() {
+    public void isSameCol() {
         int stdCol = placements.get(0).getCol();
         for (Placement p : placements) {
             if (p.getCol() != stdCol) {
-                return false;
+                return;
             }
         }
-        return true;
+        direction = Direction.VERTICAL;
     }
+
 }

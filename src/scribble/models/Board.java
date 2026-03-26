@@ -50,6 +50,10 @@ public class Board implements Serializable {
         return grid[row-1][col-1];
     }
 
+    public static int getSIZE() {
+        return SIZE;
+    }
+
     public boolean hasTile(int row, int col) {
         checkBounds(row, col);
         return grid[row-1][col-1].isPlaced();
