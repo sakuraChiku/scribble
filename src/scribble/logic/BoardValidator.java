@@ -1,5 +1,6 @@
 package scribble.logic;
 
+import scribble.exceptions.CellOccupiedException;
 import scribble.exceptions.EmptyMoveException;
 import scribble.exceptions.FirstMoveNotThroughCenter;
 import scribble.exceptions.GameException;
@@ -30,7 +31,7 @@ public class BoardValidator {
 
     public void validateDirection(Move move, Board board, Direction direction) throws GameException {
         switch (direction) {
-            case HORIZONTAL: {
+            case HORIZONTAL -> {
                 for (int col = move.getMinCol(); col <= move.getMaxCol(); col++) {
                     if (!move.hasPlacement(move.getSameRow(), col) && !board.hasTile(move.getSameRow(), col)) {
                         throw new MoveNotContinuousException("The move is not continuous (" + move.getSameRow() + ", " + col + ")");
@@ -38,7 +39,7 @@ public class BoardValidator {
                 }
             }
 
-            case VERTICAL: {
+            case VERTICAL -> {
                 for (int row = move.getMinRow(); row <= move.getMaxRow(); row++) {
                     if (!move.hasPlacement(row, move.getSameCol()) && !board.hasTile(row, move.getSameCol())) {
                         throw new MoveNotContinuousException("The move is not continuous at (" + row + ", " + move.getSameCol() + ")");
@@ -55,5 +56,13 @@ public class BoardValidator {
             }
         }
         throw new FirstMoveNotThroughCenter("First move must go through the center!");
+    }
+
+    public void haveOccupied(Move move, Board board) throws CellOccupiedException {
+        for (Placement p : move.getPlacements()) {
+            if (board.getCell(p.getRow(), p.getCol()).isPlaced()) {
+                throw new CellOccupiedException("Cell already occupied at (" + p.getRow() + ", " + p.getCol() + ")");
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Move {
     private List<Placement> placements = new ArrayList<>();
-    private Direction direction;
+    private Direction dir;
 
     public void addPlacement(Placement p) throws IllegalArgumentException{
         if (hasPlacement(p.getRow(), p.getCol())) throw new IllegalArgumentException("Duplicated move!");
@@ -24,7 +24,7 @@ public class Move {
     }
 
     public Direction getDirection() {
-        return direction;
+        return dir;
     }
 
     public boolean isEmpty() {
@@ -85,23 +85,23 @@ public class Move {
     }
 
     // judge the direction of the move
-    public void isSameRow() {
+    public void sameRow() {
         int stdRow = placements.get(0).getRow();
         for (Placement p : placements) {
             if (p.getRow() != stdRow) {
                 return;
             }
         }
-        direction = Direction.HORIZONTAL;
+        dir = Direction.HORIZONTAL;
     }
-    public void isSameCol() {
+    public void sameCol() {
         int stdCol = placements.get(0).getCol();
         for (Placement p : placements) {
             if (p.getCol() != stdCol) {
                 return;
             }
         }
-        direction = Direction.VERTICAL;
+        dir = Direction.VERTICAL;
     }
 
 }

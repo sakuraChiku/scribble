@@ -9,10 +9,12 @@ package scribble.models;
 public class Tile {
     private final char letter;
     private final int score;
+    private boolean isBonusUsed;
 
     public Tile(char letter, int score) {
         this.letter = letter;
         this.score = score;
+        this.isBonusUsed = false;
     }    
 
     public char getLetter() {
@@ -22,4 +24,13 @@ public class Tile {
     public int getScore() {
         return score;
     }
+
+    public boolean isBonusUsed() {
+        return isBonusUsed;
+    }
+
+    public void useBonus() {
+        isBonusUsed = true;
+    }
+    
 }

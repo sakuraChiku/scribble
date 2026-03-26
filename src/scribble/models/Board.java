@@ -1,7 +1,6 @@
 package scribble.models;
 
 import java.io.Serializable;
-import scribble.exceptions.CellOccupiedException;
 import scribble.exceptions.CellOutOfBoundException;
 
 /**
@@ -64,18 +63,10 @@ public class Board implements Serializable {
         return grid[row-1][col-1].getTile();
     }
 
-    public int getScore(int row, int col) {
-        checkBounds(row, col);
-        return grid[row-1][col-1].getTile().getScore();
-    }
-
-    public void placeMove(Move move) throws CellOccupiedException{
+    public void placeMove(Move move) {
         for (Placement p : move.getPlacements()) {
             checkBounds(p.getRow(), p.getCol());
             Cell cell = grid[p.getRow()-1][p.getCol()-1];
-            if (cell.isPlaced()) {
-                throw new CellOccupiedException("Cell already occupied at (" + p.getRow() + ", " + p.getCol() + ")");
-            }
             cell.placeTile(p.getTile());
         }
     }
