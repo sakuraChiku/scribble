@@ -6,6 +6,12 @@ package com.kumoasobi.scribble;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 
+import com.kumoasobi.scribble.logic.BoardValidator;
+import com.kumoasobi.scribble.models.Board;
+import com.kumoasobi.scribble.models.Move;
+import com.kumoasobi.scribble.models.Placement;
+import com.kumoasobi.scribble.models.Tile;
+
 class AppTest {
     @Test void appHasAGreeting() {
         Main classUnderTest = new Main();
@@ -14,6 +20,12 @@ class AppTest {
 
     @Test
     void testBoardValidator() {
-        
+        Board board = new Board();
+        Move move = new Move();
+        BoardValidator bv = new BoardValidator();
+        move.addPlacement(new Placement(new Tile('A', 2), 1, 1));
+        move.addPlacement(new Placement(new Tile('C', 2), 1, 2));
+        move.addPlacement(new Placement(new Tile('B', 2), 1, 3));
+        bv.haveOccupied(move, board);
     }
 }
