@@ -20,6 +20,7 @@ public class PlayerValidator {
         List<Tile> rack = player.getRack();
         for (Placement p : move.getPlacements()) {
             Tile tile = p.getTile();
+            rack.remove(tile);
             if (!rack.contains(tile)) {
                 throw new TileNotEnoughException("Tiles are not enough!");
             }
