@@ -1,5 +1,6 @@
 package com.kumoasobi.scribble.models;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,8 +9,9 @@ import java.util.List;
  * @author Yicheng Ying
  * @version 1.0
  */
-public class GameState {
-    List<Player> players;
-    TileBag bag;
-    Board board;
+public class GameState implements Serializable {
+    private List<Player> players;
+    private TileBag bag;
+    private Board board;
+    private int currentPlayerIndex;
 }
