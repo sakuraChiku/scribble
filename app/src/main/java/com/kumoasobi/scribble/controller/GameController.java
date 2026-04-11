@@ -134,7 +134,7 @@ public class GameController {
 
         // clear the tiles in player's rack
         currentBag.flowbackTiles(currentPlayer.getRack());
-        currentPlayer.getRack().clear();
+        currentPlayer.clearRack();
         
         // draw tiles and add them to the rack
         currentPlayer.addTiles(currentBag.drawTiles(Player.getRackSize()-currentPlayer.getRack().size()));

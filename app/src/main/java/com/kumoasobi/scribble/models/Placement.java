@@ -7,9 +7,9 @@ package com.kumoasobi.scribble.models;
  * @version 1.0
  */
 public class Placement {
-    private Tile tile;
-    private int row;
-    private int col;
+    private final Tile tile;
+    private final int row;
+    private final int col;
 
     public Placement(Tile tile, int row, int col) {
         this.tile = tile;

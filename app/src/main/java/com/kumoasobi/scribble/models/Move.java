@@ -11,7 +11,7 @@ import java.util.List;
  * @version 1.0
  */
 public class Move {
-    private List<Placement> placements = new ArrayList<>();
+    private final List<Placement> placements = new ArrayList<>();
     private Direction dir;
 
     public void addPlacement(Placement p) throws IllegalArgumentException{

@@ -6,10 +6,10 @@ import java.util.List;
  * Get the result of a move, including the words, and whether the move is valid, and the total score
  */
 public class MoveResult {
-    private boolean isValidMove;
-    private int totalScore;
-    private List<String> words;
-    private String info;
+    private final boolean isValidMove;
+    private final int totalScore;
+    private final List<String> words;
+    private final String info;
 
     public MoveResult(boolean isValidMove, int totalScore, List<String> words, String info) {
         this.isValidMove = isValidMove;

@@ -2,6 +2,7 @@ package com.kumoasobi.scribble.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public class Player implements Serializable{
     private final String name;
     private final UUID id;
     private int score;
-    private List<Tile> rack;
+    private final List<Tile> rack;
     private static final int RACK_SIZE = 7;
 
     public Player(String name, UUID id) {
@@ -33,7 +34,7 @@ public class Player implements Serializable{
     }
 
     public List<Tile> getRack() {
-        return rack;
+        return Collections.unmodifiableList(rack);
     }
 
     public String getName() {
@@ -61,5 +62,9 @@ public class Player implements Serializable{
 
     public void addScore(int score) {
         this.score += score;
+    }
+
+    public void clearRack() {
+        rack.clear();
     }
 }
