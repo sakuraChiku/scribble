@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.kumoasobi.scribble.exceptions.TileBagEmptyException;
+import com.kumoasobi.scribble.exceptions.TileBagOverflowException;
 
 /**
  * Put 100 tiles into the bag and shuffle them, with methods to draw tiles and check if the bag is empty
@@ -96,6 +97,14 @@ public class TileBag implements Serializable{
             tiles.add(letterPool.removeFirst());
         }
         return tiles;
+    }
+
+    public void flowbackTiles(List<Tile> playerRack) throws TileBagOverflowException {
+        if (tilesRemaining() + playerRack.size() > 100) throw new TileBagOverflowException("The maximum size of tilebag is 100!");
+        for (Tile playerTile : playerRack) {
+            letterPool.add(playerTile);
+        }
+        Collections.shuffle(letterPool);
     }
 
     // Game controller will refill the tiles for the player

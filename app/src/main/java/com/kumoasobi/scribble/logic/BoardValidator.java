@@ -19,13 +19,23 @@ import com.kumoasobi.scribble.models.Placement;
  * @version 1.0
  */
 public class BoardValidator {
+    public static void validateBoard(Move move, Board board) throws GameException {
+        haveOccupied(move, board);
+        validateStructure(move);
+        validateDirection(move, board, move.getDirection());
+        if (isFirstStep(board)) {
+            throughCenter(move);
+        } else {
+            connectToWords(move, board);
+        }
+    }
     /**
      * First, validate if the move have occupied existing cells
      * @param move
      * @param board
      * @throws CellOccupiedException
      */
-    public void haveOccupied(Move move, Board board) throws CellOccupiedException {
+    private static void haveOccupied(Move move, Board board) throws CellOccupiedException {
         for (Placement p : move.getPlacements()) {
             if (board.getCell(p.getRow(), p.getCol()).isPlaced()) {
                 throw new CellOccupiedException("Cell already occupied at (" + p.getRow() + ", " + p.getCol() + ")");
@@ -41,7 +51,7 @@ public class BoardValidator {
      * @param board
      * @throws GameException
      */
-    public void structureValidator(Move move, Board board) throws GameException {
+    private static void validateStructure(Move move) throws GameException {
         if (move.isEmpty())
             throw new EmptyMoveException("The move cannot be empty!");
         if (move.getDirection() == null) {
@@ -59,7 +69,7 @@ public class BoardValidator {
      * @param direction
      * @throws GameException
      */
-    public void validateDirection(Move move, Board board, Direction direction) throws GameException {
+    private static void validateDirection(Move move, Board board, Direction direction) throws GameException {
         switch (direction) {
             case HORIZONTAL -> {
                 for (int col = move.getMinCol(); col <= move.getMaxCol(); col++) {
@@ -85,7 +95,7 @@ public class BoardValidator {
      * @param board
      * @throws GameException
      */
-    public void connectToWords(Move move, Board board) throws GameException {
+    private static void connectToWords(Move move, Board board) throws GameException {
         for (Placement p : move.getPlacements()) {
             if (board.hasAdjacentTile(p.getRow(), p.getCol())) {
                 return;
@@ -100,12 +110,23 @@ public class BoardValidator {
      * @param board
      * @throws GameException
      */
-    public void throughCenter(Move move, Board board) throws GameException {
+    private static void throughCenter(Move move) throws GameException {
         for (Placement p : move.getPlacements()) {
             if ((p.getRow() == (1+Board.getSIZE())/2) && (p.getCol() == (1+Board.getSIZE())/2)) {
                 return;
             }
         }
         throw new FirstMoveNotThroughCenter("First move must go through the center!");
+    }
+
+    private static boolean isFirstStep(Board board) {
+        for (int i = 0; i < Board.getSIZE(); i++) {
+            for (int j = 0; j < Board.getSIZE(); j++) {
+                if (board.hasTile(i, j)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

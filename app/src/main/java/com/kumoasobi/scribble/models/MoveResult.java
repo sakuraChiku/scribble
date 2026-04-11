@@ -9,11 +9,13 @@ public class MoveResult {
     private boolean isValidMove;
     private int totalScore;
     private List<String> words;
+    private String info;
 
-    public MoveResult(boolean isValidMove, int totalScore, List<String> words) {
+    public MoveResult(boolean isValidMove, int totalScore, List<String> words, String info) {
         this.isValidMove = isValidMove;
         this.totalScore = totalScore;
         this.words = words;
+        this.info = info;
     }
 
     public boolean isValidMove() {
@@ -26,5 +28,9 @@ public class MoveResult {
 
     public List<String> getWords() {
         return words;
+    }
+    
+    public String getInfo() {
+        return info;
     }
 }

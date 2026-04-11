@@ -2,6 +2,7 @@ package com.kumoasobi.scribble.logic;
 
 import com.kumoasobi.scribble.models.Board;
 import com.kumoasobi.scribble.models.Direction;
+import com.kumoasobi.scribble.models.Placement;
 import com.kumoasobi.scribble.models.WordInfo;
 
 /**
@@ -19,7 +20,9 @@ public class WordScanner {
      * @param dir
      * @return new WordInfo
      */
-    public WordInfo scanWord(Board board, int row, int col, Direction dir) {
+    public static WordInfo scanWord(Board board, Placement p, Direction dir) {
+        int row = p.getRow();
+        int col = p.getCol();
         StringBuilder neg = new StringBuilder();
         StringBuilder pos = new StringBuilder();
         int wordMultiplier = 1;

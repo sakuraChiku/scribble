@@ -16,7 +16,7 @@ import com.kumoasobi.scribble.models.Tile;
  * @version 1.0
  */
 public class PlayerValidator {
-    public void canMakeWord(Move move, Player player) throws GameException{
+    public static void canMakeWord(Move move, Player player) throws GameException{
         List<Tile> rack = player.getRack();
         for (Placement p : move.getPlacements()) {
             Tile tile = p.getTile();

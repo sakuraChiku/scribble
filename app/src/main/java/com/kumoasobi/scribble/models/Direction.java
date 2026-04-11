@@ -23,5 +23,9 @@ public enum Direction {
     public int getDy() {
         return dy;
     }
+
+    public Direction flip() {
+        return this == HORIZONTAL ? VERTICAL : HORIZONTAL;
+    }
     
 }

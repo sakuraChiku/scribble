@@ -14,4 +14,30 @@ public class GameState implements Serializable {
     private TileBag bag;
     private Board board;
     private int currentPlayerIndex;
+    
+    public List<Player> getPlayers() {
+        return players;
+    }
+    public TileBag getBag() {
+        return bag;
+    }
+    public Board getBoard() {
+        return board;
+    }
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
+    
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+    public void setBag(TileBag bag) {
+        this.bag = bag;
+    }
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+    public void setCurrentPlayerIndex(int currentPlayerIndex) {
+        this.currentPlayerIndex = currentPlayerIndex;
+    }
 }
