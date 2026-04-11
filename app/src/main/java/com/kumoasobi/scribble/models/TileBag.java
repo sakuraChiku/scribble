@@ -6,8 +6,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.kumoasobi.scribble.exceptions.TileBagEmptyException;
-import com.kumoasobi.scribble.exceptions.TileBagOverflowException;
+import com.kumoasobi.scribble.logic.DrawStrategy;
 
 /**
  * Put 100 tiles into the bag and shuffle them, with methods to draw tiles and check if the bag is empty
@@ -18,10 +17,12 @@ import com.kumoasobi.scribble.exceptions.TileBagOverflowException;
 public class TileBag implements Serializable{
     // initialize 100 letters in the bag
     final private List<Tile> letterPool;
+    final private DrawStrategy strategy;
 
-    public TileBag() {
+    public TileBag(DrawStrategy strategy) {
         // initialize the tilepool
         letterPool = new LinkedList<>();
+        this.strategy = strategy;
 
         // add tiles to the bag
         //add 12 e tiles to pool
@@ -89,23 +90,29 @@ public class TileBag implements Serializable{
         return letterPool.size();
     }
 
-    public List<Tile> drawTiles(int n) throws TileBagEmptyException {
+    public List<Tile> drawTiles(int n){
         // return a list of random Tiles from index 0-99
         List<Tile> tiles = new ArrayList<>();
-        if (n > letterPool.size()) throw new TileBagEmptyException("Not enough tiles!");
-        for (int i = 0; i < n; i++) {
-            tiles.add(letterPool.removeFirst());
+        if (n > letterPool.size()) {
+            for (Tile t : letterPool) {
+                tiles.add(t); // directly add t, because when n > letterPool.size() happens, it must be limited draw strategy.
+            }
+        } else {
+            for (int i = 0; i < n; i++) {
+                tiles.add(strategy.draw(this));
+            }
         }
         return tiles;
     }
 
-    public void flowbackTiles(List<Tile> playerRack) throws TileBagOverflowException {
-        if (tilesRemaining() + playerRack.size() > 100) throw new TileBagOverflowException("The maximum size of tilebag is 100!");
-        for (Tile playerTile : playerRack) {
-            letterPool.add(playerTile);
-        }
+    public void flowbackTiles(List<Tile> playerRack) {
+        strategy.flowback(this, playerRack);
         Collections.shuffle(letterPool);
     }
 
     // Game controller will refill the tiles for the player
+
+    public List<Tile> getLetterPool() {
+        return letterPool;
+    }
 }

@@ -1,8 +1,8 @@
 package com.kumoasobi.scribble.models;
 
 public class WordInfo {
-    private String word;
-    private int score;
+    private final String word;
+    private final int score;
 
     public WordInfo(String word, int score) {
         this.word = word;

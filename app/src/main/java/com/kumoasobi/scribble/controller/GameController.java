@@ -23,9 +23,12 @@ import com.kumoasobi.scribble.models.WordInfo;
 public class GameController {
     private GameState gs;
     private Set<String> dict;
+    private boolean running = true;
 
     public void startGame() {
-
+        while(running) {
+            
+        }
     }
 
     public void setDict(Set<String> dict) {
