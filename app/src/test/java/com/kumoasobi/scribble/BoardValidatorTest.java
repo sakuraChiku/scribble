@@ -10,12 +10,12 @@ import com.kumoasobi.scribble.exceptions.FirstMoveNotThroughCenter;
 import com.kumoasobi.scribble.exceptions.MoveNotContinuousException;
 import com.kumoasobi.scribble.exceptions.MoveNotInLineException;
 import com.kumoasobi.scribble.exceptions.WordNotConnectedToExistingTile;
-import com.kumoasobi.scribble.logic.BoardValidator;
 import com.kumoasobi.scribble.models.Board;
 import com.kumoasobi.scribble.models.Direction;
 import com.kumoasobi.scribble.models.Move;
 import com.kumoasobi.scribble.models.Placement;
 import com.kumoasobi.scribble.models.Tile;
+import com.kumoasobi.scribble.rules.validator.BoardValidator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

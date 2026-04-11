@@ -6,11 +6,11 @@ package com.kumoasobi.scribble;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 
-import com.kumoasobi.scribble.logic.BoardValidator;
 import com.kumoasobi.scribble.models.Board;
 import com.kumoasobi.scribble.models.Move;
 import com.kumoasobi.scribble.models.Placement;
 import com.kumoasobi.scribble.models.Tile;
+import com.kumoasobi.scribble.rules.validator.BoardValidator;
 
 class AppTest {
     @Test void appHasAGreeting() {

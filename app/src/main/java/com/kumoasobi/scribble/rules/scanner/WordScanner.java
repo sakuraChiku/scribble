@@ -1,4 +1,4 @@
-package com.kumoasobi.scribble.logic;
+package com.kumoasobi.scribble.rules.scanner;
 
 import com.kumoasobi.scribble.models.Board;
 import com.kumoasobi.scribble.models.Direction;

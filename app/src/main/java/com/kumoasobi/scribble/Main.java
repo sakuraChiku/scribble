@@ -3,12 +3,18 @@
  */
 package com.kumoasobi.scribble;
 
-public class Main {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import com.kumoasobi.scribble.controller.GameConfigFactory;
+import com.kumoasobi.scribble.controller.GameController;
+import com.kumoasobi.scribble.controller.MenuController;
+import com.kumoasobi.scribble.rules.config.GameConfig;
+import com.kumoasobi.scribble.rules.config.GameConfigRequest;
 
+public class Main {
     public static void main(String[] args) {
-        System.out.println(new Main().getGreeting());
+        MenuController mc = new MenuController();
+        GameConfigFactory gcf = new GameConfigFactory();
+        GameConfig gameConfig = gcf.createConfig(new GameConfigRequest());
+        GameController gc = new GameController(mc.newGame(gameConfig), mc.loadDictionary("./app/src/main/resources/dict/wordlist.dat"), gameConfig.endStrategy);
+        gc.startGame();
     }
 }

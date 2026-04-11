@@ -1,4 +1,4 @@
-package com.kumoasobi.scribble.logic;
+package com.kumoasobi.scribble.rules.strategy;
 
 import java.util.List;
 import java.util.Random;

@@ -19,6 +19,10 @@ public class Cell {
         this.tile = tile;
     }
 
+    public void removeTile() {
+        this.tile = null;
+    }
+
     public Tile getTile() {
         return tile;
     }

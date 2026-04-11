@@ -10,22 +10,28 @@ import com.kumoasobi.scribble.models.GameState;
 /**
  * Save the gamestate using date
  * 
- * @version 1.0
- * @author Yicheng Ying
+ * @version 1.1
+ * @author Yicheng Ying, Peixuan Ding
  */
 public class SaveManager {
-    private static FileOutputStream fos;
-    private static ObjectOutputStream oos;
-    private static String filename;
-    public static void serializeGameState(GameState gs) {
+
+    public static String serializeGameState(GameState gs) {
         Calendar c = Calendar.getInstance();
-        filename = "GameState"+"_"+c.get(Calendar.YEAR)+"_"+c.get(Calendar.MONTH)+"_"+c.get(Calendar.DATE)+"_"+c.get(Calendar.HOUR_OF_DAY)+"_"+c.get(Calendar.MINUTE)+"_"+c.get(Calendar.SECOND)+".ser";
-        try {
-            fos = new FileOutputStream(filename);
-            oos = new ObjectOutputStream(fos);
+        String filename = String.format("GameState_%d_%02d_%02d_%02d_%02d_%02d.ser",
+            c.get(Calendar.YEAR),
+            c.get(Calendar.MONTH) + 1,
+            c.get(Calendar.DATE),
+            c.get(Calendar.HOUR_OF_DAY),
+            c.get(Calendar.MINUTE),
+            c.get(Calendar.SECOND));
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(gs);
-            oos.close();
+            System.out.println("Game saved to: " + filename);
         } catch (IOException e) {
+            System.err.println("Failed to save game: " + e.getMessage());
         }
+        return filename;
     }
 }
+

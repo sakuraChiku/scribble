@@ -72,6 +72,14 @@ public class Board implements Serializable {
         }
     }
 
+    public void recallMove(Move move) {
+        for (Placement p : move.getPlacements()) {
+            checkBounds(p.getRow(), p.getCol());
+            Cell cell = grid[p.getRow()-1][p.getCol()-1];
+            cell.removeTile();
+        }
+    }
+
     public boolean hasAdjacentTile(int row, int col) {
         boolean left = hasTile(row, col-1);
         boolean right = hasTile(row, col+1);

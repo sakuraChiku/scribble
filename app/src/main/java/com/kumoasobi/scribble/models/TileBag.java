@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.kumoasobi.scribble.logic.DrawStrategy;
+import com.kumoasobi.scribble.rules.strategy.DrawStrategy;
 
 /**
  * Put 100 tiles into the bag and shuffle them, with methods to draw tiles and check if the bag is empty

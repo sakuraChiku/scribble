@@ -14,6 +14,7 @@ public class GameState implements Serializable {
     private TileBag bag;
     private Board board;
     private int currentPlayerIndex;
+    private int turns;
     
     public List<Player> getPlayers() {
         return players;
@@ -27,6 +28,9 @@ public class GameState implements Serializable {
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
+    public int getTurns() {
+        return turns;
+    }
     
     public void setPlayers(List<Player> players) {
         this.players = players;
@@ -39,5 +43,8 @@ public class GameState implements Serializable {
     }
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
         this.currentPlayerIndex = currentPlayerIndex;
+    }
+    public void setTurns(int turns) {
+        this.turns = turns;
     }
 }

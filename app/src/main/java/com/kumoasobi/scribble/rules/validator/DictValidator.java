@@ -1,4 +1,4 @@
-package com.kumoasobi.scribble.logic;
+package com.kumoasobi.scribble.rules.validator;
 
 import java.util.Set;
 

@@ -5,10 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.kumoasobi.scribble.exceptions.GameException;
-import com.kumoasobi.scribble.logic.BoardValidator;
-import com.kumoasobi.scribble.logic.DictValidator;
-import com.kumoasobi.scribble.logic.PlayerValidator;
-import com.kumoasobi.scribble.logic.WordScanner;
 import com.kumoasobi.scribble.models.Board;
 import com.kumoasobi.scribble.models.Direction;
 import com.kumoasobi.scribble.models.GameState;
@@ -19,32 +15,40 @@ import com.kumoasobi.scribble.models.Player;
 import com.kumoasobi.scribble.models.Tile;
 import com.kumoasobi.scribble.models.TileBag;
 import com.kumoasobi.scribble.models.WordInfo;
+import com.kumoasobi.scribble.rules.scanner.WordScanner;
+import com.kumoasobi.scribble.rules.strategy.GameEndStrategy;
+import com.kumoasobi.scribble.rules.validator.BoardValidator;
+import com.kumoasobi.scribble.rules.validator.DictValidator;
+import com.kumoasobi.scribble.rules.validator.PlayerValidator;
 
 public class GameController {
-    private GameState gs;
-    private Set<String> dict;
-    private boolean running = true;
+    private final GameState gs;
+    private final Set<String> dict;
+    private final boolean running;
+    private final GameEndStrategy ges;
+
+    public GameController(GameState gs, Set<String> dict, GameEndStrategy ges) {
+        this.gs = gs;
+        this.dict = dict;
+        running = true;
+        this.ges = ges;
+    }
 
     public void startGame() {
         while(running) {
             
         }
     }
-
-    public void setDict(Set<String> dict) {
-        this.dict = dict;
-    }
     
     public void nextTurn() {
         gs.setCurrentPlayerIndex((gs.getCurrentPlayerIndex()+1) % gs.getPlayers().size());
-    }
-
-    public boolean isGameEnd() {
-        return true;
+        gs.setTurns(gs.getTurns() + 1);
     }
 
     public void endGame() {
-
+        if (ges.isGameOver(gs)) {
+            
+        }
     }
 
     public MoveResult validateMove(Move currentMove) {
@@ -61,9 +65,13 @@ public class GameController {
             return new MoveResult(false, 0, new ArrayList<>(), "Invalid move: " + e.getMessage());
         }
         
+        /**
+         * Second, place the move on the board first in order to scan words
+         */
+        currentBoard.placeMove(currentMove);
 
         /**
-         * Second, scan all the words using WordScanner from different directions
+         * Third, scan all the words using WordScanner from different directions
          */
         Direction currentDir = currentMove.getDirection();
         List<WordInfo> wordInfoList = new ArrayList<>();
@@ -78,10 +86,14 @@ public class GameController {
         } catch (GameException e) {
             return new MoveResult(false, 0, new ArrayList<>(), "Invalid move: " + e.getMessage());
         }
-        
 
         /**
-         * Third, take out all the words in wordInfoList, and validate them through DictValidator
+         * Fourth, remove the placement
+         */
+        currentBoard.recallMove(currentMove);
+
+        /**
+         * Fifth, take out all the words in wordInfoList, and validate them through DictValidator
          */
         try {
             for (WordInfo wi : wordInfoList) {
@@ -114,7 +126,6 @@ public class GameController {
             }
             currentBoard.placeMove(currentMove); // place the move on the board
             currentPlayer.removeTiles(currentTiles); // remove tiles from the player
-        } else {
         }
     }
 

@@ -1,4 +1,4 @@
-package com.kumoasobi.scribble.logic;
+package com.kumoasobi.scribble.rules.validator;
 
 import com.kumoasobi.scribble.exceptions.CellOccupiedException;
 import com.kumoasobi.scribble.exceptions.EmptyMoveException;
