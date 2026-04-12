@@ -15,6 +15,7 @@ public class GameState implements Serializable {
     private Board board;
     private int currentPlayerIndex;
     private int turns;
+    private long startTime;
     
     public List<Player> getPlayers() {
         return players;
@@ -46,5 +47,13 @@ public class GameState implements Serializable {
     }
     public void setTurns(int turns) {
         this.turns = turns;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 }

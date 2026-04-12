@@ -1,5 +1,6 @@
 package com.kumoasobi.scribble.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,16 +23,18 @@ import com.kumoasobi.scribble.rules.validator.DictValidator;
 import com.kumoasobi.scribble.rules.validator.PlayerValidator;
 
 public class GameController {
-    private final GameState gs;
+    private GameState gs;
     private final Set<String> dict;
     private final boolean running;
     private final GameEndStrategy ges;
+    private int consecutiveSkips;
 
     public GameController(GameState gs, Set<String> dict, GameEndStrategy ges) {
         this.gs = gs;
         this.dict = dict;
         running = true;
         this.ges = ges;
+        consecutiveSkips = 0;
     }
 
     public void startGame() {
@@ -45,8 +48,13 @@ public class GameController {
         gs.setTurns(gs.getTurns() + 1);
     }
 
+    /**
+     * Game ends when:
+     * 1. Reaches end condition
+     * 2. All players have skipped or refreshed
+     */
     public void endGame() {
-        if (ges.isGameOver(gs)) {
+        if (ges.isGameOver(gs) || consecutiveSkips  >= gs.getPlayers().size() * 2) {
             
         }
     }
@@ -152,13 +160,17 @@ public class GameController {
         
         // draw tiles and add them to the rack
         currentPlayer.addTiles(currentBag.drawTiles(Player.getRackSize()-currentPlayer.getRack().size()));
+        consecutiveSkips++;
     }
 
+    public void recordSkip() { consecutiveSkips++; }
+
     public void saveGame(String dirPath) {
-        
+        com.kumoasobi.scribble.save.SaveManager.serializeGameState(gs);
     }
 
     public void loadGame(String filePath) {
-
+        try { gs = com.kumoasobi.scribble.save.LoadManager.deserializeGameState(filePath); }
+        catch (IOException | ClassNotFoundException e) {}
     }
 }

@@ -1,10 +1,18 @@
 package com.kumoasobi.scribble.rules.strategy;
 
 import com.kumoasobi.scribble.models.GameState;
+import com.kumoasobi.scribble.models.Player;
 
 public class LimitedTileGameEndStrategy implements GameEndStrategy {
     @Override
     public boolean isGameOver(GameState gs) {
-        return gs.getBag().tilesRemaining() == 0;
+        if (gs.getBag().tilesRemaining() == 0) {
+            for (Player p : gs.getPlayers()) {
+                if (p.getRack().isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

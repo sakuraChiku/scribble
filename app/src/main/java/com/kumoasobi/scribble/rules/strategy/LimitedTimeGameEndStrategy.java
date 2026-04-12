@@ -9,6 +9,7 @@ public class LimitedTimeGameEndStrategy implements GameEndStrategy {
     }
     @Override
     public boolean isGameOver(GameState gs) {
-
+        long now = System.currentTimeMillis();
+        return now - gs.getStartTime() >= timeLimit;
     }
 }

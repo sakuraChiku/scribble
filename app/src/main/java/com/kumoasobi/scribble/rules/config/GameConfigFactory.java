@@ -1,8 +1,10 @@
-package com.kumoasobi.scribble.controller;
+package com.kumoasobi.scribble.rules.config;
 
 
-import com.kumoasobi.scribble.rules.config.GameConfig;
-import com.kumoasobi.scribble.rules.config.GameConfigRequest;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.kumoasobi.scribble.models.Player;
 import com.kumoasobi.scribble.rules.strategy.DrawStrategy;
 import com.kumoasobi.scribble.rules.strategy.GameEndStrategy;
 import com.kumoasobi.scribble.rules.strategy.LimitedDrawStrategy;
@@ -13,7 +15,7 @@ import com.kumoasobi.scribble.rules.strategy.LimitedTurnGameEndStrategy;
 import com.kumoasobi.scribble.rules.strategy.UnlimitedDrawStrategy;
 
 public class GameConfigFactory {
-    public GameEndStrategy selectEndStrategy(GameConfigRequest request) {
+    public static GameEndStrategy selectEndStrategy(GameConfigRequest request) {
         switch (request.endMode) {
             case TURN_LIMIT -> {
                 return new LimitedTurnGameEndStrategy(request.turnLimit);
@@ -31,7 +33,7 @@ public class GameConfigFactory {
         }
     }
 
-    public DrawStrategy selectDrawStrategy(GameConfigRequest request) {
+    public static DrawStrategy selectDrawStrategy(GameConfigRequest request) {
         switch (request.drawMode) {
             case LIMITED -> {
                 return new LimitedDrawStrategy();
@@ -43,7 +45,13 @@ public class GameConfigFactory {
         }
     }
 
-    public GameConfig createConfig(GameConfigRequest request) {
-        return new GameConfig(selectDrawStrategy(request), selectEndStrategy(request));
+    public static List<Player> getValidPlayers(GameConfigRequest request) {
+        List<Player> players = new ArrayList<>();
+        for (Player p : request.allPlayers) {
+            if (p.getName() != null) {
+                players.add(p);
+            }
+        }
+        return players;
     }
 }

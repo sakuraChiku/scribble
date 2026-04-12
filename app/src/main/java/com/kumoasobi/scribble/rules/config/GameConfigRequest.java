@@ -1,5 +1,9 @@
 package com.kumoasobi.scribble.rules.config;
 
+import java.util.List;
+
+import com.kumoasobi.scribble.models.Player;
+
 /**
  * The UI should fill the request like:
  * GameConfigRequest request = new GameConfigRequest()
@@ -17,5 +21,5 @@ public class GameConfigRequest {
 
     public DrawMode drawMode;
 
-    public int playerNum;
+    public List<Player> allPlayers;
 }
