@@ -2,8 +2,6 @@ package com.kumoasobi.scribble.models;
 
 import java.io.Serializable;
 
-import com.kumoasobi.scribble.exceptions.CellOutOfBoundException;
-
 /**
  * Create a 15 x 15 board, cells can be put on it.
  * 
@@ -46,7 +44,7 @@ public class Board implements Serializable {
     }
 
     public Cell getCell(int row, int col) {
-        checkBounds(row, col);
+        //checkBounds(row, col);
         return grid[row-1][col-1];
     }
 
@@ -55,18 +53,18 @@ public class Board implements Serializable {
     }
 
     public boolean hasTile(int row, int col) {
-        checkBounds(row, col);
+        //checkBounds(row, col);
         return grid[row-1][col-1].isPlaced();
     }
 
     public Tile getTile(int row, int col) {
-        checkBounds(row, col);
+        //checkBounds(row, col);
         return grid[row-1][col-1].getTile();
     }
 
     public void placeMove(Move move) {
         for (Placement p : move.getPlacements()) {
-            checkBounds(p.getRow(), p.getCol());
+            //checkBounds(p.getRow(), p.getCol());
             Cell cell = grid[p.getRow()-1][p.getCol()-1];
             cell.placeTile(p.getTile());
         }
@@ -74,7 +72,7 @@ public class Board implements Serializable {
 
     public void recallMove(Move move) {
         for (Placement p : move.getPlacements()) {
-            checkBounds(p.getRow(), p.getCol());
+            //checkBounds(p.getRow(), p.getCol());
             Cell cell = grid[p.getRow()-1][p.getCol()-1];
             cell.removeTile();
         }
@@ -88,9 +86,9 @@ public class Board implements Serializable {
         return left || right || up || down;
     }
 
-    private void checkBounds(int row, int col) throws CellOutOfBoundException{
+    /* private void checkBounds(int row, int col) throws CellOutOfBoundException{
         if (row < 1 || row > SIZE || col < 1 || col > SIZE) {
             throw new CellOutOfBoundException("Invalid board position: (" + row + ", " + col + ")");
         }
-    }
+    } */
 }

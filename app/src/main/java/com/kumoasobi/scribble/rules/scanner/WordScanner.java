@@ -71,6 +71,19 @@ public class WordScanner {
             c += dir.getDx();
         }
 
+        // do not forget the center score
+        int centerScore = board.getTile(row, col).getScore();
+        if (!board.getTile(row, col).isBonusUsed()) {
+            switch (board.getCell(row, col).getBonus()) {
+                case NONE -> centerScore *= 1;
+                case DL -> centerScore *= 2;
+                case TL -> centerScore *= 3;
+                case DW -> wordMultiplier *= 2;
+                case TW -> wordMultiplier *= 3;
+            }
+        }
+        wordScore += centerScore;
+
         //finally apply wordMultiplier to wordScore
         wordScore *= wordMultiplier;
 

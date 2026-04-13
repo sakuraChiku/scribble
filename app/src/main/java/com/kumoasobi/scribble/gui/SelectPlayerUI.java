@@ -1,10 +1,28 @@
 package com.kumoasobi.scribble.gui;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Dialog for entering player names before game start.
@@ -12,7 +30,6 @@ import java.util.List;
 public class SelectPlayerUI extends JDialog {
 
     private static final Color BG     = new Color( 45,  35,  25);
-    private static final Color CARD   = new Color( 62,  48,  32);
     private static final Color ACCENT = new Color(220, 180,  80);
     private static final Color FG     = new Color(240, 230, 210);
 

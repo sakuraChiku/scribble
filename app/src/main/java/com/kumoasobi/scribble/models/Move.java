@@ -20,7 +20,7 @@ public class Move {
     }
 
     public List<Placement> getPlacements() {
-        return Collections.unmodifiableList(placements); // make sure player can not change the placements by move.getPlacements().clear()
+        return placements; // make sure player can not change the placements by move.getPlacements().clear()
     }
 
     public Direction getDirection() {

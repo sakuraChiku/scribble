@@ -120,8 +120,8 @@ public class BoardValidator {
     }
 
     private static boolean isFirstStep(Board board) {
-        for (int i = 0; i < Board.getSIZE(); i++) {
-            for (int j = 0; j < Board.getSIZE(); j++) {
+        for (int i = 1; i <= Board.getSIZE(); i++) {
+            for (int j = 1; j <= Board.getSIZE(); j++) {
                 if (board.hasTile(i, j)) {
                     return false;
                 }

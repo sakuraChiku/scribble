@@ -1,16 +1,39 @@
 package com.kumoasobi.scribble.gui;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import com.kumoasobi.scribble.controller.GameController;
 import com.kumoasobi.scribble.controller.MenuController;
-import com.kumoasobi.scribble.models.*;
+import com.kumoasobi.scribble.models.GameState;
+import com.kumoasobi.scribble.models.Move;
+import com.kumoasobi.scribble.models.MoveResult;
+import com.kumoasobi.scribble.models.Placement;
+import com.kumoasobi.scribble.models.Player;
+import com.kumoasobi.scribble.models.Tile;
 import com.kumoasobi.scribble.rules.config.GameConfig;
 import com.kumoasobi.scribble.rules.config.GameConfigRequest;
 import com.kumoasobi.scribble.save.LoadManager;
@@ -166,6 +189,7 @@ public class GameWindow extends JFrame {
         ConfigUI configDialog = new ConfigUI(this);
         configDialog.setVisible(true);
         GameConfigRequest request = configDialog.getRequest();
+        String filepath = "./app/src/main/resources/dict/wordlist.dat";
         if (request == null) return;   // user cancelled
 
         // 2. Build GameConfig via factory
@@ -174,7 +198,11 @@ public class GameWindow extends JFrame {
 
         // 3. Create GameState (tiles already dealt inside newGame)
         gameState  = mc.newGame(config);
-        dictionary = mc.loadDictionary("words.txt");
+        try {
+            dictionary = mc.loadDictionary(filepath);
+        } catch (Exception e) {
+            controlPanel.log("Failed to load at " + filepath + ". Please check your dictionary path again!");
+        }
 
         // 4. Wire up GameController
         gameController = new GameController(gameState, dictionary, config.endStrategy);
@@ -189,6 +217,7 @@ public class GameWindow extends JFrame {
         activateGameScreen();
         controlPanel.startClock(gameState.getStartTime());
         controlPanel.log("Game started! " + gameState.getPlayers().size() + " players.");
+        controlPanel.log("Successfully loaded dictionary at " + filepath + ".");
         controlPanel.log("First word must cover the centre square (row 8, col 8).");
     }
 
@@ -198,7 +227,7 @@ public class GameWindow extends JFrame {
         if (fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
         try {
             gameState      = LoadManager.deserializeGameState(fc.getSelectedFile().getAbsolutePath());
-            dictionary     = new MenuController().loadDictionary("words.txt");
+            dictionary     = new MenuController().loadDictionary("./app/src/main/resources/dict/wordlist.dat");
             gameController = new GameController();
             gameController.setGameState(gameState);
             gameController.setDict(dictionary);

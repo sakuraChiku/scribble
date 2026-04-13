@@ -2,7 +2,6 @@ package com.kumoasobi.scribble.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +33,7 @@ public class Player implements Serializable{
     }
 
     public List<Tile> getRack() {
-        return Collections.unmodifiableList(rack);
+        return rack;
     }
 
     public String getName() {

@@ -1,10 +1,26 @@
 package com.kumoasobi.scribble.gui;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+
 import com.kumoasobi.scribble.models.Player;
 
 /**
@@ -26,7 +42,7 @@ public class ControlPanel extends JPanel {
     private final JLabel tilesRemainingLabel;
     private final JLabel turnLabel;
     private final JLabel timeLabel;
-    private JButton submitBtn, recallBtn, skipBtn, shuffleBtn;
+    private final JButton submitBtn, recallBtn, skipBtn, shuffleBtn;
 
     // Timer for elapsed time display
     private javax.swing.Timer clockTimer;

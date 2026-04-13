@@ -1,9 +1,27 @@
 package com.kumoasobi.scribble.gui;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Main menu screen shown on launch and after a game ends.
@@ -16,7 +34,7 @@ public class MenuUI extends JPanel {
     private static final Color BTN_BG  = new Color( 62,  48,  32);
     private static final Color BTN_HOV = new Color( 85,  65,  38);
 
-    private JButton newGameBtn, loadGameBtn, quitBtn;
+    private final JButton newGameBtn, loadGameBtn, quitBtn;
 
     public MenuUI() {
         setLayout(new GridBagLayout());
@@ -48,9 +66,9 @@ public class MenuUI extends JPanel {
         for (int i = 0; i < letters.length; i++)
             tiles.add(makeTileDeco(letters[i], scores[i]));
 
-        newGameBtn  = makeMenuBtn("▶  New Game");
-        loadGameBtn = makeMenuBtn("📂  Load Game");
-        quitBtn     = makeMenuBtn("✕  Quit");
+        newGameBtn  = makeMenuBtn("New Game"); //▶  New Game
+        loadGameBtn = makeMenuBtn("Load Game");//📂  Load Game
+        quitBtn     = makeMenuBtn("Quit");//✕  Quit
 
         card.add(title);
         card.add(Box.createVerticalStrut(4));

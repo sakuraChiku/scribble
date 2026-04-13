@@ -89,7 +89,9 @@ public class GameController {
             wordInfoList.add(parallelInfo);
             for (Placement p : currentMove.getPlacements()) {
                 WordInfo verticalInfo = WordScanner.scanWord(currentBoard, p, currentDir.flip());
-                wordInfoList.add(verticalInfo);
+                if (verticalInfo.getWord().length() > 2) {
+                    wordInfoList.add(verticalInfo);
+                }
             }
         } catch (GameException e) {
             currentBoard.recallMove(currentMove);
@@ -132,19 +134,18 @@ public class GameController {
     }
 
     public void drawTiles() {
-        Player  player = gs.getPlayers().get(gs.getCurrentPlayerIndex());
-        TileBag bag    = gs.getBag();
-        int     need   = Player.getRackSize() - player.getRack().size();
+        Player player = gs.getPlayers().get(gs.getCurrentPlayerIndex());
+        TileBag bag = gs.getBag();
+        int need = Player.getRackSize() - player.getRack().size();
         if (need > 0) player.addTiles(bag.drawTiles(need));
     }
 
     public void refreshTiles() {
-        Player  player = gs.getPlayers().get(gs.getCurrentPlayerIndex());
-        TileBag bag    = gs.getBag();
+        Player player = gs.getPlayers().get(gs.getCurrentPlayerIndex());
+        TileBag bag = gs.getBag();
         bag.flowbackTiles(player.getRack());
         player.clearRack();
         player.addTiles(bag.drawTiles(Player.getRackSize()));
-        consecutiveSkips++;
     }
 
     public void recordSkip() { consecutiveSkips++; }
