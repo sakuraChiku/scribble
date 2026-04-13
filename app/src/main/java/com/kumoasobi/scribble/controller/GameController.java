@@ -23,67 +23,67 @@ import com.kumoasobi.scribble.rules.validator.DictValidator;
 import com.kumoasobi.scribble.rules.validator.PlayerValidator;
 
 public class GameController {
+
     private GameState gs;
-    private final Set<String> dict;
-    private final boolean running;
-    private final GameEndStrategy ges;
+    private Set<String> dict;
+    private GameEndStrategy ges;
     private int consecutiveSkips;
 
+    // ── No-arg constructor for GameWindow usage ──────────────────────────────
+    public GameController() {
+        consecutiveSkips = 0;
+    }
+
+    // ── Full constructor (for direct use with strategies) ────────────────────
     public GameController(GameState gs, Set<String> dict, GameEndStrategy ges) {
         this.gs = gs;
         this.dict = dict;
-        running = true;
         this.ges = ges;
         consecutiveSkips = 0;
     }
 
-    public void startGame() {
-        while(running) {
-            
-        }
-    }
-    
+    // ── Setters used by GameWindow ───────────────────────────────────────────
+    public void setGameState(GameState gs)     { this.gs = gs; }
+    public void setDict(Set<String> dict)      { this.dict = dict; }
+    public void setGameEndStrategy(GameEndStrategy ges) { this.ges = ges; }
+
+    // ── Turn management ──────────────────────────────────────────────────────
+
     public void nextTurn() {
-        gs.setCurrentPlayerIndex((gs.getCurrentPlayerIndex()+1) % gs.getPlayers().size());
+        gs.setCurrentPlayerIndex((gs.getCurrentPlayerIndex() + 1) % gs.getPlayers().size());
         gs.setTurns(gs.getTurns() + 1);
     }
 
     /**
-     * Game ends when:
-     * 1. Reaches end condition
-     * 2. All players have skipped or refreshed
+     * Returns true when the configured end condition is met,
+     * OR when all players have consecutively skipped/refreshed twice each.
      */
-    public void endGame() {
-        if (ges.isGameOver(gs) || consecutiveSkips  >= gs.getPlayers().size() * 2) {
-            
-        }
+    public boolean isGameEnd() {
+        if (ges != null && ges.isGameOver(gs)) return true;
+        return consecutiveSkips >= gs.getPlayers().size() * 2;
     }
+
+    public void endGame() {
+        // placeholder – handled by GameWindow.showGameOver()
+    }
+
+    // ── Move validation & application ────────────────────────────────────────
 
     public MoveResult validateMove(Move currentMove) {
         Player currentPlayer = gs.getPlayers().get(gs.getCurrentPlayerIndex());
-        Board currentBoard = gs.getBoard();
+        Board  currentBoard  = gs.getBoard();
 
-        /**
-         *First, validate the player and the board
-         */
         try {
             PlayerValidator.canMakeWord(currentMove, currentPlayer);
             BoardValidator.validateBoard(currentMove, currentBoard);
         } catch (GameException e) {
             return new MoveResult(false, 0, new ArrayList<>(), "Invalid move: " + e.getMessage());
         }
-        
-        /**
-         * Second, place the move on the board first in order to scan words
-         */
+
         currentBoard.placeMove(currentMove);
 
-        /**
-         * Third, scan all the words using WordScanner from different directions
-         */
         Direction currentDir = currentMove.getDirection();
         List<WordInfo> wordInfoList = new ArrayList<>();
-            // scan the parallel word first from currentMove.getPlacements().get(0)
         try {
             WordInfo parallelInfo = WordScanner.scanWord(currentBoard, currentMove.getPlacements().get(0), currentDir);
             wordInfoList.add(parallelInfo);
@@ -92,17 +92,12 @@ public class GameController {
                 wordInfoList.add(verticalInfo);
             }
         } catch (GameException e) {
+            currentBoard.recallMove(currentMove);
             return new MoveResult(false, 0, new ArrayList<>(), "Invalid move: " + e.getMessage());
         }
 
-        /**
-         * Fourth, remove the placement
-         */
         currentBoard.recallMove(currentMove);
 
-        /**
-         * Fifth, take out all the words in wordInfoList, and validate them through DictValidator
-         */
         try {
             for (WordInfo wi : wordInfoList) {
                 DictValidator.isValidWord(wi, dict);
@@ -111,9 +106,6 @@ public class GameController {
             return new MoveResult(false, 0, new ArrayList<>(), "Invalid move: " + e.getMessage());
         }
 
-        /**
-         * Finally, create a MoveResult
-         */
         List<String> words = new ArrayList<>();
         int totalScore = 0;
         for (WordInfo wi : wordInfoList) {
@@ -123,47 +115,43 @@ public class GameController {
         return new MoveResult(true, totalScore, words, "Valid move");
     }
 
-    public void applyMove(Move currentMove, MoveResult currentMoveResult) {
-        Board currentBoard = gs.getBoard();
+    public void applyMove(Move currentMove, MoveResult result) {
+        Board  currentBoard  = gs.getBoard();
         Player currentPlayer = gs.getPlayers().get(gs.getCurrentPlayerIndex());
-        
-        if (currentMoveResult.isValidMove()) {
-            List<Tile> currentTiles = new ArrayList<>();
-            for (Placement p : currentMove.getPlacements()) {
-                currentTiles.add(p.getTile());
-            }
-            currentBoard.placeMove(currentMove); // place the move on the board
-            currentPlayer.removeTiles(currentTiles); // remove tiles from the player
+
+        if (result.isValidMove()) {
+            List<Tile> tiles = new ArrayList<>();
+            for (Placement p : currentMove.getPlacements()) tiles.add(p.getTile());
+            currentBoard.placeMove(currentMove);
+            currentPlayer.removeTiles(tiles);
         }
     }
 
-    public void addScore(MoveResult currentMoveResult) {
-        Player currentPlayer = gs.getPlayers().get(gs.getCurrentPlayerIndex());
-
-        currentPlayer.addScore(currentMoveResult.getTotalScore());
+    public void addScore(MoveResult result) {
+        gs.getPlayers().get(gs.getCurrentPlayerIndex()).addScore(result.getTotalScore());
     }
 
     public void drawTiles() {
-        Player currentPlayer = gs.getPlayers().get(gs.getCurrentPlayerIndex());
-        TileBag currentBag = gs.getBag();
-
-        currentPlayer.addTiles(currentBag.drawTiles(Player.getRackSize()-currentPlayer.getRack().size()));
+        Player  player = gs.getPlayers().get(gs.getCurrentPlayerIndex());
+        TileBag bag    = gs.getBag();
+        int     need   = Player.getRackSize() - player.getRack().size();
+        if (need > 0) player.addTiles(bag.drawTiles(need));
     }
 
     public void refreshTiles() {
-        Player currentPlayer = gs.getPlayers().get(gs.getCurrentPlayerIndex());
-        TileBag currentBag = gs.getBag();
-
-        // clear the tiles in player's rack
-        currentBag.flowbackTiles(currentPlayer.getRack());
-        currentPlayer.clearRack();
-        
-        // draw tiles and add them to the rack
-        currentPlayer.addTiles(currentBag.drawTiles(Player.getRackSize()-currentPlayer.getRack().size()));
+        Player  player = gs.getPlayers().get(gs.getCurrentPlayerIndex());
+        TileBag bag    = gs.getBag();
+        bag.flowbackTiles(player.getRack());
+        player.clearRack();
+        player.addTiles(bag.drawTiles(Player.getRackSize()));
         consecutiveSkips++;
     }
 
     public void recordSkip() { consecutiveSkips++; }
+
+    public void resetConsecutiveSkips() { consecutiveSkips = 0; }
+
+    // ── Save / Load ──────────────────────────────────────────────────────────
 
     public void saveGame(String dirPath) {
         com.kumoasobi.scribble.save.SaveManager.serializeGameState(gs);
@@ -171,6 +159,6 @@ public class GameController {
 
     public void loadGame(String filePath) {
         try { gs = com.kumoasobi.scribble.save.LoadManager.deserializeGameState(filePath); }
-        catch (IOException | ClassNotFoundException e) {}
+        catch (IOException | ClassNotFoundException e) { /* swallowed */ }
     }
 }

@@ -104,4 +104,9 @@ public class Move {
         dir = Direction.VERTICAL;
     }
 
+    public void inferDirection() {
+        sameRow();
+        sameCol();
+    }
+
 }
