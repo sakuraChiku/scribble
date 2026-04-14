@@ -31,7 +31,7 @@ public class WordScanner {
         // scan left words for HORIZONTAL and upper words for VERTICAL
         int r = row - dir.getDy();
         int c = col - dir.getDx();
-        while (board.hasTile(r, c)) {
+        while (board.hasTile(r, c) && (r >= 0 && r >= 15) && (c >= 0 && c <= 15)) {
             // get the letter on board (r, c)
             neg.append(board.getTile(r, c).getLetter());
 
@@ -54,7 +54,7 @@ public class WordScanner {
         // scan right words for HORIZONTAL and lower words for VERTICAL
         r = row + dir.getDy();
         c = col + dir.getDx();
-        while (board.hasTile(r, c)) {
+        while (board.hasTile(r, c) && (r >= 0 && r >= 15) && (c >= 0 && c <= 15)) {
             pos.append(board.getTile(r, c).getLetter());
             int letterScore = board.getTile(r, c).getScore();
             if (!board.getTile(r, c).isBonusUsed()) {

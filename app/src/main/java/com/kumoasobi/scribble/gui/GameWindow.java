@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -112,7 +111,7 @@ public class GameWindow extends JFrame {
         controlPanel.addSubmitListener(e  -> onSubmit());
         controlPanel.addRecallListener(e  -> onRecall());
         controlPanel.addSkipListener(e    -> onSkip());
-        controlPanel.addShuffleListener(e -> onShuffle());
+        controlPanel.addShuffleListener(e -> onRefresh());
 
         gamePanel = new JPanel(new BorderLayout(8, 8));
         gamePanel.setBackground(BG);
@@ -366,14 +365,10 @@ public class GameWindow extends JFrame {
         controlPanel.log(currentPlayer().getName() + " skipped their turn.");
     }
 
-    private void onShuffle() {
-        Player cur  = currentPlayer();
-        List<Tile> rack = new ArrayList<>(cur.getRack());
-        Collections.shuffle(rack);
-        cur.clearRack();
-        cur.addTiles(rack);
+    private void onRefresh() {
+        gameController.refreshTiles();
         refreshRackDuringPlacement();
-        controlPanel.log("Rack shuffled.");
+        controlPanel.log("Rack refreshed!");
     }
 
     private void onSave() {

@@ -9,7 +9,7 @@ public class DictValidator {
     public static void isValidWord(WordInfo wordInfo, Set<String> dict) {
         String word = wordInfo.getWord();
         if (!dict.contains(word)) {
-            throw new WordNotValidException("The word '" + word + "' is not valid!");
+            throw new WordNotValidException("The word '" + word + "' does not exist!");
         }
     }
 }

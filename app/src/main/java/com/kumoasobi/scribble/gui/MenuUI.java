@@ -48,12 +48,12 @@ public class MenuUI extends JPanel {
             new EmptyBorder(40, 60, 40, 60)
         ));
 
-        JLabel title = new JLabel("SCRABBLE");
+        JLabel title = new JLabel("SCRIBBLE");
         title.setFont(new Font("Serif", Font.BOLD, 48));
         title.setForeground(ACCENT);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel subtitle = new JLabel("The Classic Word Game");
+        JLabel subtitle = new JLabel("A Cover of the Classic Word Game");
         subtitle.setFont(new Font("Serif", Font.ITALIC, 16));
         subtitle.setForeground(new Color(160, 140, 100));
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -61,7 +61,7 @@ public class MenuUI extends JPanel {
         // Decorative tile row
         JPanel tiles = new JPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
         tiles.setBackground(new Color(45, 35, 22));
-        String[] letters = {"S","C","R","A","B","B","L","E"};
+        String[] letters = {"S","C","R","I","B","B","L","E"};
         int[]    scores  = { 1,  3,  1,  1,  3,  3,  1,  1};
         for (int i = 0; i < letters.length; i++)
             tiles.add(makeTileDeco(letters[i], scores[i]));

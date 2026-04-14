@@ -86,10 +86,12 @@ public class GameController {
         List<WordInfo> wordInfoList = new ArrayList<>();
         try {
             WordInfo parallelInfo = WordScanner.scanWord(currentBoard, currentMove.getPlacements().get(0), currentDir);
-            wordInfoList.add(parallelInfo);
+            if (parallelInfo.getWord().length() > 1) {
+                wordInfoList.add(parallelInfo);
+            }
             for (Placement p : currentMove.getPlacements()) {
                 WordInfo verticalInfo = WordScanner.scanWord(currentBoard, p, currentDir.flip());
-                if (verticalInfo.getWord().length() > 2) {
+                if (verticalInfo.getWord().length() > 1) {
                     wordInfoList.add(verticalInfo);
                 }
             }

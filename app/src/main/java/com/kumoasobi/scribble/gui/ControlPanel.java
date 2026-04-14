@@ -113,7 +113,7 @@ public class ControlPanel extends JPanel {
         submitBtn  = makeBtn("✓ Submit",    BTN_GREEN);
         recallBtn  = makeBtn("↩ Recall",    BTN_AMBER);
         skipBtn    = makeBtn("⏭ Skip Turn", BTN_AMBER);
-        shuffleBtn = makeBtn("🔀 Shuffle",  new Color(70, 100, 160));
+        shuffleBtn = makeBtn("🔀 Refresh",  new Color(70, 100, 160));
 
         btnPanel.add(submitBtn);
         btnPanel.add(recallBtn);

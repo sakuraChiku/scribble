@@ -1,11 +1,32 @@
 package com.kumoasobi.scribble.gui;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import com.kumoasobi.scribble.models.Player;
 import com.kumoasobi.scribble.rules.config.DrawMode;
@@ -43,9 +64,9 @@ public class ConfigUI extends JDialog {
     private final JRadioButton        rbScore  = makeRadio("Score limit");
     private final JRadioButton        rbTurn   = makeRadio("Turn limit");
     private final JRadioButton        rbTime   = makeRadio("Time limit");
-    private final JRadioButton        rbTile   = makeRadio("Standard (tiles run out)");
-    private final JRadioButton        rbLimited   = makeRadio("Limited  (tiles consumed)");
-    private final JRadioButton        rbUnlimited = makeRadio("Unlimited  (tiles reused)");
+    private final JRadioButton        rbTile   = makeRadio("Classic (tiles run out)");
+    private final JRadioButton        rbLimited   = makeRadio("Limited  (consume tiles)");
+    private final JRadioButton        rbUnlimited = makeRadio("Unlimited  (reuse tiles)");
     private final ButtonGroup         drawGroup   = new ButtonGroup();
     private int                       playerCount = 2;
     private final List<JTextField>    nameFields  = new ArrayList<>();
@@ -185,7 +206,7 @@ public class ConfigUI extends JDialog {
     private void rebuildNames() {
         nameContainer.removeAll();
         nameFields.clear();
-        String[] defaults = {"Alice", "Bob", "Charlie", "Diana"};
+        String[] defaults = {"Sakiko", "Anon", "Soyo", "Mutsumi"};
         for (int i = 0; i < playerCount; i++) {
             JPanel row = new JPanel(new BorderLayout(8, 0));
             row.setBackground(CARD);
