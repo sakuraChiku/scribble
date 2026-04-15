@@ -388,7 +388,7 @@ public class GameWindow extends JFrame {
 
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Save Game");
-        fc.setSelectedFile(new java.io.File("scrabble_save.ser"));
+        fc.setSelectedFile(new java.io.File(filename));
         fc.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
             "Scrabble Save Files (*.ser)", "ser"));
 
@@ -396,7 +396,7 @@ public class GameWindow extends JFrame {
 
         java.io.File file = fc.getSelectedFile();
 
-        SaveManager.serializeGameState(gameState, filename);
+        SaveManager.serializeGameState(gameState, file.getAbsolutePath());
         controlPanel.log("Game saved to: " + file.getName());
         JOptionPane.showMessageDialog(this, "Game saved!", "Saved", JOptionPane.INFORMATION_MESSAGE);
     }
