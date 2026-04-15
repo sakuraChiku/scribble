@@ -1,10 +1,25 @@
 package com.kumoasobi.scribble.ai;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
-import com.kumoasobi.scribble.models.*;
+import com.kumoasobi.scribble.exceptions.GameException;
+import com.kumoasobi.scribble.models.Board;
+import com.kumoasobi.scribble.models.Direction;
+import com.kumoasobi.scribble.models.Move;
+import com.kumoasobi.scribble.models.MoveResult;
+import com.kumoasobi.scribble.models.Placement;
+import com.kumoasobi.scribble.models.Player;
+import com.kumoasobi.scribble.models.Tile;
+import com.kumoasobi.scribble.models.WordInfo;
 import com.kumoasobi.scribble.rules.scanner.WordScanner;
-import com.kumoasobi.scribble.rules.validator.*;
+import com.kumoasobi.scribble.rules.validator.BoardValidator;
+import com.kumoasobi.scribble.rules.validator.DictValidator;
 
 /**
  * Scrabble AI engine.
@@ -199,7 +214,7 @@ public class ScrabbleAI {
         try {
             // Board structure check (no player-tile check — AI always has tiles)
             BoardValidator.validateBoard(move, board);
-        } catch (Exception e) {
+        } catch (GameException e) {
             return null;
         }
 
