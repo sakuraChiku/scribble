@@ -17,6 +17,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,6 +29,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.kumoasobi.scribble.ai.AIDifficulty;
+import com.kumoasobi.scribble.ai.AIPlayer;
 import com.kumoasobi.scribble.models.Player;
 import com.kumoasobi.scribble.rules.config.DrawMode;
 import com.kumoasobi.scribble.rules.config.EndMode;
@@ -65,12 +68,13 @@ public class ConfigUI extends JDialog {
     private final JRadioButton        rbTurn   = makeRadio("Turn limit");
     private final JRadioButton        rbTime   = makeRadio("Time limit");
     private final JRadioButton        rbTile   = makeRadio("Classic (tiles run out)");
-    private final JRadioButton        rbLimited   = makeRadio("Limited  (consume tiles)");
-    private final JRadioButton        rbUnlimited = makeRadio("Unlimited  (reuse tiles)");
+    private final JRadioButton        rbLimited   = makeRadio("Limited (consume tiles)");
+    private final JRadioButton        rbUnlimited = makeRadio("Unlimited (reuse tiles)");
     private final ButtonGroup         drawGroup   = new ButtonGroup();
     private int                       playerCount = 2;
     private final List<JTextField>    nameFields  = new ArrayList<>();
     private JPanel                    nameContainer;
+    private final List<JComboBox<String>> aiToggles = new ArrayList<>();
 
     // ── constructor ──────────────────────────────────────────────────────────
     public ConfigUI(Frame parent) {
@@ -206,30 +210,51 @@ public class ConfigUI extends JDialog {
     private void rebuildNames() {
         nameContainer.removeAll();
         nameFields.clear();
-        String[] defaults = {"Sakiko", "Anon", "Soyo", "Mutsumi"};
+        aiToggles.clear();
+        String[] defaults = {"Alice", "Bob", "Charlie", "Diana"};
         for (int i = 0; i < playerCount; i++) {
-            JPanel row = new JPanel(new BorderLayout(8, 0));
+            JPanel row = new JPanel(new BorderLayout(6, 0));
             row.setBackground(CARD);
-            row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
+            row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 38));
             row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            JLabel lbl = new JLabel("Player " + (i + 1) + ":");
+            JLabel lbl = new JLabel("P" + (i + 1) + ":");
             lbl.setForeground(DIM);
             lbl.setFont(new Font("SansSerif", Font.PLAIN, 13));
-            lbl.setPreferredSize(new Dimension(70, 28));
+            lbl.setPreferredSize(new Dimension(28, 28));
 
             JTextField tf = new JTextField(defaults[i]);
+            tf.setPreferredSize(new Dimension(220, 28));
             tf.setBackground(INPUT);
             tf.setForeground(FG);
             tf.setCaretColor(ACCENT);
             tf.setFont(new Font("SansSerif", Font.PLAIN, 13));
             tf.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(100, 80, 40)),
-                new EmptyBorder(4, 6, 4, 6)
-            ));
+                new EmptyBorder(4, 6, 4, 6)));
             nameFields.add(tf);
+
+            JComboBox<String> aiBox = new JComboBox<>(
+                new String[]{"Human", "AI — Easy", "AI — Medium", "AI — Hard"});
+            aiBox.setBackground(INPUT);
+            aiBox.setForeground(FG);
+            aiBox.setFont(new Font("SansSerif", Font.PLAIN, 12));
+            aiBox.setPreferredSize(new Dimension(100, 28));
+            aiBox.setMaximumSize(new Dimension(100, 28));
+            final JTextField ftf = tf;
+            aiBox.addActionListener(e -> {
+                boolean isHuman = aiBox.getSelectedIndex() == 0;
+                ftf.setEnabled(isHuman);
+                if (!isHuman) {
+                    String d = ((String)aiBox.getSelectedItem()).replace("AI — ","");
+                    ftf.setText("AI (" + d + ")");
+                }
+            });
+            aiToggles.add(aiBox);
+
             row.add(lbl, BorderLayout.WEST);
             row.add(tf, BorderLayout.CENTER);
+            row.add(aiBox, BorderLayout.EAST);
             nameContainer.add(row);
             nameContainer.add(Box.createVerticalStrut(4));
         }
@@ -256,12 +281,22 @@ public class ConfigUI extends JDialog {
         // drawMode
         req.drawMode = rbUnlimited.isSelected() ? DrawMode.UNLIMITED : DrawMode.LIMITED;
 
-        // players
+        // players (human or AI)
         List<Player> players = new ArrayList<>();
-        for (JTextField tf : nameFields) {
-            String name = tf.getText().trim();
+        for (int i = 0; i < nameFields.size(); i++) {
+            String name = nameFields.get(i).getText().trim();
             if (name.isEmpty()) name = "Player " + (players.size() + 1);
-            players.add(new Player(name, UUID.randomUUID()));
+            int aiIdx = aiToggles.get(i).getSelectedIndex();
+            if (aiIdx == 0) {
+                players.add(new Player(name, UUID.randomUUID()));
+            } else {
+                AIDifficulty diff = switch (aiIdx) {
+                    case 1  -> AIDifficulty.EASY;
+                    case 2  -> AIDifficulty.MEDIUM;
+                    default -> AIDifficulty.HARD;
+                };
+                players.add(new AIPlayer(name, diff));
+            }
         }
         req.allPlayers = players;
 

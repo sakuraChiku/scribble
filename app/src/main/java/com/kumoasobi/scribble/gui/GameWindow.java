@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
@@ -218,6 +219,7 @@ public class GameWindow extends JFrame {
         controlPanel.log("Game started! " + gameState.getPlayers().size() + " players.");
         controlPanel.log("Successfully loaded dictionary at " + filepath + ".");
         controlPanel.log("First word must cover the centre square (row 8, col 8).");
+        checkAndRunAITurn();
     }
 
     private void loadGame() {
@@ -338,6 +340,7 @@ public class GameWindow extends JFrame {
 
         refreshDisplay();
         controlPanel.log("— " + currentPlayer().getName() + "'s turn —");
+        checkAndRunAITurn();
     }
 
     private void onRecall() {
@@ -363,6 +366,7 @@ public class GameWindow extends JFrame {
 
         refreshDisplay();
         controlPanel.log(currentPlayer().getName() + " skipped their turn.");
+        checkAndRunAITurn();
     }
 
     private void onRefresh() {
@@ -375,6 +379,54 @@ public class GameWindow extends JFrame {
         SaveManager.serializeGameState(gameState);
         controlPanel.log("Game saved.");
         JOptionPane.showMessageDialog(this, "Game saved!", "Saved", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // ── AI turn trigger ──────────────────────────────────────────────────────────
+    /**
+     * If the current player is an AI, schedule its turn on a background thread
+     * so the UI doesn't freeze. Shows a brief "thinking..." message.
+     */
+
+    private void checkAndRunAITurn() {
+        if (!gameController.isCurrentPlayerAI()) return;
+
+        // use swingworker
+        controlPanel.log("— " + currentPlayer().getName() + " is thinking… —");
+        new javax.swing.SwingWorker<MoveResult, Void>() {
+            @Override
+            protected MoveResult doInBackground() {
+                return gameController.executeAITurn();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    MoveResult result = get();
+                    if (result.isValidMove()) {
+                        controlPanel.log("🤖  " + currentPlayer().getName()
+                            + ": " + result.getWords()
+                            + "  +" + result.getTotalScore() + " pts");
+                    } else {
+                        controlPanel.log("🤖  " + result.getInfo());
+                    }
+
+                    gameController.nextTurn();
+                    currentMove = new Move();
+                    boardPanel.setCurrentMove(currentMove);
+
+                    if (gameController.isGameEnd()) { showGameOver(); return; }
+
+                    refreshDisplay();
+                    controlPanel.log("— " + currentPlayer().getName() + "'s turn —");
+
+                    // 如果下一个也是 AI，继续触发
+                    checkAndRunAITurn();
+
+                } catch (InterruptedException | ExecutionException e) {
+                    controlPanel.log("AI error: " + e.getMessage());
+                }
+            }
+        }.execute();
     }
 
     // ── Game over ─────────────────────────────────────────────────────────────

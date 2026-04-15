@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.kumoasobi.scribble.ai.AIMove;
+import com.kumoasobi.scribble.ai.AIPlayer;
+import com.kumoasobi.scribble.ai.ScrabbleAI;
 import com.kumoasobi.scribble.exceptions.GameException;
 import com.kumoasobi.scribble.models.Board;
 import com.kumoasobi.scribble.models.Direction;
@@ -65,6 +68,46 @@ public class GameController {
 
     public void endGame() {
         // placeholder – handled by GameWindow.showGameOver()
+    }
+
+    /**
+     * Returns true if the current player is an AI.
+     * GameWindow uses this to trigger AI thinking automatically.
+     */
+    public boolean isCurrentPlayerAI() {
+        return gs.getPlayers().get(gs.getCurrentPlayerIndex()) instanceof AIPlayer;
+    }
+
+    /**
+     * Compute and execute the AI's move for the current player.
+     * Returns the MoveResult so GameWindow can log it.
+     * Returns a "skip" MoveResult if no valid move is found.
+     */
+    public MoveResult executeAITurn() {
+        AIPlayer ai  = (AIPlayer) gs.getPlayers().get(gs.getCurrentPlayerIndex());
+        ScrabbleAI engine = new ScrabbleAI(ai.getDifficulty(), dict);
+
+        AIMove best = engine.findBestMove(gs.getBoard(), ai);
+
+        if (best == null) {
+            // No valid move found → AI skips
+            consecutiveSkips++;
+            return new MoveResult(false, 0, new ArrayList<>(), ai.getName() + " has no valid move and skips.");
+        }
+
+        Move move = best.getMove();
+        MoveResult result = validateMove(move);
+        if (!result.isValidMove()) {
+            // Fallback safety: if our quick-validate was slightly off
+            consecutiveSkips++;
+            return new MoveResult(false, 0, new ArrayList<>(), ai.getName() + " could not play. Skipping.");
+        }
+
+        applyMove(move, result);
+        addScore(result);
+        drawTiles();
+        consecutiveSkips = 0;
+        return result;
     }
 
     // ── Move validation & application ────────────────────────────────────────

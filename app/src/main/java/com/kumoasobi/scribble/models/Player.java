@@ -66,4 +66,6 @@ public class Player implements Serializable{
     public void clearRack() {
         rack.clear();
     }
+
+    public boolean isAI() { return false; }
 }
