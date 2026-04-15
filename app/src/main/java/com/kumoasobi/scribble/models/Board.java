@@ -79,10 +79,10 @@ public class Board implements Serializable {
     }
 
     public boolean hasAdjacentTile(int row, int col) {
-        boolean left = hasTile(row, col-1);
-        boolean right = hasTile(row, col+1);
-        boolean up = hasTile(row-1, col);
-        boolean down = hasTile(row+1, col);
+        boolean left  = (col > 1)    && hasTile(row, col - 1);
+        boolean right = (col < SIZE) && hasTile(row, col + 1);
+        boolean up    = (row > 1)    && hasTile(row - 1, col);
+        boolean down  = (row < SIZE) && hasTile(row + 1, col);
         return left || right || up || down;
     }
 
