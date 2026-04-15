@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -376,8 +377,27 @@ public class GameWindow extends JFrame {
     }
 
     private void onSave() {
-        SaveManager.serializeGameState(gameState);
-        controlPanel.log("Game saved.");
+        Calendar c = Calendar.getInstance();
+        String filename = String.format("GameState_%d_%02d_%02d_%02d_%02d_%02d.ser",
+        c.get(Calendar.YEAR),
+        c.get(Calendar.MONTH) + 1,
+        c.get(Calendar.DATE),
+        c.get(Calendar.HOUR_OF_DAY),
+        c.get(Calendar.MINUTE),
+        c.get(Calendar.SECOND));
+
+        JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Save Game");
+        fc.setSelectedFile(new java.io.File("scrabble_save.ser"));
+        fc.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+            "Scrabble Save Files (*.ser)", "ser"));
+
+        if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
+
+        java.io.File file = fc.getSelectedFile();
+
+        SaveManager.serializeGameState(gameState, filename);
+        controlPanel.log("Game saved to: " + file.getName());
         JOptionPane.showMessageDialog(this, "Game saved!", "Saved", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -419,7 +439,6 @@ public class GameWindow extends JFrame {
                     refreshDisplay();
                     controlPanel.log("— " + currentPlayer().getName() + "'s turn —");
 
-                    // 如果下一个也是 AI，继续触发
                     checkAndRunAITurn();
 
                 } catch (InterruptedException | ExecutionException e) {

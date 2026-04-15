@@ -1,9 +1,11 @@
 package com.kumoasobi.scribble.rules.strategy;
 
+import java.io.Serializable;
+
 import com.kumoasobi.scribble.models.GameState;
 import com.kumoasobi.scribble.models.Player;
 
-public class LimitedScoreGameEndStrategy implements GameEndStrategy {
+public class LimitedScoreGameEndStrategy implements GameEndStrategy, Serializable {
     private final int targetScore;
 
     public LimitedScoreGameEndStrategy(int targetScore) {

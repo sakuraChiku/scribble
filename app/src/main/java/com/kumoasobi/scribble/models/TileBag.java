@@ -14,7 +14,7 @@ import com.kumoasobi.scribble.rules.strategy.DrawStrategy;
  * @author Yicheng Ying
  * @version 1.0
  */
-public class TileBag implements Serializable{
+public class TileBag implements Serializable {
     // initialize 100 letters in the bag
     final private List<Tile> letterPool;
     final private DrawStrategy strategy;

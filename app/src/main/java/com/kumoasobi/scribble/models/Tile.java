@@ -9,7 +9,7 @@ import java.util.Objects;
  * @author Yicheng Ying
  * @version 1.0
  */
-public class Tile implements Serializable{
+public class Tile implements Serializable {
     private final char letter;
     private final int score;
     private boolean isBonusUsed;

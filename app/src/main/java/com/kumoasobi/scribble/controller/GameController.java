@@ -1,6 +1,5 @@
 package com.kumoasobi.scribble.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -196,15 +195,4 @@ public class GameController {
     public void recordSkip() { consecutiveSkips++; }
 
     public void resetConsecutiveSkips() { consecutiveSkips = 0; }
-
-    // ── Save / Load ──────────────────────────────────────────────────────────
-
-    public void saveGame(String dirPath) {
-        com.kumoasobi.scribble.save.SaveManager.serializeGameState(gs);
-    }
-
-    public void loadGame(String filePath) {
-        try { gs = com.kumoasobi.scribble.save.LoadManager.deserializeGameState(filePath); }
-        catch (IOException | ClassNotFoundException e) { /* swallowed */ }
-    }
 }

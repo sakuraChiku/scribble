@@ -1,12 +1,14 @@
 package com.kumoasobi.scribble.models;
 
+import java.io.Serializable;
+
 /**
  * Define the cell which includes the tile and the bonus type
  * 
  * @author Yicheng Ying
  * @version 1.0
  */
-public class Cell {
+public class Cell implements Serializable {
     private Tile tile;
     private final BonusType bonus;
 

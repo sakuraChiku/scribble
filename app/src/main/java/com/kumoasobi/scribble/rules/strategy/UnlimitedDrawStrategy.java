@@ -1,12 +1,13 @@
 package com.kumoasobi.scribble.rules.strategy;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
 import com.kumoasobi.scribble.models.Tile;
 import com.kumoasobi.scribble.models.TileBag;
 
-public class UnlimitedDrawStrategy implements DrawStrategy {
+public class UnlimitedDrawStrategy implements DrawStrategy, Serializable {
     private final Random rand = new Random();
     @Override
     public Tile draw(TileBag bag) {
