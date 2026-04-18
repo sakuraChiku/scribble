@@ -28,13 +28,13 @@ import javax.swing.border.EmptyBorder;
  */
 public class MenuUI extends JPanel {
 
-    private static final Color BG = new Color(35, 26, 16);
-    private static final Color ACCENT = new Color(220, 180, 80);
-    private static final Color FG = new Color(220, 210, 190);
-    private static final Color BTN_BG = new Color(62, 48, 32);
-    private static final Color BTN_HOV = new Color(85, 65, 38);
+    private static final Color BG      = new Color( 35,  26,  16);
+    private static final Color ACCENT  = new Color(220, 180,  80);
+    private static final Color FG      = new Color(220, 210, 190);
+    private static final Color BTN_BG  = new Color( 62,  48,  32);
+    private static final Color BTN_HOV = new Color( 85,  65,  38);
 
-    private final JButton newGameBtn, loadGameBtn, introBtn, quitBtn;
+    private final JButton newGameBtn, loadGameBtn, quitBtn;
 
     public MenuUI() {
         setLayout(new GridBagLayout());
@@ -44,8 +44,8 @@ public class MenuUI extends JPanel {
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBackground(new Color(45, 35, 22));
         card.setBorder(new CompoundBorder(
-                BorderFactory.createLineBorder(new Color(100, 80, 40), 2),
-                new EmptyBorder(40, 60, 40, 60)
+            BorderFactory.createLineBorder(new Color(100, 80, 40), 2),
+            new EmptyBorder(40, 60, 40, 60)
         ));
 
         JLabel title = new JLabel("SCRIBBLE");
@@ -61,15 +61,14 @@ public class MenuUI extends JPanel {
         // Decorative tile row
         JPanel tiles = new JPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
         tiles.setBackground(new Color(45, 35, 22));
-        String[] letters = {"S", "C", "R", "I", "B", "B", "L", "E"};
-        int[] scores = {1, 3, 1, 1, 3, 3, 1, 1};
+        String[] letters = {"S","C","R","I","B","B","L","E"};
+        int[]    scores  = { 1,  3,  1,  1,  3,  3,  1,  1};
         for (int i = 0; i < letters.length; i++)
             tiles.add(makeTileDeco(letters[i], scores[i]));
 
-        newGameBtn = makeMenuBtn("New Game"); //▶  New Game
+        newGameBtn  = makeMenuBtn("New Game"); //▶  New Game
         loadGameBtn = makeMenuBtn("Load Game");//📂  Load Game
-        introBtn = makeMenuBtn("Introduction");//☰  Introduction
-        quitBtn = makeMenuBtn("Quit");//✕  Quit
+        quitBtn     = makeMenuBtn("Quit");//✕  Quit
 
         card.add(title);
         card.add(Box.createVerticalStrut(4));
@@ -81,18 +80,14 @@ public class MenuUI extends JPanel {
         card.add(Box.createVerticalStrut(10));
         card.add(loadGameBtn);
         card.add(Box.createVerticalStrut(10));
-        card.add(introBtn);
-        card.add(Box.createVerticalStrut(10));
         card.add(quitBtn);
-
 
         add(card);
     }
 
     private JButton makeMenuBtn(String text) {
         JButton b = new JButton(text) {
-            @Override
-            protected void paintComponent(Graphics g) {
+            @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(getModel().isRollover() ? BTN_HOV : BTN_BG);
@@ -115,21 +110,20 @@ public class MenuUI extends JPanel {
 
     private JPanel makeTileDeco(String letter, int score) {
         JPanel tile = new JPanel(null) {
-            @Override
-            protected void paintComponent(Graphics g) {
+            @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(new Color(255, 235, 170));
-                g2.fillRoundRect(1, 1, getWidth() - 2, getHeight() - 2, 6, 6);
+                g2.fillRoundRect(1, 1, getWidth()-2, getHeight()-2, 6, 6);
                 g2.setColor(new Color(180, 140, 60));
                 g2.setStroke(new BasicStroke(1.2f));
-                g2.drawRoundRect(1, 1, getWidth() - 2, getHeight() - 2, 6, 6);
+                g2.drawRoundRect(1, 1, getWidth()-2, getHeight()-2, 6, 6);
                 g2.setColor(new Color(30, 30, 30));
                 g2.setFont(new Font("Serif", Font.BOLD, 18));
                 FontMetrics fm = g2.getFontMetrics();
-                g2.drawString(letter, (getWidth() - fm.stringWidth(letter)) / 2, getHeight() / 2 + fm.getAscent() / 2 - 2);
+                g2.drawString(letter, (getWidth()-fm.stringWidth(letter))/2, getHeight()/2+fm.getAscent()/2-2);
                 g2.setFont(new Font("SansSerif", Font.PLAIN, 7));
-                g2.drawString(String.valueOf(score), getWidth() - 9, getHeight() - 3);
+                g2.drawString(String.valueOf(score), getWidth()-9, getHeight()-3);
             }
         };
         tile.setPreferredSize(new Dimension(36, 36));
@@ -137,20 +131,7 @@ public class MenuUI extends JPanel {
         return tile;
     }
 
-    public void addNewGameListener(ActionListener l) {
-        newGameBtn.addActionListener(l);
-    }
-
-    public void addLoadGameListener(ActionListener l) {
-        loadGameBtn.addActionListener(l);
-    }
-
-    public void addIntroListener(ActionListener l) {
-        introBtn.addActionListener(l);
-    }
-
-    public void addQuitListener(ActionListener l) {
-        quitBtn.addActionListener(l);
-    }
+    public void addNewGameListener(ActionListener l)  { newGameBtn.addActionListener(l); }
+    public void addLoadGameListener(ActionListener l) { loadGameBtn.addActionListener(l); }
+    public void addQuitListener(ActionListener l)     { quitBtn.addActionListener(l); }
 }
-

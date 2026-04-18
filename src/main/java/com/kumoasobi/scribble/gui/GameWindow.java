@@ -24,7 +24,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -96,7 +95,6 @@ public class GameWindow extends JFrame {
         menuUI = new MenuUI();
         menuUI.addNewGameListener(e -> startNewGame());
         menuUI.addLoadGameListener(e -> loadGame());
-        menuUI.addIntroListener(e -> showIntroduction());
         menuUI.addQuitListener(e -> System.exit(0));
         root.add(menuUI, "MENU");
         cards.show(root, "MENU");
@@ -185,11 +183,6 @@ public class GameWindow extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void showIntroduction() {
-        IntroductionDialog dialog = new IntroductionDialog(this);
-        dialog.setVisible(true);
-    }
-
     // ── New game / load ───────────────────────────────────────────────────────
 
     private void startNewGame() {
@@ -251,11 +244,8 @@ public class GameWindow extends JFrame {
             controlPanel.startClock(gameState.getStartTime());
             controlPanel.log("Game loaded.");
         } catch (IOException | ClassNotFoundException ex) {
-            String[] options = {"OK"};
-            JOptionPane.showOptionDialog(this,
-                    "Failed to load: " + ex.getMessage(), "Error",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
-                    null, options, options[0]);
+            JOptionPane.showMessageDialog(this,
+                "Failed to load: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -301,36 +291,14 @@ public class GameWindow extends JFrame {
 
         Tile tileToPlace = selectedTile;
         if (tileToPlace.getLetter() == '?') {
-            String[] options = {"OK", "Cancel"};
-            JTextField inputField = new JTextField("A", 5);
-            JPanel panel = new JPanel(new BorderLayout(5, 5));
-            panel.add(new JLabel("Enter letter for blank tile:"), BorderLayout.NORTH);
-            panel.add(inputField, BorderLayout.CENTER);
-
-            int result = JOptionPane.showOptionDialog(this,
-                    panel, "Blank Tile",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-                    null, options, options[0]);
-
-            if (result != 0) {
-                controlPanel.log("Blank tile placement cancelled.");
-                return;
-            }
-
-            String input = inputField.getText();
-            if (input == null || input.trim().isEmpty()) {
-                controlPanel.log("Blank tile placement cancelled.");
-                return;
-            }
-
+            String input = (String) JOptionPane.showInputDialog(
+                this, "Enter letter for blank tile:", "Blank Tile",
+                JOptionPane.PLAIN_MESSAGE, null, null, "A");
+            if (input == null || input.isBlank()) return;
             char letter = input.trim().toUpperCase().charAt(0);
-            if (letter < 'A' || letter > 'Z') {
-                controlPanel.log("Invalid letter. Please enter A-Z.");
-                return;
-            }
+            if (letter < 'A' || letter > 'Z') { controlPanel.log("Invalid letter."); return; }
             tileToPlace = new Tile(letter, 0);
         }
-
 
         try {
             currentMove.addPlacement(new Placement(tileToPlace, row, col));
@@ -385,12 +353,9 @@ public class GameWindow extends JFrame {
     }
 
     private void onSkip() {
-        String[] options = {"Yes", "No"};
-        int confirm = JOptionPane.showOptionDialog(this,
-                "Skip your turn?", "Skip Turn",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-                null, options, options[1]);
-        if (confirm != 0) return;
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Skip your turn?", "Skip Turn", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) return;
 
         currentMove = new Move();
         boardPanel.setCurrentMove(currentMove);
@@ -406,39 +371,26 @@ public class GameWindow extends JFrame {
     }
 
     private void onRefresh() {
-        if (!currentMove.isEmpty()) {
-            currentMove = new Move();
-            boardPanel.setCurrentMove(currentMove);
-            controlPanel.log("Placements cleared before refresh.");
-        }
         gameController.refreshTiles();
-        refreshDisplay();
-        controlPanel.log(currentPlayer().getName() + " refreshed their rack and ended their turn.");
-
-        gameController.nextTurn();
-
-        if (gameController.isGameEnd()) { showGameOver(); return; }
-
-        refreshDisplay();
-        controlPanel.log("— " + currentPlayer().getName() + "'s turn —");
-        checkAndRunAITurn();
+        refreshRackDuringPlacement();
+        controlPanel.log("Rack refreshed!");
     }
 
     private void onSave() {
         Calendar c = Calendar.getInstance();
         String filename = String.format("GameState_%d_%02d_%02d_%02d_%02d_%02d.ser",
-                c.get(Calendar.YEAR),
-                c.get(Calendar.MONTH) + 1,
-                c.get(Calendar.DATE),
-                c.get(Calendar.HOUR_OF_DAY),
-                c.get(Calendar.MINUTE),
-                c.get(Calendar.SECOND));
+        c.get(Calendar.YEAR),
+        c.get(Calendar.MONTH) + 1,
+        c.get(Calendar.DATE),
+        c.get(Calendar.HOUR_OF_DAY),
+        c.get(Calendar.MINUTE),
+        c.get(Calendar.SECOND));
 
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Save Game");
         fc.setSelectedFile(new java.io.File(filename));
         fc.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
-                "Scrabble Save Files (*.ser)", "ser"));
+            "Scrabble Save Files (*.ser)", "ser"));
 
         if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
 
@@ -446,11 +398,7 @@ public class GameWindow extends JFrame {
 
         SaveManager.serializeGameState(gameState, file.getAbsolutePath());
         controlPanel.log("Game saved to: " + file.getName());
-        String[] okOptions = {"OK"};
-        JOptionPane.showOptionDialog(this,
-                "Game saved!", "Saved",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-                null, okOptions, okOptions[0]);
+        JOptionPane.showMessageDialog(this, "Game saved!", "Saved", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // ── AI turn trigger ──────────────────────────────────────────────────────────
@@ -515,11 +463,7 @@ public class GameWindow extends JFrame {
         if (winner != null)
             msg.append("\n🏆  Winner: ").append(winner.getName()).append("!");
 
-        String[] okOptions = {"OK"};
-        JOptionPane.showOptionDialog(this,
-                msg.toString(), "Game Over",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-                null, okOptions, okOptions[0]);
+        JOptionPane.showMessageDialog(this, msg.toString(), "Game Over", JOptionPane.INFORMATION_MESSAGE);
         returnToMenu();
     }
 }

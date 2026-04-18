@@ -1,6 +1,12 @@
 package com.kumoasobi.scribble.rules.validator;
 
-import com.kumoasobi.scribble.exceptions.*;
+import com.kumoasobi.scribble.exceptions.CellOccupiedException;
+import com.kumoasobi.scribble.exceptions.EmptyMoveException;
+import com.kumoasobi.scribble.exceptions.FirstMoveNotThroughCenter;
+import com.kumoasobi.scribble.exceptions.GameException;
+import com.kumoasobi.scribble.exceptions.MoveNotContinuousException;
+import com.kumoasobi.scribble.exceptions.MoveNotInLineException;
+import com.kumoasobi.scribble.exceptions.WordNotConnectedToExistingTile;
 import com.kumoasobi.scribble.models.Board;
 import com.kumoasobi.scribble.models.Direction;
 import com.kumoasobi.scribble.models.Move;
@@ -18,13 +24,11 @@ public class BoardValidator {
         validateStructure(move);
         validateDirection(move, move.getDirection());
         if (isFirstStep(board)) {
-            validateFirstMoveLength(move);
             throughCenter(move);
         } else {
             connectToWords(move, board);
         }
     }
-
     /**
      * First, validate if the move have occupied existing cells
      * @param move
@@ -123,15 +127,5 @@ public class BoardValidator {
             }
         }
         return true;
-    }
-    /**
-     * Validate that the first move has at least 2 tiles
-     * @param move
-     * @throws FirstMoveOnlyOneWordException
-     */
-    private static void validateFirstMoveLength(Move move) throws FirstMoveOnlyOneWordException {
-        if (move.getPlacements().size() < 2) {
-            throw new FirstMoveOnlyOneWordException("The first word must have at least 2 letters!");
-        }
     }
 }
