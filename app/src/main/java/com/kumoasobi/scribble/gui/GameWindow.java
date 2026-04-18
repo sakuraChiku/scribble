@@ -76,7 +76,7 @@ public class GameWindow extends JFrame {
 
     // ── Constructor ──────────────────────────────────────────────────────────
     public GameWindow() {
-        super("Scrabble");
+        super("Scribble");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         getContentPane().setBackground(BG);
         setContentPane(root);
@@ -85,7 +85,7 @@ public class GameWindow extends JFrame {
         buildGameScreen();
 
         pack();
-        setMinimumSize(new Dimension(500, 450));
+        setMinimumSize(new Dimension(960, 540));
         setLocationRelativeTo(null);
         setVisible(true);
     }
