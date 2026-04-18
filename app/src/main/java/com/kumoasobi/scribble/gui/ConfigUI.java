@@ -64,6 +64,7 @@ public class ConfigUI extends JDialog {
     private final JSpinner            scoreLimitSpin = makeSpinner(100, 1, 9999, 50);
     private final JSpinner            turnLimitSpin  = makeSpinner(20,  1,  999,  5);
     private final JSpinner            timeLimitSpin  = makeSpinner(10,  1,  180,  5); // minutes
+    private final JSpinner            maxRefreshTimesSpin = makeSpinner(3, 1, 99, 1);
     private final JRadioButton        rbScore  = makeRadio("Score limit");
     private final JRadioButton        rbTurn   = makeRadio("Turn limit");
     private final JRadioButton        rbTime   = makeRadio("Time limit");
@@ -197,6 +198,18 @@ public class ConfigUI extends JDialog {
         outer.add(Box.createVerticalStrut(8));
 
         nameContainer = new JPanel();
+        JPanel refreshRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        refreshRow.setBackground(CARD);
+        refreshRow.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JLabel refreshLbl = new JLabel("Max refresh times:");
+        refreshLbl.setForeground(FG);
+        refreshLbl.setFont(new Font("SansSerif", Font.BOLD, 13));
+        maxRefreshTimesSpin.setPreferredSize(new Dimension(72, 26));
+        styleSpinner(maxRefreshTimesSpin);
+        refreshRow.add(refreshLbl);
+        refreshRow.add(maxRefreshTimesSpin);
+        outer.add(refreshRow);
+        outer.add(Box.createVerticalStrut(8));
         nameContainer.setLayout(new BoxLayout(nameContainer, BoxLayout.Y_AXIS));
         nameContainer.setBackground(CARD);
         outer.add(nameContainer);
@@ -247,7 +260,11 @@ public class ConfigUI extends JDialog {
                 ftf.setEnabled(isHuman);
                 if (!isHuman) {
                     String d = ((String)aiBox.getSelectedItem()).replace("AI — ","");
-                    ftf.setText("AI (" + d + ")");
+                    switch (d) {
+                        case "Easy" -> ftf.setText("Mako");
+                        case "Medium" -> ftf.setText("Yoshino");
+                        case "Hard" -> ftf.setText("Murasame");
+                    }
                 }
             });
             aiToggles.add(aiBox);
@@ -288,7 +305,7 @@ public class ConfigUI extends JDialog {
             if (name.isEmpty()) name = "Player " + (players.size() + 1);
             int aiIdx = aiToggles.get(i).getSelectedIndex();
             if (aiIdx == 0) {
-                players.add(new Player(name, UUID.randomUUID()));
+                players.add(new Player(name, UUID.randomUUID(), (int)maxRefreshTimesSpin.getValue()));
             } else {
                 AIDifficulty diff = switch (aiIdx) {
                     case 1  -> AIDifficulty.EASY;

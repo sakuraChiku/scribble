@@ -27,8 +27,11 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.kumoasobi.scribble.ai.AIDialogue;
+import com.kumoasobi.scribble.ai.AIPlayer;
 import com.kumoasobi.scribble.controller.GameController;
 import com.kumoasobi.scribble.controller.MenuController;
+import com.kumoasobi.scribble.exceptions.GameException;
 import com.kumoasobi.scribble.models.GameState;
 import com.kumoasobi.scribble.models.Move;
 import com.kumoasobi.scribble.models.MoveResult;
@@ -371,9 +374,19 @@ public class GameWindow extends JFrame {
     }
 
     private void onRefresh() {
-        gameController.refreshTiles();
+        Player currentPlayer = currentPlayer();
+        while (!currentMove.isEmpty()) {
+            currentMove.recallPlacement();
+        }
         refreshRackDuringPlacement();
-        controlPanel.log("Rack refreshed!");
+        boardPanel.repaint();
+        try {
+            gameController.refreshTiles();
+        } catch (GameException e) {
+            controlPanel.log(e.getMessage());
+        }
+        refreshRackDuringPlacement();
+        controlPanel.log("Rack refreshed! " + currentPlayer.getRemainingRefreshTimes() + " refresh times left.");
     }
 
     private void onSave() {
@@ -409,9 +422,10 @@ public class GameWindow extends JFrame {
 
     private void checkAndRunAITurn() {
         if (!gameController.isCurrentPlayerAI()) return;
+        AIPlayer ai = (AIPlayer)currentPlayer();
 
         // use swingworker
-        controlPanel.log("— " + currentPlayer().getName() + " is thinking… —");
+        controlPanel.log("— " + ai.getName() + " is thinking… —");
         new javax.swing.SwingWorker<MoveResult, Void>() {
             @Override
             protected MoveResult doInBackground() {
@@ -423,11 +437,13 @@ public class GameWindow extends JFrame {
                 try {
                     MoveResult result = get();
                     if (result.isValidMove()) {
-                        controlPanel.log("🤖  " + currentPlayer().getName()
+                        controlPanel.log("(AI)  " + currentPlayer().getName()
                             + ": " + result.getWords()
                             + "  +" + result.getTotalScore() + " pts");
+                        controlPanel.log("💬 " + AIDialogue.getSuccessLine(ai.getDifficulty()));
                     } else {
-                        controlPanel.log("🤖  " + result.getInfo());
+                        controlPanel.log("(AI)  " + result.getInfo());
+                        controlPanel.log("💬 " + AIDialogue.getFailLine(ai.getDifficulty()));
                     }
 
                     gameController.nextTurn();
@@ -437,7 +453,7 @@ public class GameWindow extends JFrame {
                     if (gameController.isGameEnd()) { showGameOver(); return; }
 
                     refreshDisplay();
-                    controlPanel.log("— " + currentPlayer().getName() + "'s turn —");
+                    controlPanel.log("— " + ai.getName() + "'s turn —");
 
                     checkAndRunAITurn();
 

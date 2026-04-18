@@ -8,6 +8,7 @@ import com.kumoasobi.scribble.ai.AIMove;
 import com.kumoasobi.scribble.ai.AIPlayer;
 import com.kumoasobi.scribble.ai.ScrabbleAI;
 import com.kumoasobi.scribble.exceptions.GameException;
+import com.kumoasobi.scribble.exceptions.ReachMaxRefreshTimes;
 import com.kumoasobi.scribble.models.Board;
 import com.kumoasobi.scribble.models.Direction;
 import com.kumoasobi.scribble.models.GameState;
@@ -184,12 +185,17 @@ public class GameController {
         if (need > 0) player.addTiles(bag.drawTiles(need));
     }
 
-    public void refreshTiles() {
+    public void refreshTiles() throws GameException {
         Player player = gs.getPlayers().get(gs.getCurrentPlayerIndex());
         TileBag bag = gs.getBag();
-        bag.flowbackTiles(player.getRack());
-        player.clearRack();
-        player.addTiles(bag.drawTiles(Player.getRackSize()));
+        if (player.getRemainingRefreshTimes() <= 0) {
+            throw new ReachMaxRefreshTimes("You have reached maximun refreshing times!");
+        } else {
+            player.consumeMaxRefreshTimes();
+            bag.flowbackTiles(player.getRack());
+            player.clearRack();
+            player.addTiles(bag.drawTiles(Player.getRackSize()));
+        }
     }
 
     public void recordSkip() { consecutiveSkips++; }

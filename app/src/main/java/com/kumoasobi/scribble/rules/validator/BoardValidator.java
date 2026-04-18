@@ -3,6 +3,7 @@ package com.kumoasobi.scribble.rules.validator;
 import com.kumoasobi.scribble.exceptions.CellOccupiedException;
 import com.kumoasobi.scribble.exceptions.EmptyMoveException;
 import com.kumoasobi.scribble.exceptions.FirstMoveNotThroughCenter;
+import com.kumoasobi.scribble.exceptions.FirstMoveOnlyOneWordException;
 import com.kumoasobi.scribble.exceptions.GameException;
 import com.kumoasobi.scribble.exceptions.MoveNotContinuousException;
 import com.kumoasobi.scribble.exceptions.MoveNotInLineException;
@@ -24,6 +25,7 @@ public class BoardValidator {
         validateStructure(move);
         validateDirection(move, move.getDirection());
         if (isFirstStep(board)) {
+            oneLetter(move);
             throughCenter(move);
         } else {
             connectToWords(move, board);
@@ -116,6 +118,10 @@ public class BoardValidator {
             }
         }
         throw new FirstMoveNotThroughCenter("First move must go through the center!");
+    }
+
+    private static void oneLetter(Move move) throws GameException {
+        if (move.getPlacements().size() == 1) throw new FirstMoveOnlyOneWordException("Please place at least two letters in the first step!");
     }
 
     private static boolean isFirstStep(Board board) {

@@ -20,7 +20,7 @@ public class AIPlayer extends Player {
     private final AIDifficulty difficulty;
 
     public AIPlayer(String name, AIDifficulty difficulty) {
-        super(name, UUID.randomUUID());
+        super(name, UUID.randomUUID(), 0);
         this.difficulty = difficulty;
     }
 

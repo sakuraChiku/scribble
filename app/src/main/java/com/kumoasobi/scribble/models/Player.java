@@ -17,12 +17,14 @@ public class Player implements Serializable{
     private int score;
     private final List<Tile> rack;
     private static final int RACK_SIZE = 7;
+    private int remainingRefreshTimes;
 
-    public Player(String name, UUID id) {
+    public Player(String name, UUID id, int maxRefreshTimes) {
         //initialize the basic information of the player
         this.name = name;
         this.score = 0;
         this.id = id;
+        this.remainingRefreshTimes = maxRefreshTimes;
         
         //initialize the rack
         rack = new ArrayList<>();
@@ -65,6 +67,14 @@ public class Player implements Serializable{
 
     public void clearRack() {
         rack.clear();
+    }
+    
+    public int getRemainingRefreshTimes() {
+        return remainingRefreshTimes;
+    }
+
+    public void consumeMaxRefreshTimes() {
+        remainingRefreshTimes -= 1;
     }
 
     public boolean isAI() { return false; }
