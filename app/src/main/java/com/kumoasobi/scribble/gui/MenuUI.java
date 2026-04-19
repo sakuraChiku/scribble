@@ -65,7 +65,7 @@ public class MenuUI extends JPanel {
         quitBtn     = makeMenuBtn("Quit");//✕  Quit
         introBtn    = makeMenuBtn("Instruction");
 
-        leftCard.add(Box.createVerticalStrut(175));
+        leftCard.add(Box.createVerticalStrut(180));
         leftCard.add(newGameBtn);
         leftCard.add(Box.createVerticalStrut(80));
         leftCard.add(loadGameBtn);

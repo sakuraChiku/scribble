@@ -80,8 +80,10 @@ public class BoardPanel extends JPanel {
         setPreferredSize(new Dimension(CELL * SIZE + 1, CELL * SIZE + 1));
         addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                int col = e.getX() / CELL + 1;
-                int row = e.getY() / CELL + 1;
+                int DX = (getWidth()  - SIZE * CELL) / 2;
+                int DY = (getHeight() - SIZE * CELL) / 2;
+                int col = (e.getX() - DX) / CELL + 1;
+                int row = (e.getY() - DY) / CELL + 1;
                 if (row >= 1 && row <= SIZE && col >= 1 && col <= SIZE && listener != null)
                     listener.onCellClicked(row, col);
             }
@@ -89,8 +91,17 @@ public class BoardPanel extends JPanel {
         });
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override public void mouseMoved(MouseEvent e) {
-                hoverRow = e.getY() / CELL + 1;
-                hoverCol = e.getX() / CELL + 1;
+                int DX = (getWidth()  - SIZE * CELL) / 2;
+                int DY = (getHeight() - SIZE * CELL) / 2;
+                int newRow = (e.getY() - DY) / CELL + 1;
+                int newCol = (e.getX() - DX) / CELL + 1;
+                // 鼠标在棋盘外时清除 hover
+                if (newRow < 1 || newRow > SIZE || newCol < 1 || newCol > SIZE) {
+                    hoverRow = hoverCol = -1;
+                } else {
+                    hoverRow = newRow;
+                    hoverCol = newCol;
+                }
                 repaint();
             }
         });
@@ -102,6 +113,8 @@ public class BoardPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        int DX = (getWidth() - SIZE * CELL) / 2;
+        int DY = (getHeight() - SIZE * CELL) / 2;
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         if (bgImage != null) {
@@ -112,12 +125,12 @@ public class BoardPanel extends JPanel {
         if (board == null) return;
         for (int r = 1; r <= SIZE; r++)
             for (int c = 1; c <= SIZE; c++)
-                drawCell(g2, (c-1)*CELL, (r-1)*CELL, r, c);
+                drawCell(g2, DX+(c-1)*CELL, DY+(r-1)*CELL, r, c); // grids
         g2.setColor(GRID_COLOR);
         g2.setStroke(new BasicStroke(0.8f));
         for (int i = 0; i <= SIZE; i++) {
-            g2.drawLine(i*CELL, 0, i*CELL, SIZE*CELL);
-            g2.drawLine(0, i*CELL, SIZE*CELL, i*CELL);
+            g2.drawLine(DX+i*CELL, DY, DX+i*CELL, DY+SIZE*CELL); // verticla line
+            g2.drawLine(DX, DY+i*CELL, DX+SIZE*CELL, DY+i*CELL); // horizontal line
         }
     }
 

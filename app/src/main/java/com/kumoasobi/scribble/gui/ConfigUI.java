@@ -128,6 +128,7 @@ public class ConfigUI extends JDialog {
         // Select defaults
         rbTile.setSelected(true);
         rbLimited.setSelected(true);
+        rbUnlimited.setEnabled(false);
         updateLimitSpinners();
 
         pack();
@@ -156,7 +157,17 @@ public class ConfigUI extends JDialog {
         tileRow.add(rbTile);
 
         for (JRadioButton rb : new JRadioButton[]{rbScore, rbTurn, rbTime, rbTile}) {
-            rb.addActionListener(e -> updateLimitSpinners());
+            rb.addActionListener(e -> {
+                SoundManager.playChange();
+                updateLimitSpinners();
+                if (rbTile.isSelected()) {
+                    rbLimited.setSelected(true);
+                    rbLimited.setEnabled(true);
+                    rbUnlimited.setEnabled(false);
+                } else {
+                    rbUnlimited.setEnabled(true);
+                }
+            });
         }
 
         p.add(scoreRow);
@@ -170,6 +181,21 @@ public class ConfigUI extends JDialog {
         JPanel p = card("Draw Mode");
         drawGroup.add(rbLimited);
         drawGroup.add(rbUnlimited);
+
+        rbLimited.addActionListener(e -> {
+            SoundManager.playChange();
+            rbTile.setEnabled(true);
+        });
+
+        rbUnlimited.addActionListener(e -> {
+            SoundManager.playChange();
+            if (rbTile.isSelected()) {
+                rbScore.setSelected(true);
+                updateLimitSpinners();
+            }
+            rbTile.setEnabled(false);
+        });
+
         p.add(hSingle(rbLimited));
         p.add(hSingle(rbUnlimited));
         return p;
@@ -191,7 +217,10 @@ public class ConfigUI extends JDialog {
             final int num = n;
             JRadioButton rb = makeRadio(String.valueOf(n));
             rb.setSelected(n == 2);
-            rb.addActionListener(e -> { playerCount = num; rebuildNames(); });
+            rb.addActionListener(e -> { 
+                SoundManager.playChange();
+                playerCount = num; rebuildNames();
+            });
             cg.add(rb);
             countRow.add(rb);
         }
@@ -225,7 +254,7 @@ public class ConfigUI extends JDialog {
         nameContainer.removeAll();
         nameFields.clear();
         aiToggles.clear();
-        String[] defaults = {"Alpha", "Bravo", "Charlie", "Delta"};
+        String[] defaults = {"Charlie", "Juliett", "Romeo", "Victor"};
         for (int i = 0; i < playerCount; i++) {
             JPanel row = new JPanel(new BorderLayout(6, 0));
             row.setBackground(CARD);
@@ -257,6 +286,7 @@ public class ConfigUI extends JDialog {
             aiBox.setMaximumSize(new Dimension(100, 28));
             final JTextField ftf = tf;
             aiBox.addActionListener(e -> {
+                SoundManager.playChange();
                 boolean isHuman = aiBox.getSelectedIndex() == 0;
                 ftf.setEnabled(isHuman);
                 if (!isHuman) {

@@ -40,6 +40,8 @@ public class IntroductionDialog extends JDialog {
 
         JTextArea content = new JTextArea();
         content.setEditable(false);
+        content.setCaretPosition(0);
+        content.getCaret().setVisible(false);
         content.setBackground(CARD);
         content.setForeground(FG);
         content.setFont(new Font("SansSerif", Font.PLAIN, 13));

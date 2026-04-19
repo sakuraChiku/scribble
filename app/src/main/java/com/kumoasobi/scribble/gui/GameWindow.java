@@ -3,7 +3,9 @@ package com.kumoasobi.scribble.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,12 +17,10 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -154,6 +154,23 @@ public class GameWindow extends JFrame {
         rackWrapper.add(rackLabel, BorderLayout.NORTH);
         rackWrapper.add(rackPanel, BorderLayout.CENTER);
         centerCol.add(rackWrapper, BorderLayout.SOUTH);
+        
+        JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
+        topBar.setBackground(new Color(255, 254, 248));
+
+        JButton saveBtn  = makeTopBarBtn("Save");
+        JButton menuBtn  = makeTopBarBtn("Main Menu");
+        JButton quitBtn2 = makeTopBarBtn("Quit");
+
+        saveBtn.addActionListener(e  -> onSave());
+        menuBtn.addActionListener(e  -> returnToMenu());
+        quitBtn2.addActionListener(e -> quitGame());
+
+        topBar.add(saveBtn);
+        topBar.add(menuBtn);
+        topBar.add(quitBtn2);
+
+        gamePanel.add(topBar, BorderLayout.NORTH);
 
         gamePanel.add(centerCol, BorderLayout.CENTER);
         controlPanel.setPreferredSize(new Dimension(260, 0));
@@ -169,26 +186,6 @@ public class GameWindow extends JFrame {
         SoundManager.stopMenuBGM();
         SoundManager.playGameBGM();
 
-        JMenuBar mb = new JMenuBar();
-        mb.setBackground(new Color(30, 22, 14));
-        JMenu fileMenu = new JMenu("Game");
-        fileMenu.setForeground(new Color(220, 200, 150));
-
-        JMenuItem saveItem = new JMenuItem("Save");
-        saveItem.addActionListener(e -> onSave());
-        JMenuItem menuItem = new JMenuItem("Main Menu");
-        menuItem.addActionListener(e -> returnToMenu());
-        JMenuItem quitItem = new JMenuItem("Quit");
-        quitItem.addActionListener(e -> quitGame());
-
-        fileMenu.add(saveItem);
-        fileMenu.addSeparator();
-        fileMenu.add(menuItem);
-        fileMenu.addSeparator();
-        fileMenu.add(quitItem);
-        mb.add(fileMenu);
-        setJMenuBar(mb);
-
         setMinimumSize(new Dimension(960, 740));
         pack();
         setLocationRelativeTo(null);
@@ -197,12 +194,12 @@ public class GameWindow extends JFrame {
     }
 
     private void returnToMenu() {
-
+        SoundManager.playDecide();
         SoundManager.stopGameBGM();
         SoundManager.playMenuBGM();
 
         controlPanel.stopClock();
-        setJMenuBar(null);
+        //setJMenuBar(null);
         setMinimumSize(new Dimension(500, 450));
         cards.show(root, "MENU");
         pack();
@@ -322,6 +319,17 @@ public class GameWindow extends JFrame {
 
     private Player currentPlayer() {
         return gameState.getPlayers().get(gameState.getCurrentPlayerIndex());
+    }
+
+    private JButton makeTopBarBtn(String text) {
+        JButton b = new JButton(text);
+        b.setFont(new Font("SansSerif", Font.BOLD, 12));
+        b.setForeground(new Color(120, 140, 150));
+        b.setBackground(new Color(60, 45, 25));
+        b.setFocusPainted(false);
+        b.setBorder(BorderFactory.createEmptyBorder(4, 12, 4, 12));
+        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        return b;
     }
 
     // ── Game actions ──────────────────────────────────────────────────────────
