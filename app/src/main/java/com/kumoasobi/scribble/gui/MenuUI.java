@@ -1,27 +1,27 @@
 package com.kumoasobi.scribble.gui;
 
-import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
-import javax.swing.BorderFactory;
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+
+import com.kumoasobi.scribble.util.SoundManager;
 
 /**
  * Main menu screen shown on launch and after a game ends.
@@ -29,62 +29,69 @@ import javax.swing.border.EmptyBorder;
 public class MenuUI extends JPanel {
 
     private static final Color BG      = new Color( 35,  26,  16);
-    private static final Color ACCENT  = new Color(220, 180,  80);
     private static final Color FG      = new Color(220, 210, 190);
-    private static final Color BTN_BG  = new Color( 62,  48,  32);
-    private static final Color BTN_HOV = new Color( 85,  65,  38);
+    private static final Color BTN_BG  = new Color( 192,  80,  0);
+    private static final Color BTN_HOV = new Color( 243,  243,  91);
 
-    private final JButton newGameBtn, loadGameBtn, quitBtn;
+    private final JButton newGameBtn, loadGameBtn, quitBtn, introBtn;
+    private Image bgImage, headImage, logoImage;
 
     public MenuUI() {
         setLayout(new GridBagLayout());
         setBackground(BG);
 
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(new Color(45, 35, 22));
-        card.setBorder(new CompoundBorder(
-            BorderFactory.createLineBorder(new Color(100, 80, 40), 2),
-            new EmptyBorder(40, 60, 40, 60)
-        ));
+        try {
+            bgImage = ImageIO.read(getClass().getResourceAsStream("/assets/img/gui/title_charall.png"));
+            headImage = ImageIO.read(getClass().getResourceAsStream("/assets/img/gui/title_head.png"));
+            logoImage = ImageIO.read(getClass().getResourceAsStream("/assets/img/gui/title_logo.png"));
+        } catch (IOException e) {
+            bgImage = null;
+            headImage = null;
+            logoImage = null;
+        }
 
-        JLabel title = new JLabel("SCRIBBLE");
-        title.setFont(new Font("Serif", Font.BOLD, 48));
-        title.setForeground(ACCENT);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(1260, 480));
 
-        JLabel subtitle = new JLabel("A Cover of the Classic Word Game");
-        subtitle.setFont(new Font("Serif", Font.ITALIC, 16));
-        subtitle.setForeground(new Color(160, 140, 100));
-        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Decorative tile row
-        JPanel tiles = new JPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
-        tiles.setBackground(new Color(45, 35, 22));
-        String[] letters = {"S","C","R","I","B","B","L","E"};
-        int[]    scores  = { 1,  3,  1,  1,  3,  3,  1,  1};
-        for (int i = 0; i < letters.length; i++)
-            tiles.add(makeTileDeco(letters[i], scores[i]));
+        JPanel leftCard = new JPanel();
+        leftCard.setLayout(new BoxLayout(leftCard, BoxLayout.Y_AXIS));
+        leftCard.setBackground(new Color(255, 255, 255, 0));
+        leftCard.setOpaque(false);
+        leftCard.setBorder(new EmptyBorder(60, 40, 60, 40));
+        leftCard.setPreferredSize(new Dimension(250, 0));
 
         newGameBtn  = makeMenuBtn("New Game"); //▶  New Game
         loadGameBtn = makeMenuBtn("Load Game");//📂  Load Game
         quitBtn     = makeMenuBtn("Quit");//✕  Quit
+        introBtn    = makeMenuBtn("Instruction");
 
-        card.add(title);
-        card.add(Box.createVerticalStrut(4));
-        card.add(subtitle);
-        card.add(Box.createVerticalStrut(20));
-        card.add(tiles);
-        card.add(Box.createVerticalStrut(36));
-        card.add(newGameBtn);
-        card.add(Box.createVerticalStrut(10));
-        card.add(loadGameBtn);
-        card.add(Box.createVerticalStrut(10));
-        card.add(quitBtn);
+        leftCard.add(Box.createVerticalStrut(175));
+        leftCard.add(newGameBtn);
+        leftCard.add(Box.createVerticalStrut(80));
+        leftCard.add(loadGameBtn);
+        leftCard.add(Box.createVerticalStrut(80));
+        leftCard.add(introBtn);
+        leftCard.add(Box.createVerticalStrut(80));
+        leftCard.add(quitBtn);
 
-        add(card);
+        add(leftCard, BorderLayout.WEST);
+
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (bgImage != null) {
+            g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
+        }
+        if (logoImage != null) {
+            g.drawImage(logoImage, 25, 25, 310, 150, this);
+        }
+        if (headImage != null) {
+            g.drawImage(headImage, 0, 225, 10, 450, this);
+        }
+    }
+    
     private JButton makeMenuBtn(String text) {
         JButton b = new JButton(text) {
             @Override protected void paintComponent(Graphics g) {
@@ -95,6 +102,14 @@ public class MenuUI extends JPanel {
                 super.paintComponent(g);
             }
         };
+
+        b.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                SoundManager.playDecide();
+            }
+        });
+
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
         b.setMaximumSize(new Dimension(240, 44));
         b.setFont(new Font("SansSerif", Font.BOLD, 15));
@@ -108,30 +123,8 @@ public class MenuUI extends JPanel {
         return b;
     }
 
-    private JPanel makeTileDeco(String letter, int score) {
-        JPanel tile = new JPanel(null) {
-            @Override protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(new Color(255, 235, 170));
-                g2.fillRoundRect(1, 1, getWidth()-2, getHeight()-2, 6, 6);
-                g2.setColor(new Color(180, 140, 60));
-                g2.setStroke(new BasicStroke(1.2f));
-                g2.drawRoundRect(1, 1, getWidth()-2, getHeight()-2, 6, 6);
-                g2.setColor(new Color(30, 30, 30));
-                g2.setFont(new Font("Serif", Font.BOLD, 18));
-                FontMetrics fm = g2.getFontMetrics();
-                g2.drawString(letter, (getWidth()-fm.stringWidth(letter))/2, getHeight()/2+fm.getAscent()/2-2);
-                g2.setFont(new Font("SansSerif", Font.PLAIN, 7));
-                g2.drawString(String.valueOf(score), getWidth()-9, getHeight()-3);
-            }
-        };
-        tile.setPreferredSize(new Dimension(36, 36));
-        tile.setOpaque(false);
-        return tile;
-    }
-
     public void addNewGameListener(ActionListener l)  { newGameBtn.addActionListener(l); }
     public void addLoadGameListener(ActionListener l) { loadGameBtn.addActionListener(l); }
     public void addQuitListener(ActionListener l)     { quitBtn.addActionListener(l); }
+    public void addIntroListener(ActionListener l) { introBtn.addActionListener(l); }
 }

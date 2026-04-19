@@ -18,11 +18,13 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.kumoasobi.scribble.util.SoundManager;
+
 public class IntroductionDialog extends JDialog {
-    private static final Color BG = new Color(45, 35, 22);
-    private static final Color CARD = new Color(62, 48, 32);
-    private static final Color ACCENT = new Color(220, 180, 80);
-    private static final Color FG = new Color(240, 230, 210);
+    private static final Color BG     = new Color(217,  237,  210);
+    private static final Color CARD   = new Color( 231,  231,  219);
+    private static final Color ACCENT = new Color(0, 0, 0);
+    private static final Color FG = new Color(0, 0, 0);
 
     public IntroductionDialog(Frame parent) {
         super(parent, "How to Play", true);
@@ -30,7 +32,7 @@ public class IntroductionDialog extends JDialog {
         getContentPane().setBackground(BG);
         setLayout(new BorderLayout(10, 10));
 
-        JLabel title = new JLabel("Introduction", SwingConstants.CENTER);
+        JLabel title = new JLabel("Instruction", SwingConstants.CENTER);
         title.setFont(new Font("Serif", Font.BOLD, 24));
         title.setForeground(ACCENT);
         title.setBorder(new EmptyBorder(20, 0, 10, 0));
@@ -51,8 +53,8 @@ public class IntroductionDialog extends JDialog {
                 
                 The game is prepared for 2-4 players to maximize their scores by strategically placing tiles on a 15*15 game board to achieve the target score. Scores are calculated based on the points that are displayed on the letter tiles and bonus squares on the game board.
                 
-                Tile Distribution and Rack Management
-                1. The quantities of tiles will be infinite, and the values for each letter will be predefined.
+                Tile Distribution and Rack Management:
+                1. The quantities of tiles will be 100 or infinite, and the values for each letter will be predefined.
                 2. Each player will start with 7 tiles in their \u201crack\u201d, and their will redraw tiles to 7 after each valid move.
                 3. If a player cannot form a valid word, they may choose to exchange all their tiles or tiles.
                 
@@ -78,13 +80,10 @@ public class IntroductionDialog extends JDialog {
                 The player with the highest score wins!
                 
                 AI:
-
                 Every match is more than a game—it is a clash of personalities.
                 Your opponent is not just an AI, but a character with their own way of thinking.
 
                 Choose who you will face.
-
-
                 
                 Mako Hitachi (Easy AI) — Shadow of Playfulness
                 “Hehe~ don’t underestimate me just because I’m having fun!”
@@ -93,16 +92,12 @@ public class IntroductionDialog extends JDialog {
                 Mako plays with spontaneity—sometimes reckless, sometimes unexpectedly clever.
                 Her moves may not always be optimal, but they are never predictable.
 
-
-
                 Yoshino Tomotake (Medium AI) — Keeper of Balance
                 “I will proceed carefully. Please do the same.”
 
                 The shrine maiden who bears the weight of tradition and duty.
                 Yoshino values harmony and precision, choosing each move with calm deliberation.
                 She does not rush, nor does she falter easily.
-
-
 
                 Murasame (Hard AI) — Eternal Blade Spirit
                 “If you hesitate, you will lose.”
@@ -131,7 +126,7 @@ public class IntroductionDialog extends JDialog {
         closeBtn.setBorderPainted(false);
         closeBtn.setBorder(new EmptyBorder(10, 30, 10, 30));
         closeBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        closeBtn.addActionListener(e -> dispose());
+        closeBtn.addActionListener(e -> onCancel());
 
         btnPanel.add(closeBtn);
         add(btnPanel, BorderLayout.SOUTH);
@@ -139,5 +134,10 @@ public class IntroductionDialog extends JDialog {
         pack();
         setLocationRelativeTo(parent);
         setResizable(false);
+    }
+
+    private void onCancel() {
+        SoundManager.playCancel();
+        dispose();
     }
 }

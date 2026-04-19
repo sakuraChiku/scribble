@@ -35,6 +35,7 @@ import com.kumoasobi.scribble.models.Player;
 import com.kumoasobi.scribble.rules.config.DrawMode;
 import com.kumoasobi.scribble.rules.config.EndMode;
 import com.kumoasobi.scribble.rules.config.GameConfigRequest;
+import com.kumoasobi.scribble.util.SoundManager;
 
 /**
  * New-game configuration dialog.
@@ -49,12 +50,12 @@ import com.kumoasobi.scribble.rules.config.GameConfigRequest;
 public class ConfigUI extends JDialog {
 
     // ── colours ──────────────────────────────────────────────────────────────
-    private static final Color BG     = new Color( 45,  35,  25);
-    private static final Color CARD   = new Color( 62,  48,  32);
-    private static final Color ACCENT = new Color(220, 180,  80);
-    private static final Color FG     = new Color(240, 230, 210);
+    private static final Color BG     = new Color( 217,  237,  210);
+    private static final Color CARD   = new Color( 231,  231,  219);
+    private static final Color ACCENT = new Color(0, 0,  0);
+    private static final Color FG     = new Color(0, 0, 0);
     private static final Color DIM    = new Color(160, 145, 120);
-    private static final Color INPUT  = new Color( 30,  22,  14);
+    private static final Color INPUT  = new Color( 255,  255,  255);
 
     // ── state ────────────────────────────────────────────────────────────────
     private GameConfigRequest result = null;
@@ -114,11 +115,11 @@ public class ConfigUI extends JDialog {
         JPanel btnRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 12));
         btnRow.setBackground(BG);
 
-        JButton startBtn = styledButton("Start Game", new Color(60, 150, 70));
+        JButton startBtn = styledButton("Start Game", new Color(0, 0, 0));
         startBtn.addActionListener(e -> onStart());
 
-        JButton cancelBtn = styledButton("Cancel", new Color(100, 80, 50));
-        cancelBtn.addActionListener(e -> dispose());
+        JButton cancelBtn = styledButton("Cancel", new Color(0, 0, 0));
+        cancelBtn.addActionListener(e -> onCancel());
 
         btnRow.add(startBtn);
         btnRow.add(cancelBtn);
@@ -224,7 +225,7 @@ public class ConfigUI extends JDialog {
         nameContainer.removeAll();
         nameFields.clear();
         aiToggles.clear();
-        String[] defaults = {"Alice", "Bob", "Charlie", "Diana"};
+        String[] defaults = {"Alpha", "Bravo", "Charlie", "Delta"};
         for (int i = 0; i < playerCount; i++) {
             JPanel row = new JPanel(new BorderLayout(6, 0));
             row.setBackground(CARD);
@@ -287,6 +288,8 @@ public class ConfigUI extends JDialog {
     }
 
     private void onStart() {
+        SoundManager.playStart();
+
         GameConfigRequest req = new GameConfigRequest();
 
         // endMode
@@ -318,6 +321,11 @@ public class ConfigUI extends JDialog {
         req.allPlayers = players;
 
         result = req;
+        dispose();
+    }
+
+    private void onCancel() {
+        SoundManager.playCancel();
         dispose();
     }
 

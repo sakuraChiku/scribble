@@ -42,6 +42,7 @@ import com.kumoasobi.scribble.rules.config.GameConfig;
 import com.kumoasobi.scribble.rules.config.GameConfigRequest;
 import com.kumoasobi.scribble.save.LoadManager;
 import com.kumoasobi.scribble.save.SaveManager;
+import com.kumoasobi.scribble.util.SoundManager;
 
 /**
  * Main application window.
@@ -55,7 +56,7 @@ import com.kumoasobi.scribble.save.SaveManager;
  */
 public class GameWindow extends JFrame {
 
-    private static final Color BG = new Color(45, 35, 22);
+    private static final Color BG = new Color(190, 217, 180);
 
     // ── Layout ───────────────────────────────────────────────────────────────
     private final CardLayout cards = new CardLayout();
@@ -80,6 +81,10 @@ public class GameWindow extends JFrame {
     // ── Constructor ──────────────────────────────────────────────────────────
     public GameWindow() {
         super("Scribble");
+        SoundManager.init();
+        SoundManager.playMenuBGM();
+        SoundManager.playSenren();
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         getContentPane().setBackground(BG);
         setContentPane(root);
@@ -91,6 +96,13 @@ public class GameWindow extends JFrame {
         setMinimumSize(new Dimension(960, 540));
         setLocationRelativeTo(null);
         setVisible(true);
+
+        addWindowListener(new java.awt.event.WindowAdapter() { // close the music when quitting game
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                SoundManager.shutdown();
+            }
+        });
     }
 
     // ── Menu ─────────────────────────────────────────────────────────────────
@@ -98,7 +110,8 @@ public class GameWindow extends JFrame {
         menuUI = new MenuUI();
         menuUI.addNewGameListener(e -> startNewGame());
         menuUI.addLoadGameListener(e -> loadGame());
-        menuUI.addQuitListener(e -> System.exit(0));
+        menuUI.addIntroListener(e -> enterInst());
+        menuUI.addQuitListener(e -> quitGame());
         root.add(menuUI, "MENU");
         cards.show(root, "MENU");
     }
@@ -109,6 +122,7 @@ public class GameWindow extends JFrame {
         boardPanel   = new BoardPanel(null, currentMove);
         rackPanel    = new RackPanel();
         controlPanel = new ControlPanel();
+        controlPanel.setBackground(new Color(255, 254, 248));
 
         rackPanel.setTileSelectListener((tile, idx) -> selectedTile = tile);
         boardPanel.setCellClickListener(this::onBoardClick);
@@ -135,7 +149,7 @@ public class GameWindow extends JFrame {
         JLabel rackLabel = new JLabel(
             "Your Tiles  (click to select, click again to deselect)",
             SwingConstants.CENTER);
-        rackLabel.setForeground(new Color(180, 155, 100));
+        rackLabel.setForeground(new Color(255, 254, 248));
         rackLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
         rackWrapper.add(rackLabel, BorderLayout.NORTH);
         rackWrapper.add(rackPanel, BorderLayout.CENTER);
@@ -143,6 +157,7 @@ public class GameWindow extends JFrame {
 
         gamePanel.add(centerCol, BorderLayout.CENTER);
         controlPanel.setPreferredSize(new Dimension(260, 0));
+        controlPanel.setOpaque(true);
         gamePanel.add(controlPanel, BorderLayout.EAST);
 
         root.add(gamePanel, "GAME");
@@ -150,6 +165,10 @@ public class GameWindow extends JFrame {
 
     /** Called every time we enter the game screen (new game or load). */
     private void activateGameScreen() {
+        
+        SoundManager.stopMenuBGM();
+        SoundManager.playGameBGM();
+
         JMenuBar mb = new JMenuBar();
         mb.setBackground(new Color(30, 22, 14));
         JMenu fileMenu = new JMenu("Game");
@@ -160,7 +179,7 @@ public class GameWindow extends JFrame {
         JMenuItem menuItem = new JMenuItem("Main Menu");
         menuItem.addActionListener(e -> returnToMenu());
         JMenuItem quitItem = new JMenuItem("Quit");
-        quitItem.addActionListener(e -> System.exit(0));
+        quitItem.addActionListener(e -> quitGame());
 
         fileMenu.add(saveItem);
         fileMenu.addSeparator();
@@ -178,6 +197,10 @@ public class GameWindow extends JFrame {
     }
 
     private void returnToMenu() {
+
+        SoundManager.stopGameBGM();
+        SoundManager.playMenuBGM();
+
         controlPanel.stopClock();
         setJMenuBar(null);
         setMinimumSize(new Dimension(500, 450));
@@ -193,7 +216,7 @@ public class GameWindow extends JFrame {
         ConfigUI configDialog = new ConfigUI(this);
         configDialog.setVisible(true);
         GameConfigRequest request = configDialog.getRequest();
-        String filepath = "./app/src/main/resources/dict/wordlist.dat";
+        String filepath = "./app/src/main/resources/assets/dict/wordlist.dat";
         if (request == null) return;   // user cancelled
 
         // 2. Build GameConfig via factory
@@ -227,9 +250,16 @@ public class GameWindow extends JFrame {
     }
 
     private void loadGame() {
+
+        SoundManager.playLoad();
+
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Load saved game (.ser)");
-        if (fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
+        if (fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
+            SoundManager.playCancel();
+            return;
+        }
+        SoundManager.playStart();
         try {
             gameState      = LoadManager.deserializeGameState(fc.getSelectedFile().getAbsolutePath());
             dictionary     = new MenuController().loadDictionary("./app/src/main/resources/dict/wordlist.dat");
@@ -249,7 +279,25 @@ public class GameWindow extends JFrame {
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this,
                 "Failed to load: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            SoundManager.playCancel();
         }
+    }
+
+    private void enterInst() {
+        SoundManager.playInst();
+        new IntroductionDialog(this).setVisible(true);
+    }
+
+    private void quitGame() {
+        SoundManager.stopMenuBGM();
+        SoundManager.stopGameBGM();
+        SoundManager.playQuit();
+        dispose();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
+        System.exit(0);
     }
 
     // ── Turn display ──────────────────────────────────────────────────────────
@@ -279,6 +327,7 @@ public class GameWindow extends JFrame {
     // ── Game actions ──────────────────────────────────────────────────────────
 
     private void onBoardClick(int row, int col) {
+        SoundManager.playSelect();
         if (selectedTile == null) {
             controlPanel.log("Select a tile from your rack first.");
             return;
@@ -317,6 +366,7 @@ public class GameWindow extends JFrame {
 
     private void onSubmit() {
         if (currentMove.isEmpty()) {
+            SoundManager.playCancel();
             controlPanel.log("Place at least one tile before submitting.");
             return;
         }
@@ -324,9 +374,12 @@ public class GameWindow extends JFrame {
 
         MoveResult result = gameController.validateMove(currentMove);
         if (!result.isValidMove()) {
+            SoundManager.playCancel();
             controlPanel.log("❌  " + result.getInfo());
             return;
         }
+        
+        SoundManager.playSuccess();
 
         gameController.applyMove(currentMove, result);
         gameController.addScore(result);
@@ -348,7 +401,8 @@ public class GameWindow extends JFrame {
     }
 
     private void onRecall() {
-        if (currentMove.isEmpty()) { controlPanel.log("Nothing to recall."); return; }
+        SoundManager.playCancel();
+        if (currentMove.isEmpty()) {controlPanel.log("Nothing to recall."); return; }
         currentMove.recallPlacement();
         refreshRackDuringPlacement();
         boardPanel.repaint();
@@ -356,12 +410,19 @@ public class GameWindow extends JFrame {
     }
 
     private void onSkip() {
+        SoundManager.playSelect();
         int confirm = JOptionPane.showConfirmDialog(this,
             "Skip your turn?", "Skip Turn", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) return;
-
+        if (confirm != JOptionPane.YES_OPTION) {
+            SoundManager.playCancel();
+            return;
+        }
+        SoundManager.playDecide();
         currentMove = new Move();
         boardPanel.setCurrentMove(currentMove);
+
+        refreshDisplay();
+        controlPanel.log(currentPlayer().getName() + " skipped their turn.");
 
         gameController.recordSkip();
         gameController.nextTurn();
@@ -369,11 +430,13 @@ public class GameWindow extends JFrame {
         if (gameController.isGameEnd()) { showGameOver(); return; }
 
         refreshDisplay();
-        controlPanel.log(currentPlayer().getName() + " skipped their turn.");
+        controlPanel.log("— " + currentPlayer().getName() + "'s turn —");
+
         checkAndRunAITurn();
     }
 
     private void onRefresh() {
+        SoundManager.playSelect();
         Player currentPlayer = currentPlayer();
         while (!currentMove.isEmpty()) {
             currentMove.recallPlacement();
@@ -390,6 +453,7 @@ public class GameWindow extends JFrame {
     }
 
     private void onSave() {
+        SoundManager.playSuccess();
         Calendar c = Calendar.getInstance();
         String filename = String.format("GameState_%d_%02d_%02d_%02d_%02d_%02d.ser",
         c.get(Calendar.YEAR),
@@ -453,7 +517,7 @@ public class GameWindow extends JFrame {
                     if (gameController.isGameEnd()) { showGameOver(); return; }
 
                     refreshDisplay();
-                    controlPanel.log("— " + ai.getName() + "'s turn —");
+                    controlPanel.log("— " + currentPlayer().getName() + "'s turn —");
 
                     checkAndRunAITurn();
 
@@ -480,6 +544,7 @@ public class GameWindow extends JFrame {
             msg.append("\n🏆  Winner: ").append(winner.getName()).append("!");
 
         JOptionPane.showMessageDialog(this, msg.toString(), "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        SoundManager.playDecide();
         returnToMenu();
     }
 }

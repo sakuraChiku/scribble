@@ -144,7 +144,7 @@ public class SelectPlayerUI extends JDialog {
     private void buildNameFields(JPanel container, int count) {
         container.removeAll();
         nameFields.clear();
-        String[] defaults = {"Alice", "Bob", "Charlie", "Diana"};
+        String[] defaults = {"Charlie", "Juliett", "Romeo", "Victor"};
         for (int i = 0; i < count; i++) {
             JPanel row = new JPanel(new BorderLayout(8, 0));
             row.setBackground(BG);

@@ -1,9 +1,20 @@
 package com.kumoasobi.scribble.gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+
 import com.kumoasobi.scribble.models.Tile;
 
 /**
@@ -18,13 +29,13 @@ public class RackPanel extends JPanel {
 
     private static final int CELL   = 52;
     private static final int PAD    = 6;
-    private static final Color TILE_BG     = new Color(255, 235, 170);
-    private static final Color TILE_BORDER = new Color(180, 140,  60);
-    private static final Color SEL_BG      = new Color(200, 240, 200);
-    private static final Color SEL_BORDER  = new Color( 60, 160,  60);
-    private static final Color BLANK_BG    = new Color(245, 245, 245);
-    private static final Color TILE_TEXT   = new Color( 30,  30,  30);
-    private static final Color SCORE_TEXT  = new Color(100,  60,  10);
+    private static final Color TILE_BG     = new Color(245, 250, 245);
+    private static final Color TILE_BORDER = new Color(180, 200, 190);
+    private static final Color SEL_BG      = new Color(220, 240, 230);
+    private static final Color SEL_BORDER  = new Color(120, 160, 140);
+    private static final Color BLANK_BG    = new Color(250, 250, 250);
+    private static final Color TILE_TEXT   = new Color(60, 80, 90);
+    private static final Color SCORE_TEXT  = new Color(120, 140, 150);
 
     private List<Tile> rack;
     private int selectedIndex = -1;
@@ -32,7 +43,7 @@ public class RackPanel extends JPanel {
 
     public RackPanel() {
         setPreferredSize(new Dimension(CELL * 7 + PAD * 2, CELL + PAD * 2));
-        setBackground(new Color(130, 100, 60));
+        setBackground(new Color(255, 254, 248));
         setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
 
         addMouseListener(new MouseAdapter() {

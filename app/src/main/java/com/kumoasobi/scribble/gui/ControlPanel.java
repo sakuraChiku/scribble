@@ -28,13 +28,14 @@ import com.kumoasobi.scribble.models.Player;
  */
 public class ControlPanel extends JPanel {
 
-    private static final Color BG         = new Color( 45,  35,  25);
-    private static final Color CARD_BG    = new Color( 62,  48,  32);
-    private static final Color ACCENT     = new Color(220, 180,  80);
-    private static final Color TEXT_LIGHT = new Color(240, 230, 210);
-    private static final Color TEXT_DIM   = new Color(160, 145, 120);
-    private static final Color BTN_GREEN  = new Color( 60, 150,  70);
-    private static final Color BTN_AMBER  = new Color(190, 130,  30);
+    private static final Color BG         = new Color(255, 254, 248);
+    private static final Color LOG_BG     = new Color(180, 220, 166);
+    private static final Color CARD_BG    = new Color(235, 245, 240);
+    private static final Color ACCENT     = new Color(120, 160, 140);
+    private static final Color TEXT_LIGHT = new Color(60, 80, 90);
+    private static final Color TEXT_DIM   = new Color(120, 140, 150);
+    private static final Color BTN_GREEN  = new Color(120, 180, 150);
+    private static final Color BTN_AMBER  = new Color(180, 160, 120);
 
     private final JLabel currentPlayerLabel;
     private final JTextArea logArea;
@@ -85,7 +86,7 @@ public class ControlPanel extends JPanel {
 
         // ── Centre: action log ───────────────────────────────────────────────
         JPanel logPanel = new JPanel(new BorderLayout());
-        logPanel.setBackground(BG);
+        logPanel.setBackground(LOG_BG);
         JLabel logTitle = new JLabel("Game Log");
         logTitle.setForeground(TEXT_DIM);
         logTitle.setFont(new Font("SansSerif", Font.BOLD, 12));
@@ -94,14 +95,14 @@ public class ControlPanel extends JPanel {
 
         logArea = new JTextArea();
         logArea.setEditable(false);
-        logArea.setBackground(new Color(30, 22, 14));
+        logArea.setBackground(LOG_BG);
         logArea.setForeground(TEXT_LIGHT);
         logArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         logArea.setLineWrap(true);
         logArea.setWrapStyleWord(true);
         logArea.setBorder(new EmptyBorder(6, 6, 6, 6));
         JScrollPane scroll = new JScrollPane(logArea);
-        scroll.setBorder(BorderFactory.createLineBorder(new Color(80, 60, 30), 1));
+        scroll.setBorder(BorderFactory.createLineBorder(new Color(180, 210, 200), 1));
         logPanel.add(scroll, BorderLayout.CENTER);
         add(logPanel, BorderLayout.CENTER);
 
@@ -113,7 +114,7 @@ public class ControlPanel extends JPanel {
         submitBtn  = makeBtn("✓ Submit",    BTN_GREEN);
         recallBtn  = makeBtn("↩ Recall",    BTN_AMBER);
         skipBtn    = makeBtn("⏭ Skip Turn", BTN_AMBER);
-        shuffleBtn = makeBtn("🔀 Refresh",  new Color(70, 100, 160));
+        shuffleBtn = makeBtn("🔀 Refresh",  new Color(150, 180, 200));
 
         btnPanel.add(submitBtn);
         btnPanel.add(recallBtn);
@@ -203,9 +204,12 @@ public class ControlPanel extends JPanel {
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private JButton makeBtn(String text, Color bg) {
+
         JButton b = new JButton(text);
+        
         b.setBackground(bg);
-        b.setForeground(Color.WHITE);
+        b.setBackground(bg.brighter());
+        b.setForeground(new Color(60, 80, 90));
         b.setFont(new Font("SansSerif", Font.BOLD, 13));
         b.setFocusPainted(false);
         b.setBorderPainted(false);
