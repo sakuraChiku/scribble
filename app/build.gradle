@@ -37,6 +37,35 @@ application {
     mainClass = 'com.kumoasobi.scribble.Main'
 }
 
+// Ensure the standard jar task embeds Main-Class in its manifest
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'com.kumoasobi.scribble.Main'
+        )
+    }
+}
+
+// Fat-jar task: bundles all runtime deps into a single executable jar
+tasks.register('fatJar', Jar) {
+    group = 'build'
+    description = 'Assembles a self-contained executable jar with all dependencies.'
+    archiveClassifier = 'all'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes(
+            'Main-Class': 'com.kumoasobi.scribble.Main'
+        )
+    }
+
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()

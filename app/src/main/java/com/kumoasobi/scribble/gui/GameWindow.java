@@ -27,7 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import com.kumoasobi.scribble.ai.AIDialogue;
+import com.kumoasobi.scribble.ai.AIDifficulty;
 import com.kumoasobi.scribble.ai.AIPlayer;
 import com.kumoasobi.scribble.controller.GameController;
 import com.kumoasobi.scribble.controller.MenuController;
@@ -70,6 +70,10 @@ public class GameWindow extends JFrame {
     private BoardPanel   boardPanel;
     private RackPanel    rackPanel;
     private ControlPanel controlPanel;
+
+    // ── Chat panel (null when no AI opponent) ───────────────────────────────
+    private CharacterChatPanel chatPanel;
+    private JPanel             chatWrapper;   // holds the chat panel in the layout
 
     // ── Game state ───────────────────────────────────────────────────────────
     private GameController gameController;
@@ -177,6 +181,14 @@ public class GameWindow extends JFrame {
         controlPanel.setOpaque(true);
         gamePanel.add(controlPanel, BorderLayout.EAST);
 
+        // ── Chat panel placeholder (populated when game starts) ───────────────
+        chatWrapper = new JPanel(new BorderLayout());
+        chatWrapper.setBackground(BG);
+        chatWrapper.setPreferredSize(new Dimension(220, 400));
+        chatWrapper.setMinimumSize(new Dimension(220, 200));
+        chatWrapper.setVisible(false);
+        gamePanel.add(chatWrapper, BorderLayout.WEST);
+
         root.add(gamePanel, "GAME");
     }
 
@@ -188,6 +200,8 @@ public class GameWindow extends JFrame {
 
         setMinimumSize(new Dimension(960, 740));
         pack();
+        gamePanel.revalidate();
+        gamePanel.repaint();
         setLocationRelativeTo(null);
         cards.show(root, "GAME");
         refreshDisplay();
@@ -199,7 +213,11 @@ public class GameWindow extends JFrame {
         SoundManager.playMenuBGM();
 
         controlPanel.stopClock();
-        //setJMenuBar(null);
+        // Hide and clear chat panel
+        chatWrapper.removeAll();
+        chatWrapper.setVisible(false);
+        chatPanel = null;
+
         setMinimumSize(new Dimension(500, 450));
         cards.show(root, "MENU");
         pack();
@@ -237,6 +255,9 @@ public class GameWindow extends JFrame {
         boardPanel.setBoard(gameState.getBoard());
         boardPanel.setCurrentMove(currentMove);
         controlPanel.clearLog();
+
+        // 6. Set up character chat panel for the first AI opponent found
+        setupChatPanel();
 
         activateGameScreen();
         controlPanel.startClock(gameState.getStartTime());
@@ -295,6 +316,32 @@ public class GameWindow extends JFrame {
         } catch (InterruptedException e) {
         }
         System.exit(0);
+    }
+
+    // ── Chat panel setup ──────────────────────────────────────────────────────
+
+    /**
+     * Finds the first AIPlayer in the game and creates the matching character
+     * chat panel.  Safe to call even when there are no AI players.
+     */
+    private void setupChatPanel() {
+        chatWrapper.removeAll();
+        chatPanel = null;
+
+        List<AIDifficulty> diffs = gameState.getPlayers().stream()
+            .filter(p -> p instanceof com.kumoasobi.scribble.ai.AIPlayer)
+            .map(p -> ((com.kumoasobi.scribble.ai.AIPlayer) p).getDifficulty())
+            .toList();
+
+        chatPanel = CharacterChatPanel.createForDifficulties(diffs);
+        if (chatPanel != null) {
+            chatWrapper.add(chatPanel, BorderLayout.CENTER);
+            chatWrapper.setVisible(true);
+        } else {
+            chatWrapper.setVisible(false);
+        }
+        chatWrapper.revalidate();
+        chatWrapper.repaint();
     }
 
     // ── Turn display ──────────────────────────────────────────────────────────
@@ -394,6 +441,12 @@ public class GameWindow extends JFrame {
 
         controlPanel.log("✅  " + currentPlayer().getName() + ": "
             + result.getWords() + "  +" + result.getTotalScore() + " pts");
+
+        // Notify chat character about the player's scoring move
+        if (chatPanel != null) {
+            chatPanel.notifyGameEvent("the human player just scored "
+                + result.getTotalScore() + " points with: " + result.getWords());
+        }
 
         gameController.drawTiles();
         gameController.nextTurn();
@@ -512,10 +565,14 @@ public class GameWindow extends JFrame {
                         controlPanel.log("(AI)  " + currentPlayer().getName()
                             + ": " + result.getWords()
                             + "  +" + result.getTotalScore() + " pts");
-                        controlPanel.log("💬 " + AIDialogue.getSuccessLine(ai.getDifficulty()));
+                        // Spontaneous chat reaction to AI's own good move
+                        if (chatPanel != null) {
+                            chatPanel.notifyGameEvent("you (the AI character) just scored "
+                                + result.getTotalScore() + " points with: " + result.getWords()
+                                + " — react triumphantly in 1 short sentence");
+                        }
                     } else {
                         controlPanel.log("(AI)  " + result.getInfo());
-                        controlPanel.log("💬 " + AIDialogue.getFailLine(ai.getDifficulty()));
                     }
 
                     gameController.nextTurn();
