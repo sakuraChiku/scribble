@@ -159,6 +159,7 @@ public class BoardPanel extends JPanel {
     }
 
     private void drawTile(Graphics2D g2, int x, int y, Tile tile, boolean preview) {
+        if (tile == null) return;
         int pad = 3;
         g2.setColor(preview ? PREVIEW_BG : TILE_BG);
         g2.fillRoundRect(x+pad, y+pad, CELL-pad*2, CELL-pad*2, 6, 6);
