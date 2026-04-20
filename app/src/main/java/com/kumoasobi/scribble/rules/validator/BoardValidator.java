@@ -23,7 +23,7 @@ public class BoardValidator {
     public static void validateBoard(Move move, Board board) throws GameException {
         haveOccupied(move, board);
         validateStructure(move);
-        validateDirection(move, move.getDirection());
+        validateDirection(move, board, move.getDirection());
         if (isFirstStep(board)) {
             oneLetter(move);
             throughCenter(move);
@@ -70,11 +70,11 @@ public class BoardValidator {
      * @param direction
      * @throws GameException
      */
-    private static void validateDirection(Move move, Direction direction) throws GameException {
+    private static void validateDirection(Move move, Board board, Direction direction) throws GameException {
         switch (direction) {
             case HORIZONTAL -> {
                 for (int col = move.getMinCol(); col <= move.getMaxCol(); col++) {
-                    if (!move.hasPlacement(move.getSameRow(), col)) {
+                    if (!move.hasPlacement(move.getSameRow(), col) && !board.hasTile(move.getSameRow(), col)) {
                         throw new MoveNotContinuousException("The move is not continuous (" + move.getSameRow() + ", " + col + ")");
                     }
                 }
@@ -82,7 +82,7 @@ public class BoardValidator {
 
             case VERTICAL -> {
                 for (int row = move.getMinRow(); row <= move.getMaxRow(); row++) {
-                    if (!move.hasPlacement(row, move.getSameCol())) {
+                    if (!move.hasPlacement(row, move.getSameCol()) && !board.hasTile(row, move.getSameCol())) {
                         throw new MoveNotContinuousException("The move is not continuous at (" + row + ", " + move.getSameCol() + ")");
                     }
                 }
