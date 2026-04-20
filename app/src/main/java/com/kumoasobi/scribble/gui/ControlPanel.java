@@ -215,6 +215,7 @@ public class ControlPanel extends JPanel {
         b.setBorderPainted(false);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         b.setBorder(new EmptyBorder(8, 6, 8, 6));
+        b.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         b.setOpaque(true);
         b.setContentAreaFilled(true);
         return b;

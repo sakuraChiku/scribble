@@ -280,7 +280,7 @@ public class GameWindow extends JFrame {
         SoundManager.playStart();
         try {
             gameState      = LoadManager.deserializeGameState(fc.getSelectedFile().getAbsolutePath());
-            dictionary     = new MenuController().loadDictionary("./app/src/main/resources/dict/stan_dict.txt");
+            dictionary     = new MenuController().loadDictionary("./app/src/main/resources/assets/dict/stan_dict.txt");
             gameController = new GameController();
             gameController.setGameState(gameState);
             gameController.setDict(dictionary);
@@ -508,11 +508,11 @@ public class GameWindow extends JFrame {
         boardPanel.repaint();
         try {
             gameController.refreshTiles();
+            refreshRackDuringPlacement();
+            controlPanel.log("Rack refreshed! " + currentPlayer.getRemainingRefreshTimes() + " refresh times left.");
         } catch (GameException e) {
             controlPanel.log(e.getMessage());
         }
-        refreshRackDuringPlacement();
-        controlPanel.log("Rack refreshed! " + currentPlayer.getRemainingRefreshTimes() + " refresh times left.");
     }
 
     private void onSave() {
