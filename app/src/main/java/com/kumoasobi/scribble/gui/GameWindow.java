@@ -40,6 +40,7 @@ import com.kumoasobi.scribble.models.Player;
 import com.kumoasobi.scribble.models.Tile;
 import com.kumoasobi.scribble.rules.config.GameConfig;
 import com.kumoasobi.scribble.rules.config.GameConfigRequest;
+import com.kumoasobi.scribble.rules.strategy.GameEndStrategy;
 import com.kumoasobi.scribble.save.LoadManager;
 import com.kumoasobi.scribble.save.SaveManager;
 import com.kumoasobi.scribble.util.SoundManager;
@@ -76,11 +77,12 @@ public class GameWindow extends JFrame {
     private JPanel             chatWrapper;   // holds the chat panel in the layout
 
     // ── Game state ───────────────────────────────────────────────────────────
-    private GameController gameController;
-    private GameState      gameState;
-    private Move           currentMove;
-    private Tile           selectedTile;
-    private Set<String>    dictionary = new HashSet<>();
+    private GameController  gameController;
+    private GameState       gameState;
+    private Move            currentMove;
+    private Tile            selectedTile;
+    private Set<String>     dictionary = new HashSet<>();
+    private GameEndStrategy endStrategy;
 
     // ── Constructor ──────────────────────────────────────────────────────────
     public GameWindow() {
@@ -281,9 +283,12 @@ public class GameWindow extends JFrame {
         try {
             gameState      = LoadManager.deserializeGameState(fc.getSelectedFile().getAbsolutePath());
             dictionary     = new MenuController().loadDictionary("./app/src/main/resources/assets/dict/stan_dict.txt");
+            endStrategy    = gameState.getEndStrategy();
+
             gameController = new GameController();
             gameController.setGameState(gameState);
             gameController.setDict(dictionary);
+            gameController.setGameEndStrategy(endStrategy);
 
             currentMove  = new Move();
             selectedTile = null;

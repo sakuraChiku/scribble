@@ -36,6 +36,7 @@ public class MenuController {
         gs.setCurrentPlayerIndex(0);
         gs.setTurns(0);
         gs.setStartTime(System.currentTimeMillis());
+        gs.setEndStrategy(config.endStrategy);
 
         for (Player p : gs.getPlayers()) {
             p.addTiles(gs.getBag().drawTiles(Player.getRackSize()));

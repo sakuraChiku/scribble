@@ -3,6 +3,8 @@ package com.kumoasobi.scribble.models;
 import java.io.Serializable;
 import java.util.List;
 
+import com.kumoasobi.scribble.rules.strategy.GameEndStrategy;
+
 /**
  * Serialize the players, bag, and board to save the game
  * 
@@ -16,6 +18,7 @@ public class GameState implements Serializable {
     private int currentPlayerIndex;
     private int turns;
     private long startTime;
+    private GameEndStrategy endStrategy;
     
     public List<Player> getPlayers() {
         return players;
@@ -52,8 +55,14 @@ public class GameState implements Serializable {
     public long getStartTime() {
         return startTime;
     }
-
     public void setStartTime(long startTime) {
         this.startTime = startTime;
+    }
+    
+    public GameEndStrategy getEndStrategy() {
+        return endStrategy;
+    }
+    public void setEndStrategy(GameEndStrategy endStrategy) {
+        this.endStrategy = endStrategy;
     }
 }
