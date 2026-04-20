@@ -281,6 +281,8 @@ public class CharacterChatPanel extends JPanel {
         sendBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         sendBtn.setBorder(new EmptyBorder(6, 12, 6, 12));
         sendBtn.addActionListener(e -> onSend());
+        sendBtn.setOpaque(true);
+        sendBtn.setContentAreaFilled(true);
 
         inputRow.add(inputField, BorderLayout.CENTER);
         inputRow.add(sendBtn, BorderLayout.EAST);

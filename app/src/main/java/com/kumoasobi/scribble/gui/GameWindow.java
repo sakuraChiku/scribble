@@ -376,6 +376,8 @@ public class GameWindow extends JFrame {
         b.setFocusPainted(false);
         b.setBorder(BorderFactory.createEmptyBorder(4, 12, 4, 12));
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        b.setOpaque(true);
+        b.setContentAreaFilled(true);
         return b;
     }
 
