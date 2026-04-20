@@ -116,14 +116,14 @@ public class GameController {
         Player currentPlayer = gs.getPlayers().get(gs.getCurrentPlayerIndex());
         Board  currentBoard  = gs.getBoard();
 
+        currentBoard.placeMove(currentMove);
+
         try {
             PlayerValidator.canMakeWord(currentMove, currentPlayer);
             BoardValidator.validateBoard(currentMove, currentBoard);
         } catch (GameException e) {
             return new MoveResult(false, 0, new ArrayList<>(), "Invalid move: " + e.getMessage());
         }
-
-        currentBoard.placeMove(currentMove);
 
         Direction currentDir = currentMove.getDirection();
         List<WordInfo> wordInfoList = new ArrayList<>();

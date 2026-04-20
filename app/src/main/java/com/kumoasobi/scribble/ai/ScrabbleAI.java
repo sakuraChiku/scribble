@@ -213,6 +213,8 @@ public class ScrabbleAI {
      * Temporarily places then recalls tiles for scanning.
      */
     private MoveResult quickValidate(Board board, Move move) {
+        // Temporarily place to scan
+        board.placeMove(move);
         try {
             // Board structure check (no player-tile check — AI always has tiles)
             BoardValidator.validateBoard(move, board);
@@ -220,8 +222,6 @@ public class ScrabbleAI {
             return null;
         }
 
-        // Temporarily place to scan
-        board.placeMove(move);
         List<WordInfo> wordInfos = new ArrayList<>();
         try {
             Direction dir = move.getDirection();
