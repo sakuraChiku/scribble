@@ -363,6 +363,7 @@ public class CharacterChatPanel extends JPanel {
     /**
      * Adds a chat bubble. def == null means it's the user's own bubble.
      */
+    @SuppressWarnings("null")
     private void addBubble(String text, CharacterDef def) {
         boolean isUser = (def == null);
 
