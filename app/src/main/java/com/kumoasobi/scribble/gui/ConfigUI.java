@@ -430,6 +430,8 @@ public class ConfigUI extends JDialog {
         b.setForeground(Color.WHITE);
         b.setFont(new Font("SansSerif", Font.BOLD, 14));
         b.setFocusPainted(false);
+        b.setOpaque(true);
+        b.setContentAreaFilled(true);
         b.setBorderPainted(false);
         b.setBorder(new EmptyBorder(10, 24, 10, 24));
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

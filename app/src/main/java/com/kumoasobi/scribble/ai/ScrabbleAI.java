@@ -40,6 +40,8 @@ import com.kumoasobi.scribble.rules.validator.DictValidator;
  * This greedy approach is straightforward to implement with the existing
  * game infrastructure and runs fast enough for real-time play.
  * ─────────────────────────────────────────────────────────────────────────────
+ * 
+ * @author Peixuan Ding
  */
 public class ScrabbleAI {
 

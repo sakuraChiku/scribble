@@ -49,6 +49,7 @@ public class BoardPanel extends JPanel {
     private Move currentMove;
     private CellClickListener listener;
     private int hoverRow = -1, hoverCol = -1;
+    @SuppressWarnings("FieldMayBeFinal")
     private Image bgImage;
 
     private static final BonusType[][] BONUS_MAP = {

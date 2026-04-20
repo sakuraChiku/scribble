@@ -231,7 +231,7 @@ public class GameWindow extends JFrame {
         ConfigUI configDialog = new ConfigUI(this);
         configDialog.setVisible(true);
         GameConfigRequest request = configDialog.getRequest();
-        String filepath = "./app/src/main/resources/assets/dict/wordlist.dat";
+        String filepath = "./app/src/main/resources/assets/dict/stan_dict.txt";
         if (request == null) return;   // user cancelled
 
         // 2. Build GameConfig via factory
@@ -280,7 +280,7 @@ public class GameWindow extends JFrame {
         SoundManager.playStart();
         try {
             gameState      = LoadManager.deserializeGameState(fc.getSelectedFile().getAbsolutePath());
-            dictionary     = new MenuController().loadDictionary("./app/src/main/resources/dict/wordlist.dat");
+            dictionary     = new MenuController().loadDictionary("./app/src/main/resources/dict/stan_dict.txt");
             gameController = new GameController();
             gameController.setGameState(gameState);
             gameController.setDict(dictionary);

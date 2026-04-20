@@ -13,6 +13,8 @@ import java.util.function.Consumer;
  * Uses only java.net (no external deps) so it compiles with the existing Gradle setup.
  *
  * Call {@link #sendAsync(List, Consumer, Consumer)} on a background thread.
+ * 
+ * @author Peixuan Ding
  */
 public class ZhipuChatClient {
 

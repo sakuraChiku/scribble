@@ -105,7 +105,7 @@ public class SelectPlayerUI extends JDialog {
 
         JButton startBtn = new JButton("Start Game");
         startBtn.setBackground(new Color(60, 150, 70));
-        startBtn.setForeground(Color.WHITE);
+        startBtn.setForeground(Color.BLACK);
         startBtn.setFont(new Font("SansSerif", Font.BOLD, 14));
         startBtn.setFocusPainted(false);
         startBtn.setBorderPainted(false);
@@ -115,7 +115,7 @@ public class SelectPlayerUI extends JDialog {
 
         JButton cancelBtn = new JButton("Cancel");
         cancelBtn.setBackground(new Color(100, 80, 50));
-        cancelBtn.setForeground(FG);
+        cancelBtn.setForeground(Color.BLACK);
         cancelBtn.setFont(new Font("SansSerif", Font.BOLD, 14));
         cancelBtn.setFocusPainted(false);
         cancelBtn.setBorderPainted(false);

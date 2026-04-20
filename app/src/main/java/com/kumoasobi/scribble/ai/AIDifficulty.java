@@ -7,6 +7,8 @@ package com.kumoasobi.scribble.ai;
  * MEDIUM — picks the best-scoring valid move, but only searches
  *          a limited subset of anchor positions (faster, less optimal).
  * HARD   — full board search, always plays the highest-scoring valid move.
+ * 
+ * @author Peixuan Ding
  */
 public enum AIDifficulty {
     EASY,
