@@ -50,7 +50,7 @@ public class ScrabbleAI {
     private final Random       rng = new Random();
 
     // How many anchors MEDIUM difficulty samples (out of all available)
-    private static final int MEDIUM_ANCHOR_SAMPLE = 30;
+    private static final int MEDIUM_ANCHOR_SAMPLE = 15;
 
     public ScrabbleAI(AIDifficulty difficulty, Set<String> dictionary) {
         this.difficulty = difficulty;
