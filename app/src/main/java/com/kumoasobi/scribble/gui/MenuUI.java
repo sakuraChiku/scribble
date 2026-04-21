@@ -117,9 +117,10 @@ public class MenuUI extends JPanel {
         b.setBackground(BTN_BG);
         b.setFocusPainted(false);
         b.setBorderPainted(false);
-        b.setContentAreaFilled(false);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         b.setBorder(new EmptyBorder(10, 20, 10, 20));
+        b.setOpaque(true);
+        b.setContentAreaFilled(true);
         return b;
     }
 
