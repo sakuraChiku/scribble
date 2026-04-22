@@ -409,6 +409,7 @@ public class GameWindow extends JFrame {
                 this, "Enter letter for blank tile:", "Blank Tile",
                 JOptionPane.PLAIN_MESSAGE, null, null, "A");
             if (input == null || input.isBlank()) return;
+            if (input.length() != 1) { controlPanel.log("Please input only one letter."); return; }
             char letter = input.trim().toUpperCase().charAt(0);
             if (letter < 'A' || letter > 'Z') { controlPanel.log("Invalid letter."); return; }
             tileToPlace = new Tile(letter, 0);
