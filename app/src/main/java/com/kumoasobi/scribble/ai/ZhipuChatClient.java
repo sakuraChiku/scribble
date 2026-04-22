@@ -14,7 +14,8 @@ import java.util.function.Consumer;
  *
  * Call {@link #sendAsync(List, Consumer, Consumer)} on a background thread.
  * 
- * @author Peixuan Ding
+ * @author Yutong Xiao
+ * @version 1.0
  */
 public class ZhipuChatClient {
 

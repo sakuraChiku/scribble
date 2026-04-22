@@ -4,6 +4,9 @@ import java.util.List;
 
 /**
  * Get the result of a move, including the words, and whether the move is valid, and the total score
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
  */
 public class MoveResult {
     private final boolean isValidMove;

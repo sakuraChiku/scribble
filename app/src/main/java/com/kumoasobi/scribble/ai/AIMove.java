@@ -5,7 +5,8 @@ import com.kumoasobi.scribble.models.Move;
 /**
  * A candidate move found by the AI, bundled with its projected score.
  * 
- * @author Peixuan Ding
+ * @author Peixuan Ding, Yutong Xiao
+ * @version 1.0
  */
 public class AIMove {
     private final Move move;

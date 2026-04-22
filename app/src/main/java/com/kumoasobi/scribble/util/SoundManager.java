@@ -9,6 +9,28 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+/**
+ * Load the sound from resources/assets/sound
+ * 
+ * Copyright Notice
+ *
+ * This project ("Scribble") is a non-commercial academic assignment.
+ *
+ * Some audio assets used in this project are sourced from the visual novel
+ * "Senren * Banka" developed by Yuzusoft.
+ *
+ * All rights to these audio materials belong to their original creators
+ * and copyright holders (Yuzusoft).
+ *
+ * These assets are used solely for educational and non-commercial purposes.
+ * No copyright infringement is intended.
+ *
+ * If any copyright holder has concerns regarding the use of these materials,
+ * please contact the author and the content will be removed promptly.
+ * 
+ * @author Yicheng Ying, Junyu Li
+ * @version 1.0
+ */
 public class SoundManager {
 
     private static Clip bgmClip, gameClip, quitClip, loadClip, senrenClip, instClip, cancelClip, changeClip, selectClip, startClip, successClip, decideClip;

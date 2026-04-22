@@ -25,6 +25,25 @@ import com.kumoasobi.scribble.util.SoundManager;
 
 /**
  * Main menu screen shown on launch and after a game ends.
+ * 
+ * Copyright Notice
+ *
+ * This project ("Scribble") is a non-commercial academic assignment.
+ *
+ * Some image assets used in this project are sourced from the visual novel
+ * "Senren * Banka" developed by Yuzusoft.
+ *
+ * All rights to these audio materials belong to their original creators
+ * and copyright holders (Yuzusoft).
+ *
+ * These assets are used solely for educational and non-commercial purposes.
+ * No copyright infringement is intended.
+ *
+ * If any copyright holder has concerns regarding the use of these materials,
+ * please contact the author and the content will be removed promptly.
+ * 
+ * @author Peixuan Ding
+ * @version 1.0
  */
 public class MenuUI extends JPanel {
 
@@ -34,7 +53,12 @@ public class MenuUI extends JPanel {
     private static final Color BTN_HOV = new Color( 243,  243,  91);
 
     private final JButton newGameBtn, loadGameBtn, quitBtn, introBtn;
-    private Image bgImage, headImage, logoImage;
+    @SuppressWarnings("FieldMayBeFinal")
+    private Image bgImage;
+    @SuppressWarnings("FieldMayBeFinal")
+    private Image headImage;
+    @SuppressWarnings("FieldMayBeFinal")
+    private Image logoImage;
 
     public MenuUI() {
         setLayout(new GridBagLayout());

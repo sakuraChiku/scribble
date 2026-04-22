@@ -54,6 +54,8 @@ import com.kumoasobi.scribble.util.SoundManager;
  *            → MenuController.newGame(config)         → GameState
  *            → GameController wired up
  *            → GameWindow shows game screen
+ * 
+ * @author Peixuan Ding, Yutong Xiao, Yicheng Ying
  */
 public class GameWindow extends JFrame {
 
@@ -249,7 +251,7 @@ public class GameWindow extends JFrame {
         }
 
         // 4. Wire up GameController
-        gameController = new GameController(gameState, dictionary, config.endStrategy);
+        gameController = new GameController(gameState, dictionary, config.getEndStrategy());
 
         // 5. Reset UI state
         currentMove  = new Move();

@@ -1,5 +1,11 @@
 package com.kumoasobi.scribble.models;
 
+/**
+ * Return a word information after scanning one word
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
+ */
 public class WordInfo {
     private final String word;
     private final int score;

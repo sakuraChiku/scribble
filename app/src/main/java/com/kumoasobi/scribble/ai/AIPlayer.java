@@ -13,7 +13,8 @@ import com.kumoasobi.scribble.models.Player;
  * The ScrabbleAI engine is NOT stored here (it is not Serializable and
  * doesn't need to be saved). GameController recreates it from difficulty.
  * 
- * @author Peixuan Ding
+ * @author Peixuan Ding, Yutong Xiao
+ * @version 1.0
  */
 public class AIPlayer extends Player {
 

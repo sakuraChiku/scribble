@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Create a 15 x 15 board, cells can be put on it.
  * 
- * @author Yicheng Ying
+ * @author Yicheng Ying, Chuhui Gu
  * @version 1.0
  */
 public class Board implements Serializable {

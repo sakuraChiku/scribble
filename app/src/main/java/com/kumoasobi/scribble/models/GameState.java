@@ -8,7 +8,7 @@ import com.kumoasobi.scribble.rules.strategy.GameEndStrategy;
 /**
  * Serialize the players, bag, and board to save the game
  * 
- * @author Yicheng Ying
+ * @author Yicheng Ying, Chuhui Gu
  * @version 1.0
  */
 public class GameState implements Serializable {

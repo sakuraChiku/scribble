@@ -46,6 +46,9 @@ import com.kumoasobi.scribble.util.SoundManager;
  *   playerNum / playerInfo (names)
  *
  * After the dialog is dismissed, call getRequest(); returns null if cancelled.
+ * 
+ * @author Peixuan Ding
+ * @version 1.0
  */
 public class ConfigUI extends JDialog {
 
@@ -323,13 +326,13 @@ public class ConfigUI extends JDialog {
         GameConfigRequest req = new GameConfigRequest();
 
         // endMode
-        if (rbScore.isSelected())      { req.endMode = EndMode.SCORE_LIMIT; req.scoreLimit = (int) scoreLimitSpin.getValue(); }
-        else if (rbTurn.isSelected())  { req.endMode = EndMode.TURN_LIMIT;  req.turnLimit  = (int) turnLimitSpin.getValue(); }
-        else if (rbTime.isSelected())  { req.endMode = EndMode.TIME_LIMIT;  req.timeLimitMillis = (long)((int) timeLimitSpin.getValue()) * 60_000L; }
-        else                           { req.endMode = EndMode.TILE_LIMIT; }
+        if (rbScore.isSelected())      { req.setEndMode(EndMode.SCORE_LIMIT); req.setScoreLimit((int) scoreLimitSpin.getValue()); }
+        else if (rbTurn.isSelected())  { req.setEndMode(EndMode.TURN_LIMIT);  req.setTurnLimit((int) turnLimitSpin.getValue()); }
+        else if (rbTime.isSelected())  { req.setEndMode(EndMode.TIME_LIMIT);  req.setTimeLimitMillis((long)((int) timeLimitSpin.getValue()) * 60_000L); }
+        else                           { req.setEndMode(EndMode.TILE_LIMIT); }
 
         // drawMode
-        req.drawMode = rbUnlimited.isSelected() ? DrawMode.UNLIMITED : DrawMode.LIMITED;
+        req.setDrawMode(rbUnlimited.isSelected() ? DrawMode.UNLIMITED : DrawMode.LIMITED);
 
         // players (human or AI)
         List<Player> players = new ArrayList<>();
@@ -348,7 +351,7 @@ public class ConfigUI extends JDialog {
                 players.add(new AIPlayer(name, diff));
             }
         }
-        req.allPlayers = players;
+        req.setAllPlayers(players);
 
         result = req;
         dispose();

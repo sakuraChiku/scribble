@@ -11,15 +11,66 @@ import com.kumoasobi.scribble.models.Player;
  * request.endMode = ... (select)
  * request.scoreLimit = ... (user input)
  * ......
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
  */
 public class GameConfigRequest {
-    public EndMode endMode;
+    private EndMode endMode;
 
-    public int scoreLimit;
-    public int turnLimit;
-    public long timeLimitMillis;
+    private int scoreLimit;
+    private int turnLimit;
+    private long timeLimitMillis;
 
-    public DrawMode drawMode;
+    private DrawMode drawMode;
 
-    public List<Player> allPlayers;
+    private List<Player> allPlayers;
+
+    public EndMode getEndMode() {
+        return endMode;
+    }
+
+    public void setEndMode(EndMode endMode) {
+        this.endMode = endMode;
+    }
+
+    public int getScoreLimit() {
+        return scoreLimit;
+    }
+
+    public void setScoreLimit(int scoreLimit) {
+        this.scoreLimit = scoreLimit;
+    }
+
+    public int getTurnLimit() {
+        return turnLimit;
+    }
+
+    public void setTurnLimit(int turnLimit) {
+        this.turnLimit = turnLimit;
+    }
+
+    public long getTimeLimitMillis() {
+        return timeLimitMillis;
+    }
+
+    public void setTimeLimitMillis(long timeLimitMillis) {
+        this.timeLimitMillis = timeLimitMillis;
+    }
+
+    public DrawMode getDrawMode() {
+        return drawMode;
+    }
+
+    public void setDrawMode(DrawMode drawMode) {
+        this.drawMode = drawMode;
+    }
+
+    public List<Player> getAllPlayers() {
+        return allPlayers;
+    }
+
+    public void setAllPlayers(List<Player> allPlayers) {
+        this.allPlayers = allPlayers;
+    }
 }

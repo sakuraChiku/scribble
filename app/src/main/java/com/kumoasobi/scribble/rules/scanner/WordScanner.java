@@ -8,7 +8,7 @@ import com.kumoasobi.scribble.models.WordInfo;
 /**
  * Scan the cells on the board (including existing cells) and calculate its score at the same time
  * 
- * @author Yicheng Ying
+ * @author Yicheng Ying, Chuhui Gu
  * @version 1.0
  */
 public class WordScanner {

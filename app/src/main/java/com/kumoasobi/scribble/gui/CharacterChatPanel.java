@@ -34,6 +34,9 @@ import com.kumoasobi.scribble.ai.ZhipuChatClient;
  * interleaved in a single scrollable area.
  *
  * Entry point: {@link #createForDifficulties(List)}
+ * 
+ * @author Peixuan Ding, Yutong Xiao, Yicheng Ying
+ * @version 1.0
  */
 public class CharacterChatPanel extends JPanel {
 

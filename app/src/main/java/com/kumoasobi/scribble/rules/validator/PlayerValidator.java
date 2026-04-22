@@ -12,7 +12,7 @@ import com.kumoasobi.scribble.models.Tile;
 /**
  * Validate if player has enough tiles to place the move
  * 
- * @author Yicheng Ying
+ * @author Yicheng Ying, Chuhui Gu
  * @version 1.0
  */
 public class PlayerValidator {

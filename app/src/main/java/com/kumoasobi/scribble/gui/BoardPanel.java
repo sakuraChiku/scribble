@@ -23,6 +23,12 @@ import com.kumoasobi.scribble.models.Move;
 import com.kumoasobi.scribble.models.Placement;
 import com.kumoasobi.scribble.models.Tile;
 
+/**
+ * Board panel section
+ * 
+ * @author Peixuan Ding
+ * @version 1.0
+ */
 public class BoardPanel extends JPanel {
 
     public interface CellClickListener {

@@ -16,7 +16,7 @@ import com.kumoasobi.scribble.models.Placement;
 /**
  * Provide 5 methods to validate the structure and the location of a move
  * 
- * @author Yicheng Ying
+ * @author Yicheng Ying, Chuhui Gu
  * @version 1.0
  */
 public class BoardValidator {

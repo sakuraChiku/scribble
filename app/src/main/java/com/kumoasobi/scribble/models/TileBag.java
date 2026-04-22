@@ -11,7 +11,7 @@ import com.kumoasobi.scribble.rules.strategy.DrawStrategy;
 /**
  * Put 100 tiles into the bag and shuffle them, with methods to draw tiles and check if the bag is empty
  * 
- * @author Yicheng Ying
+ * @author Yicheng Ying, Chuhui Gu
  * @version 1.0
  */
 public class TileBag implements Serializable {

@@ -8,7 +8,8 @@ package com.kumoasobi.scribble.ai;
  *          a limited subset of anchor positions (faster, less optimal).
  * HARD   — full board search, always plays the highest-scoring valid move.
  * 
- * @author Peixuan Ding
+ * @author Peixuan Ding, Yutong Xiao
+ * @version 1.0
  */
 public enum AIDifficulty {
     EASY,

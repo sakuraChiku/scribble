@@ -25,6 +25,12 @@ import com.kumoasobi.scribble.rules.validator.BoardValidator;
 import com.kumoasobi.scribble.rules.validator.DictValidator;
 import com.kumoasobi.scribble.rules.validator.PlayerValidator;
 
+/**
+ * The bridge between GUI and game core
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
+ */
 public class GameController {
 
     private GameState gs;

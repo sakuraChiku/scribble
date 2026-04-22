@@ -20,6 +20,9 @@ import com.kumoasobi.scribble.models.Tile;
 /**
  * Displays the current player's tile rack (up to 7 tiles).
  * Click a tile to select it; click again to deselect.
+ * 
+ * @author Peixuan Ding
+ * @version 1.0
  */
 public class RackPanel extends JPanel {
 

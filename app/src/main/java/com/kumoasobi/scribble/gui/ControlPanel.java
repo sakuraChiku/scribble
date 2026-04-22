@@ -25,6 +25,9 @@ import com.kumoasobi.scribble.models.Player;
 
 /**
  * Right-side panel: player scores, turn/time info, action log, and game buttons.
+ * 
+ * @author Peixuan Ding
+ * @version 1.0
  */
 public class ControlPanel extends JPanel {
 

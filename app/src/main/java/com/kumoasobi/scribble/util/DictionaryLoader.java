@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Copy right notice for resources/assets/full_wordlist.dat
+ * 
  * Custom wordlist generated from http://app.aspell.net/create using SCOWL with
  * parameters: diacritic: strip max_size: 80 max_variant: 1 special: hacker
  * roman-numerals spelling: US  *
@@ -27,8 +29,24 @@ import java.util.Set;
  * in any form, the copyright notice must be prominently displayed and the text
  * of this document must be included verbatim.
  *
+ * Copy right notice for resources/assets/stan_dict.txt
+ * 
+ * This word list is sourced from:
+ * https://inventwithpython.com/dictionary.txt
  *
- * @author Yicheng Ying
+ * The original content is provided by Al Sweigart (Invent with Python).
+ *
+ * This file is used in this project ("Scribble") for educational and 
+ * non-commercial purposes only.
+ *
+ * All rights to the original content belong to its respective author.
+ * No copyright infringement is intended.
+ *
+ * If the copyright holder has any concerns regarding the use of this file,
+ * please contact the project author and the content will be removed promptly.
+ * 
+ * @author Yicheng Ying, Junyu Li
+ * @version 1.0
  */
 
 public class DictionaryLoader {

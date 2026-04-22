@@ -20,6 +20,11 @@ import javax.swing.border.EmptyBorder;
 
 import com.kumoasobi.scribble.util.SoundManager;
 
+/**
+ * The instruction section for the game
+ * 
+ * @author Chuhui Gu
+ */
 public class IntroductionDialog extends JDialog {
     private static final Color BG     = new Color(217,  237,  210);
     private static final Color CARD   = new Color( 231,  231,  219);

@@ -11,6 +11,12 @@ import com.kumoasobi.scribble.rules.config.GameConfigFactory;
 import com.kumoasobi.scribble.rules.config.GameConfigRequest;
 import com.kumoasobi.scribble.util.DictionaryLoader;
 
+/**
+ * The settings before starting the game
+ * 
+ * @author Yicheng Ying
+ * @version 1.0
+ */
 public class MenuController {
 
     /**
@@ -30,13 +36,13 @@ public class MenuController {
      */
     public GameState newGame(GameConfig config) {
         GameState gs = new GameState();
-        gs.setPlayers(config.players);
-        gs.setBag(new TileBag(config.drawStrategy));
+        gs.setPlayers(config.getPlayers());
+        gs.setBag(new TileBag(config.getDrawStrategy()));
         gs.setBoard(new Board());
         gs.setCurrentPlayerIndex(0);
         gs.setTurns(0);
         gs.setStartTime(System.currentTimeMillis());
-        gs.setEndStrategy(config.endStrategy);
+        gs.setEndStrategy(config.getEndStrategy());
 
         for (Player p : gs.getPlayers()) {
             p.addTiles(gs.getBag().drawTiles(Player.getRackSize()));

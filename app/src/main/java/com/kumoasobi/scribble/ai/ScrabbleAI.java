@@ -41,7 +41,8 @@ import com.kumoasobi.scribble.rules.validator.DictValidator;
  * game infrastructure and runs fast enough for real-time play.
  * ─────────────────────────────────────────────────────────────────────────────
  * 
- * @author Peixuan Ding
+ * @author Peixuan Ding, Yutong Xiao
+ * @version 1.0
  */
 public class ScrabbleAI {
 
