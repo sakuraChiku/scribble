@@ -40,9 +40,7 @@ public class Tile implements Serializable {
     public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Tile t)) return false;
-    // 空白tile：只要score都是0，就视为同一种tile
     if (this.score == 0 && t.score == 0) return true;
-    // 普通tile：字母和分数都必须一致
     return this.score == t.score && this.letter == t.letter;
 }
 

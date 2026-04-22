@@ -298,6 +298,8 @@ public class GameWindow extends JFrame {
             boardPanel.setCurrentMove(currentMove);
             controlPanel.clearLog();
 
+            setupChatPanel();
+            
             activateGameScreen();
             controlPanel.startClock(gameState.getStartTime());
             controlPanel.log("Game loaded.");
