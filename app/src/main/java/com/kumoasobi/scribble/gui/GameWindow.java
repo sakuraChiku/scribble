@@ -540,7 +540,7 @@ public class GameWindow extends JFrame {
         fc.setDialogTitle("Save Game");
         fc.setSelectedFile(new java.io.File(filename));
         fc.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
-            "Scrabble Save Files (*.ser)", "ser"));
+            "Scribble Save Files (*.ser)", "ser"));
 
         if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
 

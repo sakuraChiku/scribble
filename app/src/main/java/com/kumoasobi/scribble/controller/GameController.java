@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.kumoasobi.scribble.ai.AIMove;
 import com.kumoasobi.scribble.ai.AIPlayer;
-import com.kumoasobi.scribble.ai.ScrabbleAI;
+import com.kumoasobi.scribble.ai.ScribbleAI;
 import com.kumoasobi.scribble.exceptions.GameException;
 import com.kumoasobi.scribble.exceptions.ReachMaxRefreshTimes;
 import com.kumoasobi.scribble.models.Board;
@@ -91,7 +91,7 @@ public class GameController {
      */
     public MoveResult executeAITurn() {
         AIPlayer ai  = (AIPlayer) gs.getPlayers().get(gs.getCurrentPlayerIndex());
-        ScrabbleAI engine = new ScrabbleAI(ai.getDifficulty(), dict);
+        ScribbleAI engine = new ScribbleAI(ai.getDifficulty(), dict);
 
         AIMove best = engine.findBestMove(gs.getBoard(), ai);
 

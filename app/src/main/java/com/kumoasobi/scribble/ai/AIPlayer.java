@@ -10,7 +10,7 @@ import com.kumoasobi.scribble.models.Player;
  * Extends Player so it can be stored in GameState alongside human players
  * without any changes to existing model classes.
  *
- * The ScrabbleAI engine is NOT stored here (it is not Serializable and
+ * The ScribbleAI engine is NOT stored here (it is not Serializable and
  * doesn't need to be saved). GameController recreates it from difficulty.
  * 
  * @author Peixuan Ding, Yutong Xiao

@@ -22,7 +22,7 @@ import com.kumoasobi.scribble.rules.validator.BoardValidator;
 import com.kumoasobi.scribble.rules.validator.DictValidator;
 
 /**
- * Scrabble AI engine.
+ * Scribble AI engine.
  *
  * Algorithm overview:
  * ─────────────────────────────────────────────────────────────────────────────
@@ -44,7 +44,7 @@ import com.kumoasobi.scribble.rules.validator.DictValidator;
  * @author Peixuan Ding, Yutong Xiao
  * @version 1.0
  */
-public class ScrabbleAI {
+public class ScribbleAI {
 
     private final AIDifficulty difficulty;
     private final Set<String>  dictionary;
@@ -53,7 +53,7 @@ public class ScrabbleAI {
     // How many anchors MEDIUM difficulty samples (out of all available)
     private static final int MEDIUM_ANCHOR_SAMPLE = 15;
 
-    public ScrabbleAI(AIDifficulty difficulty, Set<String> dictionary) {
+    public ScribbleAI(AIDifficulty difficulty, Set<String> dictionary) {
         this.difficulty = difficulty;
         this.dictionary = dictionary;
     }
