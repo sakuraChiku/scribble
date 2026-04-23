@@ -195,7 +195,7 @@ public class GameController {
         Player player = gs.getPlayers().get(gs.getCurrentPlayerIndex());
         TileBag bag = gs.getBag();
         if (player.getRemainingRefreshTimes() <= 0) {
-            throw new ReachMaxRefreshTimes("You have reached maximun refreshing times!");
+            throw new ReachMaxRefreshTimes("You have reached maximum refreshing times!");
         } else {
             player.consumeMaxRefreshTimes();
             bag.flowbackTiles(player.getRack());
