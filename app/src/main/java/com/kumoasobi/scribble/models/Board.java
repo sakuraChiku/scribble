@@ -85,10 +85,4 @@ public class Board implements Serializable {
         boolean down  = (row < SIZE) && hasTile(row + 1, col);
         return left || right || up || down;
     }
-
-    /* private void checkBounds(int row, int col) throws CellOutOfBoundException{
-        if (row < 1 || row > SIZE || col < 1 || col > SIZE) {
-            throw new CellOutOfBoundException("Invalid board position: (" + row + ", " + col + ")");
-        }
-    } */
 }

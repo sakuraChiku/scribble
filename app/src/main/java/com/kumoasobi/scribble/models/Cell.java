@@ -11,10 +11,12 @@ import java.io.Serializable;
 public class Cell implements Serializable {
     private Tile tile;
     private final BonusType bonus;
+    private boolean isBonusUsed;
 
     public Cell(BonusType bonus) {
         this.tile = null;
         this.bonus = bonus;
+        this.isBonusUsed = false;
     }
 
     public void placeTile(Tile tile) {
@@ -35,5 +37,13 @@ public class Cell implements Serializable {
 
     public boolean isPlaced() {
         return tile != null;
+    }
+
+    public boolean isBonusUsed() {
+        return isBonusUsed;
+    }
+
+    public void useBonus() {
+        isBonusUsed = true;
     }
 }

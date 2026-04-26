@@ -37,7 +37,7 @@ public class WordScanner {
 
             // get the score on board (r, c)
             int letterScore = board.getTile(r, c).getScore();
-            if (!board.getTile(r, c).isBonusUsed()) { // if the bonus is not used
+            if (!board.getCell(r, c).isBonusUsed()) { // if the bonus is not used
                 switch (board.getCell(r, c).getBonus()) {
                     case NONE -> letterScore *= 1;
                     case DL -> letterScore *= 2;
@@ -45,6 +45,7 @@ public class WordScanner {
                     case DW -> wordMultiplier *= 2;
                     case TW -> wordMultiplier *= 3;
                 }
+                board.getCell(r, c).useBonus();
             }
             wordScore += letterScore;
             r -= dir.getDy(); 
@@ -57,7 +58,7 @@ public class WordScanner {
         while ((r >= 1 && r <= 15) && (c >= 1 && c <= 15) && board.hasTile(r, c)) {
             pos.append(board.getTile(r, c).getLetter());
             int letterScore = board.getTile(r, c).getScore();
-            if (!board.getTile(r, c).isBonusUsed()) {
+            if (!board.getCell(r, c).isBonusUsed()) {
                 switch (board.getCell(r, c).getBonus()) {
                     case NONE -> letterScore *= 1;
                     case DL -> letterScore *= 2;
@@ -65,6 +66,7 @@ public class WordScanner {
                     case DW -> wordMultiplier *= 2;
                     case TW -> wordMultiplier *= 3;
                 }
+                board.getCell(r, c).useBonus();
             }
             wordScore += letterScore;
             r += dir.getDy();
@@ -73,7 +75,7 @@ public class WordScanner {
 
         // do not forget the center score
         int centerScore = board.getTile(row, col).getScore();
-        if (!board.getTile(row, col).isBonusUsed()) {
+        if (!board.getCell(row, col).isBonusUsed()) {
             switch (board.getCell(row, col).getBonus()) {
                 case NONE -> centerScore *= 1;
                 case DL -> centerScore *= 2;
@@ -81,6 +83,7 @@ public class WordScanner {
                 case DW -> wordMultiplier *= 2;
                 case TW -> wordMultiplier *= 3;
             }
+            board.getCell(r, c).useBonus();
         }
         wordScore += centerScore;
 
