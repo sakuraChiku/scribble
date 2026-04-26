@@ -134,12 +134,12 @@ public class GameController {
         Direction currentDir = currentMove.getDirection();
         List<WordInfo> wordInfoList = new ArrayList<>();
         try {
-            WordInfo parallelInfo = WordScanner.scanWord(currentBoard, currentMove.getPlacements().get(0), currentDir);
+            WordInfo parallelInfo = WordScanner.dryScanWord(currentBoard, currentMove.getPlacements().get(0), currentDir);
             if (parallelInfo.getWord().length() > 1) {
                 wordInfoList.add(parallelInfo);
             }
             for (Placement p : currentMove.getPlacements()) {
-                WordInfo verticalInfo = WordScanner.scanWord(currentBoard, p, currentDir.flip());
+                WordInfo verticalInfo = WordScanner.dryScanWord(currentBoard, p, currentDir.flip());
                 if (verticalInfo.getWord().length() > 1) {
                     wordInfoList.add(verticalInfo);
                 }
@@ -171,12 +171,19 @@ public class GameController {
     public void applyMove(Move currentMove, MoveResult result) {
         Board  currentBoard  = gs.getBoard();
         Player currentPlayer = gs.getPlayers().get(gs.getCurrentPlayerIndex());
+        Direction dir = currentMove.getDirection();
 
         if (result.isValidMove()) {
             List<Tile> tiles = new ArrayList<>();
             for (Placement p : currentMove.getPlacements()) tiles.add(p.getTile());
             currentBoard.placeMove(currentMove);
             currentPlayer.removeTiles(tiles);
+
+            // the operations below simply consume isBonusUsed
+            WordScanner.standardScanWord(currentBoard, currentMove.getPlacements().get(0), dir);
+            for (Placement p : currentMove.getPlacements()) {
+                WordScanner.standardScanWord(currentBoard, p, dir.flip());
+            }
         }
     }
 

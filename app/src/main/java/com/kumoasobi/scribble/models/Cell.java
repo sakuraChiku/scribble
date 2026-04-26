@@ -46,4 +46,8 @@ public class Cell implements Serializable {
     public void useBonus() {
         isBonusUsed = true;
     }
+
+    public void resetBonus() {
+        isBonusUsed = false;
+    }
 }

@@ -12,6 +12,12 @@ import com.kumoasobi.scribble.models.WordInfo;
  * @version 1.0
  */
 public class WordScanner {
+    public static WordInfo dryScanWord(Board board, Placement p, Direction dir) {
+        return scanWord(board, p, dir, false);
+    }
+    public static WordInfo standardScanWord(Board board, Placement p, Direction dir) {
+        return scanWord(board, p, dir, true);
+    }
     /**
      * Scan the word from a specific direction and return the word and its score
      * @param board
@@ -20,7 +26,7 @@ public class WordScanner {
      * @param dir
      * @return new WordInfo
      */
-    public static WordInfo scanWord(Board board, Placement p, Direction dir) {
+    private static WordInfo scanWord(Board board, Placement p, Direction dir, boolean consumeBonus) {
         int row = p.getRow();
         int col = p.getCol();
         StringBuilder neg = new StringBuilder();
@@ -45,7 +51,7 @@ public class WordScanner {
                     case DW -> wordMultiplier *= 2;
                     case TW -> wordMultiplier *= 3;
                 }
-                board.getCell(r, c).useBonus();
+                if (consumeBonus) board.getCell(r, c).useBonus();
             }
             wordScore += letterScore;
             r -= dir.getDy(); 
@@ -66,7 +72,7 @@ public class WordScanner {
                     case DW -> wordMultiplier *= 2;
                     case TW -> wordMultiplier *= 3;
                 }
-                board.getCell(r, c).useBonus();
+                if (consumeBonus) board.getCell(r, c).useBonus();
             }
             wordScore += letterScore;
             r += dir.getDy();
@@ -83,7 +89,7 @@ public class WordScanner {
                 case DW -> wordMultiplier *= 2;
                 case TW -> wordMultiplier *= 3;
             }
-            board.getCell(r, c).useBonus();
+            if (consumeBonus) board.getCell(row, col).useBonus();
         }
         wordScore += centerScore;
 

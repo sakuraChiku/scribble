@@ -226,10 +226,10 @@ public class ScribbleAI {
         List<WordInfo> wordInfos = new ArrayList<>();
         try {
             Direction dir = move.getDirection();
-            WordInfo main = WordScanner.scanWord(board, move.getPlacements().get(0), dir);
+            WordInfo main = WordScanner.dryScanWord(board, move.getPlacements().get(0), dir);
             wordInfos.add(main);
             for (Placement p : move.getPlacements()) {
-                WordInfo cross = WordScanner.scanWord(board, p, dir.flip());
+                WordInfo cross = WordScanner.dryScanWord(board, p, dir.flip());
                 if (cross.getWord().length() > 1) wordInfos.add(cross);
             }
         } catch (Exception e) {
