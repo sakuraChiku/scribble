@@ -235,7 +235,7 @@ public class GameWindow extends JFrame {
         ConfigUI configDialog = new ConfigUI(this);
         configDialog.setVisible(true);
         GameConfigRequest request = configDialog.getRequest();
-        String filepath = "./app/src/main/resources/assets/dict/stan_dict.txt";
+        String resourcePath = "/assets/dict/stan_dict.txt";
         if (request == null) return;   // user cancelled
 
         // 2. Build GameConfig via factory
@@ -245,9 +245,9 @@ public class GameWindow extends JFrame {
         // 3. Create GameState (tiles already dealt inside newGame)
         gameState  = mc.newGame(config);
         try {
-            dictionary = mc.loadDictionary(filepath);
+            dictionary = mc.loadDictionary(resourcePath);
         } catch (Exception e) {
-            controlPanel.log("Failed to load at " + filepath + ". Please check your dictionary path again!");
+            controlPanel.log("Failed to load at " + resourcePath + ". Please check your dictionary path again!");
         }
 
         // 4. Wire up GameController
@@ -266,7 +266,7 @@ public class GameWindow extends JFrame {
         activateGameScreen();
         controlPanel.startClock(gameState.getStartTime());
         controlPanel.log("Game started! " + gameState.getPlayers().size() + " players.");
-        controlPanel.log("Successfully loaded dictionary at " + filepath + ".");
+        controlPanel.log("Successfully loaded dictionary at " + resourcePath + ".");
         controlPanel.log("First word must cover the centre square (row 8, col 8).");
         checkAndRunAITurn();
     }
@@ -284,7 +284,7 @@ public class GameWindow extends JFrame {
         SoundManager.playStart();
         try {
             gameState      = LoadManager.deserializeGameState(fc.getSelectedFile().getAbsolutePath());
-            dictionary     = new MenuController().loadDictionary("./app/src/main/resources/assets/dict/stan_dict.txt");
+            dictionary     = new MenuController().loadDictionary("/assets/dict/stan_dict.txt");
             endStrategy    = gameState.getEndStrategy();
 
             gameController = new GameController();

@@ -1,8 +1,8 @@
 package com.kumoasobi.scribble.util;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,14 +50,11 @@ import java.util.Set;
  */
 
 public class DictionaryLoader {
-    public static Set<String> loadDictionarySet(String filepath) {
+    public static Set<String> loadDictionarySet(String resourcePath) {
         BufferedReader br;
-        FileReader fr;
         Set<String> dict = new HashSet<>();
         try {
-            fr = new FileReader(filepath);
-            br = new BufferedReader(fr); 
-
+            br = new BufferedReader(new InputStreamReader(DictionaryLoader.class.getResourceAsStream(resourcePath)));
             String line;
             while ((line = br.readLine()) != null) {
                 dict.add(line.trim().toUpperCase());
