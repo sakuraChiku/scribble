@@ -155,6 +155,10 @@ scribble
 - Deeply immersive AI character
 - Settings option
 
+## License
+MIT
+Yuzusoft
+
 ## Contributing
 
 Pull requests are welcome.
