@@ -156,7 +156,8 @@ scribble
 - Settings option
 
 ## License
-MIT
+
+MIT  
 Yuzusoft
 
 ## Contributing
